@@ -1,0 +1,105 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Projects - Steve Wang"
+  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, and purchasing workflow tooling."
+  current="projects"
+>
+  <main>
+    <section class="page-title section-wrap">
+      <h1>Projects</h1>
+      <p>
+        Selected work across full-stack product development, live personal software,
+        and purchasing workflow automation.
+      </p>
+    </section>
+
+    <section class="section-wrap project-list">
+      <article class="detail-card" id="digital-signage-cms">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Full-stack product</span>
+            <h2>Digital Signage CMS</h2>
+          </div>
+          <span class="status-label">Production work</span>
+        </div>
+        <div class="detail-grid">
+          <div>
+            <h3>Scope</h3>
+            <p>Production CMS for digital signage content, screens, assets, templates, editing, permissions, billing, and deployment workflows.</p>
+          </div>
+          <div>
+            <h3>Owned Work</h3>
+            <p>Permission control, Stripe payment setup, related CMS flows, CI/CD pipeline work, backend APIs, database changes, and production support.</p>
+          </div>
+          <div>
+            <h3>Also Supported</h3>
+            <p>CRM sync, screen monitoring notifications, Electron support, and Android/Tizen TV app maintenance.</p>
+          </div>
+          <div>
+            <h3>Tech Stack</h3>
+            <p>React, TypeScript, Node.js, MySQL, Stripe API, Ontraport CRM, Docker, Nginx, CircleCI, Bitbucket Pipelines, AWS EC2.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="detail-card" id="fuel-tracker">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Live tool</span>
+            <h2>Fuel Tracker</h2>
+          </div>
+          <a class="button button-secondary" href="https://fueltracker.stevewang.me">Open tool</a>
+        </div>
+        <div class="detail-grid">
+          <div>
+            <h3>Problem</h3>
+            <p>Store apps felt too heavy or missed the workflow I wanted.</p>
+          </div>
+          <div>
+            <h3>Solution</h3>
+            <p>A focused production app I can adjust, with AI receipt reading to reduce manual entry.</p>
+          </div>
+          <div>
+            <h3>AI Extraction</h3>
+            <p>Litres, pump unit price, retail total, fuel grade, brand, station name, and purchase datetime.</p>
+          </div>
+          <div>
+            <h3>Tech Stack</h3>
+            <p>Web app, AI API integration, AWS Amplify deployment.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="detail-card" id="purchasing-workflow-tools">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Current focus</span>
+            <h2>Purchasing Workflow Tools</h2>
+          </div>
+          <span class="status-label">In progress</span>
+        </div>
+        <div class="detail-grid">
+          <div>
+            <h3>Goal</h3>
+            <p>Speed up low-stock ordering decisions that can be done in Excel, but take longer to prepare and check manually.</p>
+          </div>
+          <div>
+            <h3>Current Tool</h3>
+            <p>Python import flow for item, sales, cost, price, and supplier data with automatic order amount calculation.</p>
+          </div>
+          <div>
+            <h3>Rules</h3>
+            <p>Uses supplier MOQ, layer price, pallet price, and packaging constraints when calculating suggested order amounts.</p>
+          </div>
+          <div>
+            <h3>Tech Stack</h3>
+            <p>Python first. Future UI will depend on the workflow shape after the calculation model is stable.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</BaseLayout>

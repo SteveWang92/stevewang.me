@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Steve Wang - Project Hub"
+  description="Steve Wang builds software, automation, and procurement systems for reporting, operations, and supply chain workflows."
+>
+  <main>
+    <section class="hero section-wrap">
+      <div class="hero-copy">
+        <h1>Steve Wang</h1>
+        <div class="role-stack" aria-label="Primary disciplines">
+          <span>Full-Stack Developer</span>
+          <span>Data &amp; Process Automation</span>
+          <span>Procurement Systems</span>
+        </div>
+        <p>
+          I build full-stack software and practical automation tools, with experience
+          across digital signage platforms, payments, CI/CD, and foodservice purchasing workflows.
+        </p>
+        <div class="actions">
+          <a class="button button-primary" href="/projects/">View projects</a>
+          <a class="button button-secondary" href="/career/">Career outcomes</a>
+        </div>
+      </div>
+
+      <div class="focus-panel" aria-label="Current focus summary">
+        <div>
+          <span>Production background</span>
+          <strong>Digital signage CMS, payments, CI/CD, editor and template systems.</strong>
+        </div>
+        <div>
+          <span>Live personal product</span>
+          <strong>Fuel Tracker with AI receipt extraction, deployed on AWS Amplify.</strong>
+        </div>
+        <div>
+          <span>Current build focus</span>
+          <strong>Python purchasing tool for order suggestions from item, sales, cost, price, and supplier data.</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-wrap section-block">
+      <div class="section-heading">
+        <h2>Featured Projects</h2>
+        <a href="/projects/">All projects</a>
+      </div>
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-meta">Full-stack product</div>
+          <h3>Digital Signage CMS</h3>
+          <p>CMS work across permissions, Stripe payments, CI/CD, templates, and built-in editing.</p>
+          <a href="/projects/#digital-signage-cms">Read project notes</a>
+        </article>
+        <article class="project-card">
+          <div class="project-meta">Live tool</div>
+          <h3>Fuel Tracker</h3>
+          <p>Receipt-assisted fuel logging app built to stay lighter and more adaptable than store alternatives.</p>
+          <a href="https://fueltracker.stevewang.me">fueltracker.stevewang.me</a>
+        </article>
+        <article class="project-card">
+          <div class="project-meta">Current focus</div>
+          <h3>Purchasing Workflow Tools</h3>
+          <p>Python tooling for low-stock order suggestions using sales, cost, price, supplier, MOQ, and pallet rules.</p>
+          <a href="/projects/#purchasing-workflow-tools">View scope</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="proof-band">
+      <div>
+        <strong>Product Engineering</strong>
+        <span>Full-stack CMS, payment, CRM, and deployment work</span>
+      </div>
+      <div>
+        <strong>Automation</strong>
+        <span>Python tools for reporting and purchasing workflows</span>
+      </div>
+      <div>
+        <strong>Operations</strong>
+        <span>Design from real purchasing and supply chain work</span>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

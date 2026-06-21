@@ -1,0 +1,19 @@
+---
+interface Props {
+  current?: "projects" | "career";
+}
+
+const { current } = Astro.props;
+---
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="Steve Wang home">
+    <span class="brand-mark">SW</span>
+    <span>Steve Wang</span>
+  </a>
+  <nav class="nav" aria-label="Primary navigation">
+    <a aria-current={current === "projects" ? "page" : undefined} href="/projects/">Projects</a>
+    <a aria-current={current === "career" ? "page" : undefined} href="/career/">Career</a>
+    <a href="mailto:wangqi.1992@hotmail.com">Email</a>
+  </nav>
+</header>

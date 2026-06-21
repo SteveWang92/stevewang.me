@@ -1,0 +1,11 @@
+# Private planning notes; keep out of public commits/deployments.
+docs/
+
+# Astro / Node output.
+node_modules/
+dist/
+.astro/
+
+# Local OS/editor noise.
+.DS_Store
+Thumbs.db
