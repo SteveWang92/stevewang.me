@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Projects - Steve Wang"
-  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, and purchasing workflow tooling."
+  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, Shared Bill, and purchasing workflow tooling."
   current="projects"
 >
   <main>
@@ -69,6 +69,44 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <div>
             <h3>Tech Stack</h3>
             <p>Web app, AI API integration, AWS Amplify deployment.</p>
+          </div>
+        </div>
+        <div class="demo-strip" aria-label="Fuel Tracker screenshots">
+          <figure>
+            <img src="/assets/fueltracker-overview.png" alt="Fuel Tracker overview showing consumption, cost, distance, and recent activity." loading="lazy" />
+            <figcaption>Overview metrics and recent activity</figcaption>
+          </figure>
+          <figure>
+            <img src="/assets/fueltracker-ai-entry.png" alt="Fuel Tracker add-fill screen showing AI receipt extraction filling fuel details." loading="lazy" />
+            <figcaption>AI-assisted receipt entry</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="detail-card" id="shared-bill">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Desktop app</span>
+            <h2>Shared Bill</h2>
+          </div>
+          <span class="status-label">Local release</span>
+        </div>
+        <div class="detail-grid">
+          <div>
+            <h3>Purpose</h3>
+            <p>Local Windows app for recording shared expenses and calculating who should pay whom.</p>
+          </div>
+          <div>
+            <h3>Features</h3>
+            <p>Participants, expenses, weighted splits, notes, completed transfers, currency setting, and English/Chinese UI.</p>
+          </div>
+          <div>
+            <h3>Data</h3>
+            <p>Desktop data is saved beside the executable as JSON, with backup and restore support from settings.</p>
+          </div>
+          <div>
+            <h3>Tech Stack</h3>
+            <p>Electron, React, Vite, shared settlement logic, local JSON storage, and unit/UI tests.</p>
           </div>
         </div>
       </article>
