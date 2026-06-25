@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Projects - Steve Wang"
-  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, Shared Bill, and purchasing workflow tooling."
+  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, the hosted Shared Bill web app, and purchasing workflow tooling."
   current="projects"
 >
   <main>
@@ -86,27 +86,27 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <article class="detail-card" id="shared-bill">
         <div class="detail-header">
           <div>
-            <span class="project-meta">Desktop app</span>
+            <span class="project-meta">Live web app</span>
             <h2>Shared Bill</h2>
           </div>
-          <span class="status-label">Local release</span>
+          <a class="button button-secondary" href="https://sharebill.stevewang.me">Open app</a>
         </div>
         <div class="detail-grid">
           <div>
             <h3>Purpose</h3>
-            <p>Local Windows app for recording shared expenses and calculating who should pay whom.</p>
+            <p>Hosted app for recording shared expenses, splitting costs, and calculating who should pay whom.</p>
           </div>
           <div>
-            <h3>Features</h3>
-            <p>Participants, expenses, weighted splits, notes, completed transfers, currency setting, and English/Chinese UI.</p>
+            <h3>Web Migration</h3>
+            <p>Completed React/Vite web migration with Supabase-backed sign-in, groups, invites, shared bill storage, and completed transfer tracking.</p>
           </div>
           <div>
-            <h3>Data</h3>
-            <p>Desktop data is saved beside the executable as JSON, with backup and restore support from settings.</p>
+            <h3>Import Path</h3>
+            <p>Owner-only desktop JSON import keeps the original Electron data path useful while moving shared records into the hosted backend.</p>
           </div>
           <div>
             <h3>Tech Stack</h3>
-            <p>Electron, React, Vite, shared settlement logic, local JSON storage, and unit/UI tests.</p>
+            <p>React, Vite, Supabase Auth, Supabase Postgres, AWS Amplify Hosting, Electron, shared settlement logic, and unit/UI tests.</p>
           </div>
         </div>
       </article>
