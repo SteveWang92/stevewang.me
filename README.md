@@ -13,6 +13,12 @@ npm run preview
 
 ## Deploy
 
+Production hosting uses AWS Amplify from the `main` branch.
+
+Use short-lived `feat/*` branches for future work, merge them into `dev` for a
+combined manual check, then merge `dev` into `main` as the manual production
+deploy trigger.
+
 Build command: `npm run build`
 
 Output directory: `dist`
