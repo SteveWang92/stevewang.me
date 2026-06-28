@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Projects - Steve Wang"
-  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, the hosted Shared Bill web app, and purchasing workflow tooling."
+  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, the hosted Shared Bill web app, Project Status Hub, and purchasing workflow tooling."
   current="projects"
 >
   <main>
@@ -12,7 +12,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <h1>Projects</h1>
       <p>
         Selected work across full-stack product development, live personal software,
-        and purchasing workflow automation.
+        private operations dashboards, and purchasing workflow automation.
       </p>
     </section>
 
@@ -107,6 +107,34 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <div>
             <h3>Tech Stack</h3>
             <p>React, Vite, Supabase Auth, Supabase Postgres, AWS Amplify Hosting, Electron, shared settlement logic, and unit/UI tests.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="detail-card" id="project-status-hub">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Private dashboard</span>
+            <h2>Project Status Hub</h2>
+          </div>
+          <span class="status-label">Owner-only</span>
+        </div>
+        <div class="detail-grid">
+          <div>
+            <h3>Purpose</h3>
+            <p>Private operations dashboard for personal web projects, covering deploy health, uptime, provider status, collector errors, aggregate usage, and month-to-date cost.</p>
+          </div>
+          <div>
+            <h3>Tracked Apps</h3>
+            <p>Personal Hub, Shared Bill App, Fuel Tracker App, and Project Status Hub itself.</p>
+          </div>
+          <div>
+            <h3>Access Model</h3>
+            <p>Frontend login gates the dashboard before data renders, and Supabase RLS allows reads only for approved authenticated dashboard users.</p>
+          </div>
+          <div>
+            <h3>Tech Stack</h3>
+            <p>Vite web app, Supabase Auth, Supabase row-level security, scheduled collectors, AWS Amplify Hosting, and GitHub-based branch deployment flow.</p>
           </div>
         </div>
       </article>
