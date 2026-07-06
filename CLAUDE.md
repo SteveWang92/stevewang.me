@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`stevewang.me` — Steve Wang's personal project hub, a static Astro site (three pages: home, `/projects/`, `/career/`) deployed to AWS Amplify. It is a project hub, not a blog or resume site: it should answer "What has Steve built?" quickly. `AGENTS.md` carries the same working notes for other agent tools — keep the two consistent when conventions change.
+`stevewang.me` — Steve Wang's personal project hub, a static Astro site (three pages: home, `/projects/`, `/career/`) deployed to AWS Amplify. It is a project hub, not a blog or resume site: it should answer "What has Steve built?" quickly. The former `AGENTS.md` is archived at `docs/archive/AGENTS.md` — do not read or maintain it.
 
 ## Commands
 
