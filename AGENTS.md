@@ -7,6 +7,6 @@
 - If a change affects positioning, public-facing project copy, content guardrails, or deployment assumptions, update `docs/PROJECT_PLAN.md` in the same change.
 - This is an Astro static site. Use `npm run dev` for local work and `npm run build` for verification before handing off content or deployment changes.
 - For documentation-only changes, do not run tests or builds; verify by reviewing the edited files instead.
-- Use short-lived `feat/*` branches for future work, merge them into `dev` for a combined manual check, and leave the final `dev` to `main` merge as the manual Amplify production deploy trigger.
-- Amplify production deploys from `main`. Do not refer to `production` as the deploy branch for this project.
+- Work directly on `main`; this project has no `dev` branch. Commit finished work but never push — the maintainer pushes manually to trigger the release.
+- Amplify production deploys from `main` on push. Do not refer to `production` as the deploy branch for this project.
 - Never commit provider credentials, AWS secrets, API keys, or `.env` files.

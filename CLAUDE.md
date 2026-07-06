@@ -40,8 +40,8 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 ## Workflow conventions
 
 - **Commits: one-line Conventional Commits, subject only** — no body, no co-author/generated-by trailers, no AI mentions anywhere in git history. Branch names are meaningful and descriptive (e.g. `feat/tools-page`), never auto-generated strings.
-- Commit finished work without being asked; split unrelated work into separate commits. Never push unless explicitly asked.
-- Branch flow: small changes (copy tweaks, docs) commit directly to the current working branch; larger work goes on short-lived `feat/*` branches merged into `dev` for a combined manual check, with the final `dev` → `main` merge as the manual Amplify production deploy trigger.
-- **Amplify deploys from `main`** (build `npm run build`, output `dist/`). A legacy `production` branch exists — it is not the deploy branch; do not use or reference it.
+- Commit finished work without being asked; split unrelated work into separate commits.
+- Work directly on `main` — this project is small and has no `dev` branch. **Never push**: pushing `main` is the manual Amplify production deploy trigger, and the user does it themselves when they want a release.
+- **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`). A legacy `production` branch exists — it is not the deploy branch; do not use or reference it.
 - Never commit credentials, AWS secrets, API keys, or `.env` files.
 - Keep changes focused and read only the files needed; do not use optional skills or plugins unless asked.
