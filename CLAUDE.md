@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`stevewang.me` — Steve Wang's personal project hub, a static Astro site (three pages: home, `/projects/`, `/career/`) deployed to AWS Amplify. It is a project hub, not a blog or resume site: it should answer "What has Steve built?" quickly. The former `AGENTS.md` is archived at `docs/archive/AGENTS.md` — do not read or maintain it.
+`stevewang.me` — Steve Wang's personal project hub, a static Astro site (home, `/projects/`, `/career/`, plus a 404 page) deployed to AWS Amplify. It is a project hub, not a blog or resume site: it should answer "What has Steve built?" quickly. The former `AGENTS.md` is archived at `docs/archive/AGENTS.md` — do not read or maintain it.
 
 ## Commands
 
