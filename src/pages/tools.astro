@@ -65,6 +65,72 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
       </article>
+
+      <article class="detail-card" id="price-break-evaluator">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Price Break Evaluator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field">
+              <label for="pb-qty">Quantity needed (cartons)</label>
+              <input id="pb-qty" type="number" inputmode="numeric" min="1" step="1" value="137" />
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="pb-cpl">Cartons per layer</label>
+                <input id="pb-cpl" type="number" inputmode="numeric" min="1" step="1" value="10" />
+              </div>
+              <div class="tool-field">
+                <label for="pb-lpp">Layers per pallet</label>
+                <input id="pb-lpp" type="number" inputmode="numeric" min="1" step="1" value="6" />
+              </div>
+            </div>
+            <div class="tool-field-row">
+              <div class="tool-field">
+                <label for="pb-base">Base $/carton</label>
+                <input id="pb-base" type="number" inputmode="decimal" min="0.01" step="0.01" value="12.00" />
+              </div>
+              <div class="tool-field">
+                <label for="pb-layer">Layer $/carton</label>
+                <input id="pb-layer" type="number" inputmode="decimal" min="0.01" step="0.01" value="11.40" />
+              </div>
+              <div class="tool-field">
+                <label for="pb-pallet">Pallet $/carton</label>
+                <input id="pb-pallet" type="number" inputmode="decimal" min="0.01" step="0.01" value="10.80" />
+              </div>
+            </div>
+            <p class="tool-note">
+              Compare buying the exact quantity at base price against rounding
+              up to full layers or full pallets at better unit prices —
+              rounding up is often cheaper in total.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Buy exact at base price</span>
+              <strong id="pb-exact">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Round up to full layers</span>
+              <strong id="pb-roundlayer">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Round up to full pallets</span>
+              <strong id="pb-roundpallet">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Best option</span>
+              <strong id="pb-best">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
     </section>
   </main>
 </BaseLayout>
@@ -79,6 +145,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   function readPositiveInt(input: HTMLInputElement): number | null {
     const value = Number(input.value);
     return Number.isInteger(value) && value > 0 ? value : null;
+  }
+
+  function readPositiveNumber(input: HTMLInputElement): number | null {
+    const value = Number(input.value);
+    return Number.isFinite(value) && value > 0 ? value : null;
+  }
+
+  function money(value: number): string {
+    const formatted = Math.abs(value).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    return `${value < 0 ? "-" : ""}$${formatted}`;
   }
 
   function plural(count: number, unit: string): string {
@@ -138,5 +217,68 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     update();
   }
 
+  function setupPriceBreakEvaluator() {
+    const qtyInput = byId("pb-qty") as HTMLInputElement;
+    const cplInput = byId("pb-cpl") as HTMLInputElement;
+    const lppInput = byId("pb-lpp") as HTMLInputElement;
+    const baseInput = byId("pb-base") as HTMLInputElement;
+    const layerInput = byId("pb-layer") as HTMLInputElement;
+    const palletInput = byId("pb-pallet") as HTMLInputElement;
+    const outputs = {
+      exact: byId("pb-exact"),
+      roundLayer: byId("pb-roundlayer"),
+      roundPallet: byId("pb-roundpallet"),
+      best: byId("pb-best"),
+    };
+
+    function update() {
+      const quantity = readPositiveInt(qtyInput);
+      const cartonsPerLayer = readPositiveInt(cplInput);
+      const layersPerPallet = readPositiveInt(lppInput);
+      const basePrice = readPositiveNumber(baseInput);
+      const layerPrice = readPositiveNumber(layerInput);
+      const palletPrice = readPositiveNumber(palletInput);
+
+      if (!quantity || !cartonsPerLayer || !layersPerPallet || !basePrice || !layerPrice || !palletPrice) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const perPallet = cartonsPerLayer * layersPerPallet;
+      const options = [
+        { name: "Buying exact", qty: quantity, total: quantity * basePrice, el: outputs.exact },
+        {
+          name: "Full layers",
+          qty: Math.ceil(quantity / cartonsPerLayer) * cartonsPerLayer,
+          total: Math.ceil(quantity / cartonsPerLayer) * cartonsPerLayer * layerPrice,
+          el: outputs.roundLayer,
+        },
+        {
+          name: "Full pallets",
+          qty: Math.ceil(quantity / perPallet) * perPallet,
+          total: Math.ceil(quantity / perPallet) * perPallet * palletPrice,
+          el: outputs.roundPallet,
+        },
+      ];
+
+      options.forEach((option) => {
+        option.el.textContent = `${option.qty} cartons · ${money(option.total)} · ${money(option.total / quantity)} per needed carton`;
+      });
+
+      const best = options.reduce((a, b) => (b.total < a.total ? b : a));
+      const exactTotal = options[0].total;
+      outputs.best.textContent =
+        best === options[0]
+          ? "Buying exact is cheapest"
+          : `${best.name} — saves ${money(exactTotal - best.total)} vs buying exact`;
+    }
+
+    [qtyInput, cplInput, lppInput, baseInput, layerInput, palletInput].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
   setupPalletCalculator();
+  setupPriceBreakEvaluator();
 </script>
