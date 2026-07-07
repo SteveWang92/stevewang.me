@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Tools - Steve Wang"
-  description="Small browser-based purchasing tools by Steve Wang, starting with a pallet configuration calculator."
+  description="Small browser-based purchasing calculators by Steve Wang — pallet breakdown, price breaks, MOQ rounding, order coverage, freight space, rebates, and cost change impact."
   current="tools"
 >
   <main>
@@ -132,6 +132,58 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
       </article>
 
+      <article class="detail-card" id="moq-calculator">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>MOQ &amp; Pack Round Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field">
+              <label for="moq-need">Quantity needed (units)</label>
+              <input id="moq-need" type="number" inputmode="numeric" min="1" step="1" value="137" />
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="moq-min">Supplier minimum (units)</label>
+                <input id="moq-min" type="number" inputmode="numeric" min="0" step="1" value="200" />
+              </div>
+              <div class="tool-field">
+                <label for="moq-multiple">Order multiple (units)</label>
+                <input id="moq-multiple" type="number" inputmode="numeric" min="1" step="1" value="24" />
+              </div>
+            </div>
+            <p class="tool-note">
+              Round a required quantity up to satisfy a supplier minimum order
+              and a fixed order multiple (pack or outer size), and see which
+              rule sets the final quantity.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Suggested order</span>
+              <strong id="moq-order">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Above requirement</span>
+              <strong id="moq-extra">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Meets supplier minimum</span>
+              <strong id="moq-meets">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Binding constraint</span>
+              <strong id="moq-binding">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+
       <article class="detail-card" id="order-coverage">
         <div class="detail-header">
           <div>
@@ -179,6 +231,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <div class="tool-result">
               <span>Projected run-out</span>
               <strong id="oc-runout">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Reorder point</span>
+              <strong id="oc-reorder">—</strong>
             </div>
             <div class="tool-result">
               <span>Suggested order</span>
@@ -568,6 +624,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const outputs = {
       cover: byId("oc-cover"),
       runout: byId("oc-runout"),
+      reorder: byId("oc-reorder"),
       order: byId("oc-order"),
     };
 
@@ -597,6 +654,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         year: "numeric",
       });
 
+      const reorderPoint = Math.ceil((weekly * leadDays) / 7);
+      outputs.reorder.textContent =
+        leadDays === 0
+          ? "No lead time — reorder as stock runs out"
+          : `${plural(reorderPoint, "unit")} on hand — covers the ${leadDays}-day lead`;
+
       const needed = Math.ceil(weekly * (targetWeeks + leadDays / 7) - available);
       outputs.order.textContent =
         needed <= 0
@@ -605,6 +668,54 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
 
     [stockInput, incomingInput, weeklyInput, leadInput, targetInput].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
+  function setupMoqCalculator() {
+    const needInput = byId("moq-need") as HTMLInputElement;
+    const minInput = byId("moq-min") as HTMLInputElement;
+    const multipleInput = byId("moq-multiple") as HTMLInputElement;
+    const outputs = {
+      order: byId("moq-order"),
+      extra: byId("moq-extra"),
+      meets: byId("moq-meets"),
+      binding: byId("moq-binding"),
+    };
+
+    function update() {
+      const need = readPositiveInt(needInput);
+      const min = readNonNegativeInt(minInput);
+      const multiple = readPositiveInt(multipleInput);
+
+      if (!need || min === null || !multiple) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const afterMin = Math.max(need, min);
+      const order = Math.ceil(afterMin / multiple) * multiple;
+      const extra = order - need;
+
+      outputs.order.textContent = plural(order, "unit");
+      outputs.extra.textContent =
+        extra === 0
+          ? "Exact — no excess"
+          : `${plural(extra, "unit")} (+${((extra / need) * 100).toFixed(1)}%)`;
+      outputs.meets.textContent =
+        need >= min
+          ? "Yes — need already meets it"
+          : `No — minimum adds ${plural(min - need, "unit")}`;
+      outputs.binding.textContent =
+        order === need
+          ? "Requirement — already a clean order"
+          : order > afterMin
+            ? "Order multiple"
+            : "Supplier minimum";
+    }
+
+    [needInput, minInput, multipleInput].forEach((input) =>
       input.addEventListener("input", update),
     );
     update();
@@ -792,6 +903,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   setupPalletCalculator();
   setupPriceBreakEvaluator();
+  setupMoqCalculator();
   setupOrderCoverageCalculator();
   setupFreightSpaceCalculator();
   setupRebateCalculator();
