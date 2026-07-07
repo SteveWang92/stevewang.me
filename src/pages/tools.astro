@@ -575,7 +575,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       const runout = new Date();
       runout.setDate(runout.getDate() + coverDays);
-      outputs.runout.textContent = runout.toLocaleDateString(undefined, {
+      outputs.runout.textContent = runout.toLocaleDateString("en-AU", {
         weekday: "short",
         day: "numeric",
         month: "short",
