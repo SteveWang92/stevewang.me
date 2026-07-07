@@ -459,6 +459,15 @@ a {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.tool-field-row .tool-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-field-row .tool-field input {
+  margin-top: auto;
+}
+
 .tool-note {
   margin: 4px 0 0;
   color: var(--muted);
