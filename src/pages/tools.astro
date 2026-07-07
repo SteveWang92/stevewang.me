@@ -4,14 +4,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Tools - Steve Wang"
-  description="Small browser-based purchasing calculators by Steve Wang, including a pallet configuration calculator and a sales margin calculator."
+  description="Small browser-based purchasing tools by Steve Wang, starting with a pallet configuration calculator."
   current="tools"
 >
   <main>
     <section class="page-title section-wrap">
       <h1>Tools</h1>
       <p>
-        Small calculators built from day-to-day purchasing work.
+        Small tools built from day-to-day purchasing work.
         Everything runs in your browser — no data is sent anywhere.
       </p>
     </section>
@@ -65,47 +65,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
       </article>
-
-      <article class="detail-card" id="margin-calculator">
-        <div class="detail-header">
-          <div>
-            <span class="project-meta">Purchasing tool</span>
-            <h2>Sales Margin Calculator</h2>
-          </div>
-          <span class="status-label">Live on this page</span>
-        </div>
-        <div class="tool-body">
-          <form class="tool-form" autocomplete="off">
-            <div class="tool-field">
-              <label for="margin-cost">Unit cost</label>
-              <input id="margin-cost" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="e.g. 10.00" />
-            </div>
-            <div class="tool-field">
-              <label for="margin-sell">Unit sell price</label>
-              <input id="margin-sell" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="e.g. 14.00" />
-            </div>
-            <p class="tool-note">
-              Margin is profit as a share of the sell price; markup is profit
-              as a share of cost.
-            </p>
-          </form>
-          <div class="tool-results" aria-live="polite">
-            <div class="tool-result">
-              <span>Gross profit</span>
-              <strong id="margin-gp">—</strong>
-            </div>
-            <div class="tool-result">
-              <span>Margin</span>
-              <strong id="margin-margin">—</strong>
-            </div>
-            <div class="tool-result">
-              <span>Markup</span>
-              <strong id="margin-markup">—</strong>
-            </div>
-          </div>
-        </div>
-        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
-      </article>
     </section>
   </main>
 </BaseLayout>
@@ -120,15 +79,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   function readPositiveInt(input: HTMLInputElement): number | null {
     const value = Number(input.value);
     return Number.isInteger(value) && value > 0 ? value : null;
-  }
-
-  function readPositiveNumber(input: HTMLInputElement): number | null {
-    const value = Number(input.value);
-    return Number.isFinite(value) && value > 0 ? value : null;
-  }
-
-  function money(value: number): string {
-    return `${value < 0 ? "-" : ""}$${Math.abs(value).toFixed(2)}`;
   }
 
   function plural(count: number, unit: string): string {
@@ -187,33 +137,5 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     [cplInput, lppInput, qtyInput].forEach((input) => input.addEventListener("input", update));
   }
 
-  function setupMarginCalculator() {
-    const costInput = byId("margin-cost") as HTMLInputElement;
-    const sellInput = byId("margin-sell") as HTMLInputElement;
-    const outputs = {
-      gp: byId("margin-gp"),
-      margin: byId("margin-margin"),
-      markup: byId("margin-markup"),
-    };
-
-    function update() {
-      const cost = readPositiveNumber(costInput);
-      const sell = readPositiveNumber(sellInput);
-
-      if (!cost || !sell) {
-        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
-        return;
-      }
-
-      const grossProfit = sell - cost;
-      outputs.gp.textContent = `${money(grossProfit)} per unit`;
-      outputs.margin.textContent = `${((grossProfit / sell) * 100).toFixed(1)}% of sell price`;
-      outputs.markup.textContent = `${((grossProfit / cost) * 100).toFixed(1)}% on cost`;
-    }
-
-    [costInput, sellInput].forEach((input) => input.addEventListener("input", update));
-  }
-
   setupPalletCalculator();
-  setupMarginCalculator();
 </script>
