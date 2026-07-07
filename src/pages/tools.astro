@@ -333,6 +333,64 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
       </article>
+
+      <article class="detail-card" id="cost-change-impact">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Cost Change Impact</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="cc-cost">Current cost ($)</label>
+                <input id="cc-cost" type="number" inputmode="decimal" min="0.01" step="0.01" value="10.00" />
+              </div>
+              <div class="tool-field">
+                <label for="cc-new">New cost ($)</label>
+                <input id="cc-new" type="number" inputmode="decimal" min="0.01" step="0.01" value="10.60" />
+              </div>
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="cc-sell">Current sell price ($)</label>
+                <input id="cc-sell" type="number" inputmode="decimal" min="0.01" step="0.01" value="14.00" />
+              </div>
+              <div class="tool-field">
+                <label for="cc-volume">Annual volume (units)</label>
+                <input id="cc-volume" type="number" inputmode="numeric" min="1" step="1" value="5200" />
+              </div>
+            </div>
+            <p class="tool-note">
+              See what a supplier cost change does to margin, the sell price
+              needed to hold the current margin, and the annualised impact at
+              current volume.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Margin before</span>
+              <strong id="cc-before">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Margin after (same sell price)</span>
+              <strong id="cc-after">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Sell price to hold margin</span>
+              <strong id="cc-hold">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Annualised cost impact</span>
+              <strong id="cc-annual">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
     </section>
   </main>
 </BaseLayout>
@@ -653,9 +711,57 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     update();
   }
 
+  function setupCostChangeImpact() {
+    const costInput = byId("cc-cost") as HTMLInputElement;
+    const newCostInput = byId("cc-new") as HTMLInputElement;
+    const sellInput = byId("cc-sell") as HTMLInputElement;
+    const volumeInput = byId("cc-volume") as HTMLInputElement;
+    const outputs = {
+      before: byId("cc-before"),
+      after: byId("cc-after"),
+      hold: byId("cc-hold"),
+      annual: byId("cc-annual"),
+    };
+
+    function marginText(cost: number, sell: number): string {
+      const profit = sell - cost;
+      return `${((profit / sell) * 100).toFixed(1)}% (${money(profit)} per unit)`;
+    }
+
+    function update() {
+      const cost = readPositiveNumber(costInput);
+      const newCost = readPositiveNumber(newCostInput);
+      const sell = readPositiveNumber(sellInput);
+      const volume = readPositiveInt(volumeInput);
+
+      if (!cost || !newCost || !sell || !volume) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      outputs.before.textContent = marginText(cost, sell);
+      outputs.after.textContent = marginText(newCost, sell);
+      outputs.hold.textContent = money((newCost * sell) / cost);
+
+      const annualChange = (newCost - cost) * volume;
+      outputs.annual.textContent =
+        annualChange === 0
+          ? "No change"
+          : annualChange > 0
+            ? `${money(annualChange)} extra cost per year`
+            : `${money(-annualChange)} saved per year`;
+    }
+
+    [costInput, newCostInput, sellInput, volumeInput].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
   setupPalletCalculator();
   setupPriceBreakEvaluator();
   setupOrderCoverageCalculator();
   setupFreightSpaceCalculator();
   setupRebateCalculator();
+  setupCostChangeImpact();
 </script>
