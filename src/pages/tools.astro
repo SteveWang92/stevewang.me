@@ -188,6 +188,80 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
       </article>
+
+      <article class="detail-card" id="freight-space">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Freight Space Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field-row">
+              <div class="tool-field">
+                <label for="fs-cl">Carton length (mm)</label>
+                <input id="fs-cl" type="number" inputmode="numeric" min="1" step="1" value="380" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-cw">Carton width (mm)</label>
+                <input id="fs-cw" type="number" inputmode="numeric" min="1" step="1" value="280" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-ch">Carton height (mm)</label>
+                <input id="fs-ch" type="number" inputmode="numeric" min="1" step="1" value="230" />
+              </div>
+            </div>
+            <div class="tool-field-row">
+              <div class="tool-field">
+                <label for="fs-pl">Pallet length (mm)</label>
+                <input id="fs-pl" type="number" inputmode="numeric" min="1" step="1" value="1165" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-pw">Pallet width (mm)</label>
+                <input id="fs-pw" type="number" inputmode="numeric" min="1" step="1" value="1165" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-height">Max load height (mm)</label>
+                <input id="fs-height" type="number" inputmode="numeric" min="1" step="1" value="1350" />
+              </div>
+            </div>
+            <div class="tool-field">
+              <label for="fs-qty">Order quantity (cartons)</label>
+              <input id="fs-qty" type="number" inputmode="numeric" min="1" step="1" value="137" />
+            </div>
+            <p class="tool-note">
+              Work out how many cartons fit a pallet from carton and pallet
+              dimensions, and how many pallets an order takes. Cartons are laid
+              flat in a single orientation per layer.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Cartons per layer</span>
+              <strong id="fs-perlayer">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Layers per pallet</span>
+              <strong id="fs-layers">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Cartons per pallet</span>
+              <strong id="fs-perpallet">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Pallets for order</span>
+              <strong id="fs-pallets">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Full-pallet cube utilisation</span>
+              <strong id="fs-util">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
     </section>
   </main>
 </BaseLayout>
@@ -392,7 +466,70 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     update();
   }
 
+  function setupFreightSpaceCalculator() {
+    const inputs = {
+      cl: byId("fs-cl") as HTMLInputElement,
+      cw: byId("fs-cw") as HTMLInputElement,
+      ch: byId("fs-ch") as HTMLInputElement,
+      pl: byId("fs-pl") as HTMLInputElement,
+      pw: byId("fs-pw") as HTMLInputElement,
+      height: byId("fs-height") as HTMLInputElement,
+      qty: byId("fs-qty") as HTMLInputElement,
+    };
+    const outputs = {
+      perLayer: byId("fs-perlayer"),
+      layers: byId("fs-layers"),
+      perPallet: byId("fs-perpallet"),
+      pallets: byId("fs-pallets"),
+      util: byId("fs-util"),
+    };
+
+    function update() {
+      const cl = readPositiveInt(inputs.cl);
+      const cw = readPositiveInt(inputs.cw);
+      const ch = readPositiveInt(inputs.ch);
+      const pl = readPositiveInt(inputs.pl);
+      const pw = readPositiveInt(inputs.pw);
+      const maxHeight = readPositiveInt(inputs.height);
+      const quantity = readPositiveInt(inputs.qty);
+
+      if (!cl || !cw || !ch || !pl || !pw || !maxHeight || !quantity) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const lengthwise = Math.floor(pl / cl) * Math.floor(pw / cw);
+      const widthwise = Math.floor(pl / cw) * Math.floor(pw / cl);
+      const perLayer = Math.max(lengthwise, widthwise);
+      const layers = Math.floor(maxHeight / ch);
+
+      if (perLayer === 0 || layers === 0) {
+        outputs.perLayer.textContent = "Carton does not fit within the pallet space";
+        outputs.layers.textContent = EMPTY;
+        outputs.perPallet.textContent = EMPTY;
+        outputs.pallets.textContent = EMPTY;
+        outputs.util.textContent = EMPTY;
+        return;
+      }
+
+      const orientation = widthwise > lengthwise ? "carton rotated 90°" : "carton square to pallet";
+      const perPallet = perLayer * layers;
+      outputs.perLayer.textContent = `${perLayer} (${orientation})`;
+      outputs.layers.textContent = String(layers);
+      outputs.perPallet.textContent = String(perPallet);
+      outputs.pallets.textContent = plural(Math.ceil(quantity / perPallet), "pallet");
+
+      const cartonVolume = cl * cw * ch;
+      const palletVolume = pl * pw * maxHeight;
+      outputs.util.textContent = `${(((perPallet * cartonVolume) / palletVolume) * 100).toFixed(1)}%`;
+    }
+
+    Object.values(inputs).forEach((input) => input.addEventListener("input", update));
+    update();
+  }
+
   setupPalletCalculator();
   setupPriceBreakEvaluator();
   setupOrderCoverageCalculator();
+  setupFreightSpaceCalculator();
 </script>
