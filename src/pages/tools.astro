@@ -1,0 +1,911 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Tools - Steve Wang"
+  description="Small browser-based purchasing calculators by Steve Wang — pallet breakdown, price breaks, MOQ rounding, order coverage, freight space, rebates, and cost change impact."
+  current="tools"
+>
+  <main>
+    <section class="page-title section-wrap">
+      <h1>Tools</h1>
+      <p>
+        Small tools built from day-to-day purchasing work.
+        Everything runs in your browser — no data is sent anywhere.
+      </p>
+    </section>
+
+    <section class="section-wrap project-list">
+      <article class="detail-card" id="pallet-calculator">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Pallet Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field">
+              <label for="pallet-cpl">Cartons per layer</label>
+              <input id="pallet-cpl" type="number" inputmode="numeric" min="1" step="1" value="10" />
+            </div>
+            <div class="tool-field">
+              <label for="pallet-lpp">Layers per pallet</label>
+              <input id="pallet-lpp" type="number" inputmode="numeric" min="1" step="1" value="6" />
+            </div>
+            <div class="tool-field">
+              <label for="pallet-qty">Order quantity (cartons)</label>
+              <input id="pallet-qty" type="number" inputmode="numeric" min="1" step="1" value="137" />
+            </div>
+            <p class="tool-note">
+              Break an order quantity into pallets and layers, and see what it
+              takes to round up to a clean layer or a full pallet.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Order breakdown</span>
+              <strong id="pallet-breakdown">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Round up to full layer</span>
+              <strong id="pallet-layer">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Round up to full pallet</span>
+              <strong id="pallet-pallet">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Last pallet utilisation</span>
+              <strong id="pallet-util">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+
+      <article class="detail-card" id="price-break-evaluator">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Price Break Evaluator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field">
+              <label for="pb-qty">Quantity needed (cartons)</label>
+              <input id="pb-qty" type="number" inputmode="numeric" min="1" step="1" value="137" />
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="pb-cpl">Cartons per layer</label>
+                <input id="pb-cpl" type="number" inputmode="numeric" min="1" step="1" value="10" />
+              </div>
+              <div class="tool-field">
+                <label for="pb-lpp">Layers per pallet</label>
+                <input id="pb-lpp" type="number" inputmode="numeric" min="1" step="1" value="6" />
+              </div>
+            </div>
+            <div class="tool-field-row">
+              <div class="tool-field">
+                <label for="pb-base">Base $/carton</label>
+                <input id="pb-base" type="number" inputmode="decimal" min="0.01" step="0.01" value="12.00" />
+              </div>
+              <div class="tool-field">
+                <label for="pb-layer">Layer $/carton</label>
+                <input id="pb-layer" type="number" inputmode="decimal" min="0.01" step="0.01" value="11.40" />
+              </div>
+              <div class="tool-field">
+                <label for="pb-pallet">Pallet $/carton</label>
+                <input id="pb-pallet" type="number" inputmode="decimal" min="0.01" step="0.01" value="10.80" />
+              </div>
+            </div>
+            <p class="tool-note">
+              Compare buying the exact quantity at base price against rounding
+              up to full layers or full pallets at better unit prices —
+              rounding up is often cheaper in total.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Buy exact at base price</span>
+              <strong id="pb-exact">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Round up to full layers</span>
+              <strong id="pb-roundlayer">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Round up to full pallets</span>
+              <strong id="pb-roundpallet">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Best option</span>
+              <strong id="pb-best">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+
+      <article class="detail-card" id="moq-calculator">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>MOQ &amp; Pack Round Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field">
+              <label for="moq-need">Quantity needed (units)</label>
+              <input id="moq-need" type="number" inputmode="numeric" min="1" step="1" value="137" />
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="moq-min">Supplier minimum (units)</label>
+                <input id="moq-min" type="number" inputmode="numeric" min="0" step="1" value="200" />
+              </div>
+              <div class="tool-field">
+                <label for="moq-multiple">Order multiple (units)</label>
+                <input id="moq-multiple" type="number" inputmode="numeric" min="1" step="1" value="24" />
+              </div>
+            </div>
+            <p class="tool-note">
+              Round a required quantity up to satisfy a supplier minimum order
+              and a fixed order multiple (pack or outer size), and see which
+              rule sets the final quantity.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Suggested order</span>
+              <strong id="moq-order">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Above requirement</span>
+              <strong id="moq-extra">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Meets supplier minimum</span>
+              <strong id="moq-meets">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Binding constraint</span>
+              <strong id="moq-binding">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+
+      <article class="detail-card" id="order-coverage">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Order Coverage Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="oc-stock">Stock on hand (units)</label>
+                <input id="oc-stock" type="number" inputmode="numeric" min="0" step="1" value="42" />
+              </div>
+              <div class="tool-field">
+                <label for="oc-incoming">Incoming quantity</label>
+                <input id="oc-incoming" type="number" inputmode="numeric" min="0" step="1" value="0" />
+              </div>
+            </div>
+            <div class="tool-field">
+              <label for="oc-weekly">Average weekly sales (units)</label>
+              <input id="oc-weekly" type="number" inputmode="numeric" min="1" step="1" value="18" />
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="oc-lead">Lead time (days)</label>
+                <input id="oc-lead" type="number" inputmode="numeric" min="0" step="1" value="7" />
+              </div>
+              <div class="tool-field">
+                <label for="oc-target">Target cover (weeks)</label>
+                <input id="oc-target" type="number" inputmode="numeric" min="1" step="1" value="4" />
+              </div>
+            </div>
+            <p class="tool-note">
+              Check how long current stock lasts and how much to order so that
+              stock arriving after the lead time still reaches the target cover.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Stock cover (incl. incoming)</span>
+              <strong id="oc-cover">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Projected run-out</span>
+              <strong id="oc-runout">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Reorder point</span>
+              <strong id="oc-reorder">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Suggested order</span>
+              <strong id="oc-order">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+
+      <article class="detail-card" id="freight-space">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Freight Space Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field-row">
+              <div class="tool-field">
+                <label for="fs-cl">Carton length (mm)</label>
+                <input id="fs-cl" type="number" inputmode="numeric" min="1" step="1" value="380" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-cw">Carton width (mm)</label>
+                <input id="fs-cw" type="number" inputmode="numeric" min="1" step="1" value="280" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-ch">Carton height (mm)</label>
+                <input id="fs-ch" type="number" inputmode="numeric" min="1" step="1" value="230" />
+              </div>
+            </div>
+            <div class="tool-field-row">
+              <div class="tool-field">
+                <label for="fs-pl">Pallet length (mm)</label>
+                <input id="fs-pl" type="number" inputmode="numeric" min="1" step="1" value="1165" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-pw">Pallet width (mm)</label>
+                <input id="fs-pw" type="number" inputmode="numeric" min="1" step="1" value="1165" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-height">Max load height (mm)</label>
+                <input id="fs-height" type="number" inputmode="numeric" min="1" step="1" value="1350" />
+              </div>
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="fs-weight">Carton weight (kg)</label>
+                <input id="fs-weight" type="number" inputmode="decimal" min="0.01" step="0.01" value="18" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-maxweight">Max pallet weight (kg)</label>
+                <input id="fs-maxweight" type="number" inputmode="decimal" min="0.01" step="1" value="1000" />
+              </div>
+            </div>
+            <div class="tool-field">
+              <label for="fs-qty">Order quantity (cartons)</label>
+              <input id="fs-qty" type="number" inputmode="numeric" min="1" step="1" value="137" />
+            </div>
+            <p class="tool-note">
+              Work out how many cartons fit a pallet from carton and pallet
+              dimensions, and how many pallets an order takes. Cartons are laid
+              flat in a single orientation per layer; the pallet load is capped
+              by both space and weight.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Cartons per layer</span>
+              <strong id="fs-perlayer">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Layers per pallet</span>
+              <strong id="fs-layers">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Cartons per pallet</span>
+              <strong id="fs-perpallet">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Full-pallet weight</span>
+              <strong id="fs-palletweight">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Pallets for order</span>
+              <strong id="fs-pallets">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Full-pallet cube utilisation</span>
+              <strong id="fs-util">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+
+      <article class="detail-card" id="rebate-calculator">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Rebate Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field">
+              <label for="rb-spend">Period spend ($)</label>
+              <input id="rb-spend" type="number" inputmode="decimal" min="0.01" step="0.01" value="32500" />
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="rb-t1">Tier 1 from ($)</label>
+                <input id="rb-t1" type="number" inputmode="decimal" min="0.01" step="0.01" value="10000" />
+              </div>
+              <div class="tool-field">
+                <label for="rb-p1">Tier 1 rebate (%)</label>
+                <input id="rb-p1" type="number" inputmode="decimal" min="0.01" step="0.1" value="2" />
+              </div>
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="rb-t2">Tier 2 from ($)</label>
+                <input id="rb-t2" type="number" inputmode="decimal" min="0.01" step="0.01" value="25000" />
+              </div>
+              <div class="tool-field">
+                <label for="rb-p2">Tier 2 rebate (%)</label>
+                <input id="rb-p2" type="number" inputmode="decimal" min="0.01" step="0.1" value="3" />
+              </div>
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="rb-t3">Tier 3 from ($)</label>
+                <input id="rb-t3" type="number" inputmode="decimal" min="0.01" step="0.01" value="50000" />
+              </div>
+              <div class="tool-field">
+                <label for="rb-p3">Tier 3 rebate (%)</label>
+                <input id="rb-p3" type="number" inputmode="decimal" min="0.01" step="0.1" value="4" />
+              </div>
+            </div>
+            <p class="tool-note">
+              Tiered supplier rebate where the highest tier reached applies to
+              the whole period spend.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Tier reached</span>
+              <strong id="rb-tier">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Rebate earned</span>
+              <strong id="rb-rebate">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Effective net spend</span>
+              <strong id="rb-net">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Next tier</span>
+              <strong id="rb-next">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+
+      <article class="detail-card" id="cost-change-impact">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Cost Change Impact</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="cc-cost">Current cost ($)</label>
+                <input id="cc-cost" type="number" inputmode="decimal" min="0.01" step="0.01" value="10.00" />
+              </div>
+              <div class="tool-field">
+                <label for="cc-new">New cost ($)</label>
+                <input id="cc-new" type="number" inputmode="decimal" min="0.01" step="0.01" value="10.60" />
+              </div>
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="cc-sell">Current sell price ($)</label>
+                <input id="cc-sell" type="number" inputmode="decimal" min="0.01" step="0.01" value="14.00" />
+              </div>
+              <div class="tool-field">
+                <label for="cc-volume">Annual volume (units)</label>
+                <input id="cc-volume" type="number" inputmode="numeric" min="1" step="1" value="5200" />
+              </div>
+            </div>
+            <p class="tool-note">
+              See what a supplier cost change does to margin, the sell price
+              needed to hold the current margin, and the annualised impact at
+              current volume.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Margin before</span>
+              <strong id="cc-before">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Margin after (same sell price)</span>
+              <strong id="cc-after">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Sell price to hold margin</span>
+              <strong id="cc-hold">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Annualised cost impact</span>
+              <strong id="cc-annual">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const EMPTY = "—";
+
+  function byId(id: string) {
+    return document.getElementById(id) as HTMLElement;
+  }
+
+  function readPositiveInt(input: HTMLInputElement): number | null {
+    const value = Number(input.value);
+    return Number.isInteger(value) && value > 0 ? value : null;
+  }
+
+  function readNonNegativeInt(input: HTMLInputElement): number | null {
+    const value = Number(input.value);
+    return Number.isInteger(value) && value >= 0 ? value : null;
+  }
+
+  function readPositiveNumber(input: HTMLInputElement): number | null {
+    const value = Number(input.value);
+    return Number.isFinite(value) && value > 0 ? value : null;
+  }
+
+  function money(value: number): string {
+    const formatted = Math.abs(value).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    return `${value < 0 ? "-" : ""}$${formatted}`;
+  }
+
+  function plural(count: number, unit: string): string {
+    return `${count} ${unit}${count === 1 ? "" : "s"}`;
+  }
+
+  function setupPalletCalculator() {
+    const cplInput = byId("pallet-cpl") as HTMLInputElement;
+    const lppInput = byId("pallet-lpp") as HTMLInputElement;
+    const qtyInput = byId("pallet-qty") as HTMLInputElement;
+    const outputs = {
+      breakdown: byId("pallet-breakdown"),
+      layer: byId("pallet-layer"),
+      pallet: byId("pallet-pallet"),
+      util: byId("pallet-util"),
+    };
+
+    function update() {
+      const cartonsPerLayer = readPositiveInt(cplInput);
+      const layersPerPallet = readPositiveInt(lppInput);
+      const quantity = readPositiveInt(qtyInput);
+
+      if (!cartonsPerLayer || !layersPerPallet || !quantity) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const perPallet = cartonsPerLayer * layersPerPallet;
+      const fullPallets = Math.floor(quantity / perPallet);
+      const remainder = quantity % perPallet;
+      const looseLayers = Math.floor(remainder / cartonsPerLayer);
+      const looseCartons = remainder % cartonsPerLayer;
+
+      outputs.breakdown.textContent = [
+        plural(fullPallets, "pallet"),
+        plural(looseLayers, "layer"),
+        plural(looseCartons, "carton"),
+      ].join(" + ");
+
+      const nextLayerQty = Math.ceil(quantity / cartonsPerLayer) * cartonsPerLayer;
+      outputs.layer.textContent =
+        nextLayerQty === quantity
+          ? `${quantity} cartons — already exact`
+          : `${nextLayerQty} cartons (+${nextLayerQty - quantity})`;
+
+      const nextPalletQty = Math.ceil(quantity / perPallet) * perPallet;
+      outputs.pallet.textContent =
+        nextPalletQty === quantity
+          ? `${quantity} cartons — already exact`
+          : `${nextPalletQty} cartons (+${nextPalletQty - quantity})`;
+
+      const lastPalletCartons = remainder === 0 ? perPallet : remainder;
+      outputs.util.textContent = `${((lastPalletCartons / perPallet) * 100).toFixed(1)}%`;
+    }
+
+    [cplInput, lppInput, qtyInput].forEach((input) => input.addEventListener("input", update));
+    update();
+  }
+
+  function setupPriceBreakEvaluator() {
+    const qtyInput = byId("pb-qty") as HTMLInputElement;
+    const cplInput = byId("pb-cpl") as HTMLInputElement;
+    const lppInput = byId("pb-lpp") as HTMLInputElement;
+    const baseInput = byId("pb-base") as HTMLInputElement;
+    const layerInput = byId("pb-layer") as HTMLInputElement;
+    const palletInput = byId("pb-pallet") as HTMLInputElement;
+    const outputs = {
+      exact: byId("pb-exact"),
+      roundLayer: byId("pb-roundlayer"),
+      roundPallet: byId("pb-roundpallet"),
+      best: byId("pb-best"),
+    };
+
+    function update() {
+      const quantity = readPositiveInt(qtyInput);
+      const cartonsPerLayer = readPositiveInt(cplInput);
+      const layersPerPallet = readPositiveInt(lppInput);
+      const basePrice = readPositiveNumber(baseInput);
+      const layerPrice = readPositiveNumber(layerInput);
+      const palletPrice = readPositiveNumber(palletInput);
+
+      if (!quantity || !cartonsPerLayer || !layersPerPallet || !basePrice || !layerPrice || !palletPrice) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const perPallet = cartonsPerLayer * layersPerPallet;
+      const options = [
+        { name: "Buying exact", qty: quantity, total: quantity * basePrice, el: outputs.exact },
+        {
+          name: "Full layers",
+          qty: Math.ceil(quantity / cartonsPerLayer) * cartonsPerLayer,
+          total: Math.ceil(quantity / cartonsPerLayer) * cartonsPerLayer * layerPrice,
+          el: outputs.roundLayer,
+        },
+        {
+          name: "Full pallets",
+          qty: Math.ceil(quantity / perPallet) * perPallet,
+          total: Math.ceil(quantity / perPallet) * perPallet * palletPrice,
+          el: outputs.roundPallet,
+        },
+      ];
+
+      options.forEach((option) => {
+        option.el.textContent = `${option.qty} cartons · ${money(option.total)} · ${money(option.total / quantity)} per needed carton`;
+      });
+
+      const best = options.reduce((a, b) => (b.total < a.total ? b : a));
+      const exactTotal = options[0].total;
+      outputs.best.textContent =
+        best === options[0]
+          ? "Buying exact is cheapest"
+          : `${best.name} — saves ${money(exactTotal - best.total)} vs buying exact`;
+    }
+
+    [qtyInput, cplInput, lppInput, baseInput, layerInput, palletInput].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
+  function setupOrderCoverageCalculator() {
+    const stockInput = byId("oc-stock") as HTMLInputElement;
+    const incomingInput = byId("oc-incoming") as HTMLInputElement;
+    const weeklyInput = byId("oc-weekly") as HTMLInputElement;
+    const leadInput = byId("oc-lead") as HTMLInputElement;
+    const targetInput = byId("oc-target") as HTMLInputElement;
+    const outputs = {
+      cover: byId("oc-cover"),
+      runout: byId("oc-runout"),
+      reorder: byId("oc-reorder"),
+      order: byId("oc-order"),
+    };
+
+    function update() {
+      const stock = readNonNegativeInt(stockInput);
+      const incoming = readNonNegativeInt(incomingInput);
+      const weekly = readPositiveInt(weeklyInput);
+      const leadDays = readNonNegativeInt(leadInput);
+      const targetWeeks = readPositiveInt(targetInput);
+
+      if (stock === null || incoming === null || !weekly || leadDays === null || !targetWeeks) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const available = stock + incoming;
+      const coverWeeks = available / weekly;
+      const coverDays = Math.floor(coverWeeks * 7);
+      outputs.cover.textContent = `${coverWeeks.toFixed(1)} weeks (≈ ${plural(coverDays, "day")})`;
+
+      const runout = new Date();
+      runout.setDate(runout.getDate() + coverDays);
+      outputs.runout.textContent = runout.toLocaleDateString("en-AU", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+
+      const reorderPoint = Math.ceil((weekly * leadDays) / 7);
+      outputs.reorder.textContent =
+        leadDays === 0
+          ? "No lead time — reorder as stock runs out"
+          : `${plural(reorderPoint, "unit")} on hand — covers the ${leadDays}-day lead`;
+
+      const needed = Math.ceil(weekly * (targetWeeks + leadDays / 7) - available);
+      outputs.order.textContent =
+        needed <= 0
+          ? "No order needed — already past target cover"
+          : `${plural(needed, "unit")} to hold ${plural(targetWeeks, "week")} cover after the ${leadDays}-day lead`;
+    }
+
+    [stockInput, incomingInput, weeklyInput, leadInput, targetInput].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
+  function setupMoqCalculator() {
+    const needInput = byId("moq-need") as HTMLInputElement;
+    const minInput = byId("moq-min") as HTMLInputElement;
+    const multipleInput = byId("moq-multiple") as HTMLInputElement;
+    const outputs = {
+      order: byId("moq-order"),
+      extra: byId("moq-extra"),
+      meets: byId("moq-meets"),
+      binding: byId("moq-binding"),
+    };
+
+    function update() {
+      const need = readPositiveInt(needInput);
+      const min = readNonNegativeInt(minInput);
+      const multiple = readPositiveInt(multipleInput);
+
+      if (!need || min === null || !multiple) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const afterMin = Math.max(need, min);
+      const order = Math.ceil(afterMin / multiple) * multiple;
+      const extra = order - need;
+
+      outputs.order.textContent = plural(order, "unit");
+      outputs.extra.textContent =
+        extra === 0
+          ? "Exact — no excess"
+          : `${plural(extra, "unit")} (+${((extra / need) * 100).toFixed(1)}%)`;
+      outputs.meets.textContent =
+        need >= min
+          ? "Yes — need already meets it"
+          : `No — minimum adds ${plural(min - need, "unit")}`;
+      outputs.binding.textContent =
+        order === need
+          ? "Requirement — already a clean order"
+          : order > afterMin
+            ? "Order multiple"
+            : "Supplier minimum";
+    }
+
+    [needInput, minInput, multipleInput].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
+  function setupFreightSpaceCalculator() {
+    const inputs = {
+      cl: byId("fs-cl") as HTMLInputElement,
+      cw: byId("fs-cw") as HTMLInputElement,
+      ch: byId("fs-ch") as HTMLInputElement,
+      pl: byId("fs-pl") as HTMLInputElement,
+      pw: byId("fs-pw") as HTMLInputElement,
+      height: byId("fs-height") as HTMLInputElement,
+      weight: byId("fs-weight") as HTMLInputElement,
+      maxWeight: byId("fs-maxweight") as HTMLInputElement,
+      qty: byId("fs-qty") as HTMLInputElement,
+    };
+    const outputs = {
+      perLayer: byId("fs-perlayer"),
+      layers: byId("fs-layers"),
+      perPallet: byId("fs-perpallet"),
+      palletWeight: byId("fs-palletweight"),
+      pallets: byId("fs-pallets"),
+      util: byId("fs-util"),
+    };
+
+    function update() {
+      const cl = readPositiveInt(inputs.cl);
+      const cw = readPositiveInt(inputs.cw);
+      const ch = readPositiveInt(inputs.ch);
+      const pl = readPositiveInt(inputs.pl);
+      const pw = readPositiveInt(inputs.pw);
+      const maxHeight = readPositiveInt(inputs.height);
+      const weight = readPositiveNumber(inputs.weight);
+      const maxWeight = readPositiveNumber(inputs.maxWeight);
+      const quantity = readPositiveInt(inputs.qty);
+
+      if (!cl || !cw || !ch || !pl || !pw || !maxHeight || !weight || !maxWeight || !quantity) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const lengthwise = Math.floor(pl / cl) * Math.floor(pw / cw);
+      const widthwise = Math.floor(pl / cw) * Math.floor(pw / cl);
+      const perLayer = Math.max(lengthwise, widthwise);
+      const layers = Math.floor(maxHeight / ch);
+      const weightCap = Math.floor(maxWeight / weight);
+
+      if (perLayer === 0 || layers === 0 || weightCap === 0) {
+        outputs.perLayer.textContent =
+          weightCap === 0
+            ? "A single carton exceeds the pallet weight limit"
+            : "Carton does not fit within the pallet space";
+        outputs.layers.textContent = EMPTY;
+        outputs.perPallet.textContent = EMPTY;
+        outputs.palletWeight.textContent = EMPTY;
+        outputs.pallets.textContent = EMPTY;
+        outputs.util.textContent = EMPTY;
+        return;
+      }
+
+      const orientation = widthwise > lengthwise ? "carton rotated 90°" : "carton square to pallet";
+      const spaceCap = perLayer * layers;
+      const perPallet = Math.min(spaceCap, weightCap);
+      outputs.perLayer.textContent = `${perLayer} (${orientation})`;
+      outputs.layers.textContent = String(layers);
+      outputs.perPallet.textContent =
+        weightCap < spaceCap
+          ? `${perPallet} — weight limited (space fits ${spaceCap})`
+          : `${perPallet} — space limited`;
+      outputs.palletWeight.textContent = `${(perPallet * weight).toLocaleString(undefined, {
+        maximumFractionDigits: 1,
+      })} kg of ${maxWeight.toLocaleString(undefined, { maximumFractionDigits: 1 })} kg limit`;
+      outputs.pallets.textContent = plural(Math.ceil(quantity / perPallet), "pallet");
+
+      const cartonVolume = cl * cw * ch;
+      const palletVolume = pl * pw * maxHeight;
+      outputs.util.textContent = `${(((perPallet * cartonVolume) / palletVolume) * 100).toFixed(1)}%`;
+    }
+
+    Object.values(inputs).forEach((input) => input.addEventListener("input", update));
+    update();
+  }
+
+  function setupRebateCalculator() {
+    const spendInput = byId("rb-spend") as HTMLInputElement;
+    const tierInputs = [1, 2, 3].map((n) => ({
+      threshold: byId(`rb-t${n}`) as HTMLInputElement,
+      percent: byId(`rb-p${n}`) as HTMLInputElement,
+    }));
+    const outputs = {
+      tier: byId("rb-tier"),
+      rebate: byId("rb-rebate"),
+      net: byId("rb-net"),
+      next: byId("rb-next"),
+    };
+
+    function update() {
+      const spend = readPositiveNumber(spendInput);
+      const tiers = tierInputs.map((tier, index) => ({
+        label: `Tier ${index + 1}`,
+        threshold: readPositiveNumber(tier.threshold),
+        percent: readPositiveNumber(tier.percent),
+      }));
+
+      if (!spend || tiers.some((tier) => !tier.threshold || !tier.percent)) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const sorted = [...tiers].sort((a, b) => a.threshold! - b.threshold!);
+      const reached = sorted.filter((tier) => spend >= tier.threshold!).pop() ?? null;
+      const nextTier = sorted.find((tier) => spend < tier.threshold!) ?? null;
+
+      if (reached) {
+        outputs.tier.textContent = `${reached.label} — ${reached.percent}% (from ${money(reached.threshold!)})`;
+        const rebate = spend * (reached.percent! / 100);
+        outputs.rebate.textContent = money(rebate);
+        outputs.net.textContent = money(spend - rebate);
+      } else {
+        outputs.tier.textContent = "Below Tier 1 — no rebate yet";
+        outputs.rebate.textContent = money(0);
+        outputs.net.textContent = money(spend);
+      }
+
+      outputs.next.textContent = nextTier
+        ? `${money(nextTier.threshold! - spend)} more to reach ${nextTier.label} — worth ${money(
+            nextTier.threshold! * (nextTier.percent! / 100),
+          )} at the threshold`
+        : "Top tier reached";
+    }
+
+    [spendInput, ...tierInputs.flatMap((tier) => [tier.threshold, tier.percent])].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
+  function setupCostChangeImpact() {
+    const costInput = byId("cc-cost") as HTMLInputElement;
+    const newCostInput = byId("cc-new") as HTMLInputElement;
+    const sellInput = byId("cc-sell") as HTMLInputElement;
+    const volumeInput = byId("cc-volume") as HTMLInputElement;
+    const outputs = {
+      before: byId("cc-before"),
+      after: byId("cc-after"),
+      hold: byId("cc-hold"),
+      annual: byId("cc-annual"),
+    };
+
+    function marginText(cost: number, sell: number): string {
+      const profit = sell - cost;
+      return `${((profit / sell) * 100).toFixed(1)}% (${money(profit)} per unit)`;
+    }
+
+    function update() {
+      const cost = readPositiveNumber(costInput);
+      const newCost = readPositiveNumber(newCostInput);
+      const sell = readPositiveNumber(sellInput);
+      const volume = readPositiveInt(volumeInput);
+
+      if (!cost || !newCost || !sell || !volume) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      outputs.before.textContent = marginText(cost, sell);
+      outputs.after.textContent = marginText(newCost, sell);
+      outputs.hold.textContent = money((newCost * sell) / cost);
+
+      const annualChange = (newCost - cost) * volume;
+      outputs.annual.textContent =
+        annualChange === 0
+          ? "No change"
+          : annualChange > 0
+            ? `${money(annualChange)} extra cost per year`
+            : `${money(-annualChange)} saved per year`;
+    }
+
+    [costInput, newCostInput, sellInput, volumeInput].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
+  setupPalletCalculator();
+  setupPriceBreakEvaluator();
+  setupMoqCalculator();
+  setupOrderCoverageCalculator();
+  setupFreightSpaceCalculator();
+  setupRebateCalculator();
+  setupCostChangeImpact();
+</script>
