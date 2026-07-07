@@ -262,6 +262,77 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
       </article>
+
+      <article class="detail-card" id="rebate-calculator">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Rebate Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field">
+              <label for="rb-spend">Period spend ($)</label>
+              <input id="rb-spend" type="number" inputmode="decimal" min="0.01" step="0.01" value="32500" />
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="rb-t1">Tier 1 from ($)</label>
+                <input id="rb-t1" type="number" inputmode="decimal" min="0.01" step="0.01" value="10000" />
+              </div>
+              <div class="tool-field">
+                <label for="rb-p1">Tier 1 rebate (%)</label>
+                <input id="rb-p1" type="number" inputmode="decimal" min="0.01" step="0.1" value="2" />
+              </div>
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="rb-t2">Tier 2 from ($)</label>
+                <input id="rb-t2" type="number" inputmode="decimal" min="0.01" step="0.01" value="25000" />
+              </div>
+              <div class="tool-field">
+                <label for="rb-p2">Tier 2 rebate (%)</label>
+                <input id="rb-p2" type="number" inputmode="decimal" min="0.01" step="0.1" value="3" />
+              </div>
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="rb-t3">Tier 3 from ($)</label>
+                <input id="rb-t3" type="number" inputmode="decimal" min="0.01" step="0.01" value="50000" />
+              </div>
+              <div class="tool-field">
+                <label for="rb-p3">Tier 3 rebate (%)</label>
+                <input id="rb-p3" type="number" inputmode="decimal" min="0.01" step="0.1" value="4" />
+              </div>
+            </div>
+            <p class="tool-note">
+              Tiered supplier rebate where the highest tier reached applies to
+              the whole period spend.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Tier reached</span>
+              <strong id="rb-tier">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Rebate earned</span>
+              <strong id="rb-rebate">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Effective net spend</span>
+              <strong id="rb-net">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Next tier</span>
+              <strong id="rb-next">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
     </section>
   </main>
 </BaseLayout>
@@ -528,8 +599,63 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     update();
   }
 
+  function setupRebateCalculator() {
+    const spendInput = byId("rb-spend") as HTMLInputElement;
+    const tierInputs = [1, 2, 3].map((n) => ({
+      threshold: byId(`rb-t${n}`) as HTMLInputElement,
+      percent: byId(`rb-p${n}`) as HTMLInputElement,
+    }));
+    const outputs = {
+      tier: byId("rb-tier"),
+      rebate: byId("rb-rebate"),
+      net: byId("rb-net"),
+      next: byId("rb-next"),
+    };
+
+    function update() {
+      const spend = readPositiveNumber(spendInput);
+      const tiers = tierInputs.map((tier, index) => ({
+        label: `Tier ${index + 1}`,
+        threshold: readPositiveNumber(tier.threshold),
+        percent: readPositiveNumber(tier.percent),
+      }));
+
+      if (!spend || tiers.some((tier) => !tier.threshold || !tier.percent)) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const sorted = [...tiers].sort((a, b) => a.threshold! - b.threshold!);
+      const reached = sorted.filter((tier) => spend >= tier.threshold!).pop() ?? null;
+      const nextTier = sorted.find((tier) => spend < tier.threshold!) ?? null;
+
+      if (reached) {
+        outputs.tier.textContent = `${reached.label} — ${reached.percent}% (from ${money(reached.threshold!)})`;
+        const rebate = spend * (reached.percent! / 100);
+        outputs.rebate.textContent = money(rebate);
+        outputs.net.textContent = money(spend - rebate);
+      } else {
+        outputs.tier.textContent = "Below Tier 1 — no rebate yet";
+        outputs.rebate.textContent = money(0);
+        outputs.net.textContent = money(spend);
+      }
+
+      outputs.next.textContent = nextTier
+        ? `${money(nextTier.threshold! - spend)} more to reach ${nextTier.label} — worth ${money(
+            nextTier.threshold! * (nextTier.percent! / 100),
+          )} at the threshold`
+        : "Top tier reached";
+    }
+
+    [spendInput, ...tierInputs.flatMap((tier) => [tier.threshold, tier.percent])].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
   setupPalletCalculator();
   setupPriceBreakEvaluator();
   setupOrderCoverageCalculator();
   setupFreightSpaceCalculator();
+  setupRebateCalculator();
 </script>
