@@ -131,6 +131,63 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
       </article>
+
+      <article class="detail-card" id="order-coverage">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Order Coverage Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="oc-stock">Stock on hand (units)</label>
+                <input id="oc-stock" type="number" inputmode="numeric" min="0" step="1" value="42" />
+              </div>
+              <div class="tool-field">
+                <label for="oc-incoming">Incoming quantity</label>
+                <input id="oc-incoming" type="number" inputmode="numeric" min="0" step="1" value="0" />
+              </div>
+            </div>
+            <div class="tool-field">
+              <label for="oc-weekly">Average weekly sales (units)</label>
+              <input id="oc-weekly" type="number" inputmode="numeric" min="1" step="1" value="18" />
+            </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="oc-lead">Lead time (days)</label>
+                <input id="oc-lead" type="number" inputmode="numeric" min="0" step="1" value="7" />
+              </div>
+              <div class="tool-field">
+                <label for="oc-target">Target cover (weeks)</label>
+                <input id="oc-target" type="number" inputmode="numeric" min="1" step="1" value="4" />
+              </div>
+            </div>
+            <p class="tool-note">
+              Check how long current stock lasts and how much to order so that
+              stock arriving after the lead time still reaches the target cover.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Stock cover (incl. incoming)</span>
+              <strong id="oc-cover">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Projected run-out</span>
+              <strong id="oc-runout">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Suggested order</span>
+              <strong id="oc-order">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
     </section>
   </main>
 </BaseLayout>
@@ -145,6 +202,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   function readPositiveInt(input: HTMLInputElement): number | null {
     const value = Number(input.value);
     return Number.isInteger(value) && value > 0 ? value : null;
+  }
+
+  function readNonNegativeInt(input: HTMLInputElement): number | null {
+    const value = Number(input.value);
+    return Number.isInteger(value) && value >= 0 ? value : null;
   }
 
   function readPositiveNumber(input: HTMLInputElement): number | null {
@@ -279,6 +341,58 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     update();
   }
 
+  function setupOrderCoverageCalculator() {
+    const stockInput = byId("oc-stock") as HTMLInputElement;
+    const incomingInput = byId("oc-incoming") as HTMLInputElement;
+    const weeklyInput = byId("oc-weekly") as HTMLInputElement;
+    const leadInput = byId("oc-lead") as HTMLInputElement;
+    const targetInput = byId("oc-target") as HTMLInputElement;
+    const outputs = {
+      cover: byId("oc-cover"),
+      runout: byId("oc-runout"),
+      order: byId("oc-order"),
+    };
+
+    function update() {
+      const stock = readNonNegativeInt(stockInput);
+      const incoming = readNonNegativeInt(incomingInput);
+      const weekly = readPositiveInt(weeklyInput);
+      const leadDays = readNonNegativeInt(leadInput);
+      const targetWeeks = readPositiveInt(targetInput);
+
+      if (stock === null || incoming === null || !weekly || leadDays === null || !targetWeeks) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const available = stock + incoming;
+      const coverWeeks = available / weekly;
+      const coverDays = Math.floor(coverWeeks * 7);
+      outputs.cover.textContent = `${coverWeeks.toFixed(1)} weeks (≈ ${plural(coverDays, "day")})`;
+
+      const runout = new Date();
+      runout.setDate(runout.getDate() + coverDays);
+      outputs.runout.textContent = runout.toLocaleDateString(undefined, {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+
+      const needed = Math.ceil(weekly * (targetWeeks + leadDays / 7) - available);
+      outputs.order.textContent =
+        needed <= 0
+          ? "No order needed — already past target cover"
+          : `${plural(needed, "unit")} to hold ${plural(targetWeeks, "week")} cover after the ${leadDays}-day lead`;
+    }
+
+    [stockInput, incomingInput, weeklyInput, leadInput, targetInput].forEach((input) =>
+      input.addEventListener("input", update),
+    );
+    update();
+  }
+
   setupPalletCalculator();
   setupPriceBreakEvaluator();
+  setupOrderCoverageCalculator();
 </script>
