@@ -30,6 +30,8 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 
 `docs/PROJECT_PLAN.md` is the authoritative source for positioning, content direction, public copy guardrails, design direction, and deployment notes — read it before content changes, and update it in the same change when positioning, public-facing copy, guardrails, or deployment assumptions shift. But the whole `docs/` folder is intentionally Git-ignored (private planning notes): never commit it, and never copy employer-specific or private planning details from it into committed files or public copy.
 
+`ROADMAP.md` (repo root, tracked, public) is the sanitized counterpart — a shareable summary of direction and principles with no employer, private app URLs, or private workflow detail. Keep it in sync at a high level when the public roadmap shifts, but never mirror private specifics into it. The repo is public, so treat anything committed as published.
+
 ## Content guardrails (from the plan)
 
 - Say "purchasing operations" / "foodservice supply chain" — never name the employer, internal portal names, or private workflow details.
