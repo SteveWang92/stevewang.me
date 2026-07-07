@@ -41,9 +41,7 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 
 ## Workflow conventions
 
-- **Commits: one-line Conventional Commits, subject only** — no body, no co-author/generated-by trailers, no AI mentions anywhere in git history. Branch names are meaningful and descriptive (e.g. `feat/tools-page`), never auto-generated strings.
-- Commit finished work without being asked; split unrelated work into separate commits.
-- Day-to-day commits land on the local `dev` branch; keep `main` matching `origin/main`. Releasing is manual: the user fast-forwards `main` to `dev` and pushes it themselves. **Never push**: pushing `main` is the manual Amplify production deploy trigger.
-- **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`). A legacy `production` branch exists — it is not the deploy branch; do not use or reference it.
-- Never commit credentials, AWS secrets, API keys, or `.env` files.
-- Keep changes focused and read only the files needed; do not use optional skills or plugins unless asked.
+General commit, branch, release, security, and working rules live in the user-global `~/.claude/CLAUDE.md`. Project-specific notes:
+
+- **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`). Release via a squash-merge `dev`→`main` PR using the **`/release` skill** (no `release:tag` script here).
+- A legacy `production` branch exists — it is **not** the deploy branch; do not use or reference it.
