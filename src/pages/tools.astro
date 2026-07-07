@@ -29,15 +29,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <form class="tool-form" autocomplete="off">
             <div class="tool-field">
               <label for="pallet-cpl">Cartons per layer</label>
-              <input id="pallet-cpl" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 10" />
+              <input id="pallet-cpl" type="number" inputmode="numeric" min="1" step="1" value="10" />
             </div>
             <div class="tool-field">
               <label for="pallet-lpp">Layers per pallet</label>
-              <input id="pallet-lpp" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 6" />
+              <input id="pallet-lpp" type="number" inputmode="numeric" min="1" step="1" value="6" />
             </div>
             <div class="tool-field">
               <label for="pallet-qty">Order quantity (cartons)</label>
-              <input id="pallet-qty" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 137" />
+              <input id="pallet-qty" type="number" inputmode="numeric" min="1" step="1" value="137" />
             </div>
             <p class="tool-note">
               Break an order quantity into pallets and layers, and see what it
@@ -135,6 +135,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
 
     [cplInput, lppInput, qtyInput].forEach((input) => input.addEventListener("input", update));
+    update();
   }
 
   setupPalletCalculator();
