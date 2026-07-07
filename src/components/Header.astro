@@ -1,6 +1,6 @@
 ---
 interface Props {
-  current?: "projects" | "career";
+  current?: "projects" | "career" | "tools";
 }
 
 const { current } = Astro.props;
@@ -13,6 +13,7 @@ const { current } = Astro.props;
   </a>
   <nav class="nav" aria-label="Primary navigation">
     <a aria-current={current === "projects" ? "page" : undefined} href="/projects/">Projects</a>
+    <a aria-current={current === "tools" ? "page" : undefined} href="/tools/">Tools</a>
     <a aria-current={current === "career" ? "page" : undefined} href="/career/">Career</a>
     <a href="mailto:contact@stevewang.me">Email</a>
   </nav>

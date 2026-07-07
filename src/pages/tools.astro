@@ -1,0 +1,219 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Tools - Steve Wang"
+  description="Small browser-based purchasing calculators by Steve Wang, including a pallet configuration calculator and a sales margin calculator."
+  current="tools"
+>
+  <main>
+    <section class="page-title section-wrap">
+      <h1>Tools</h1>
+      <p>
+        Small calculators built from day-to-day purchasing work.
+        Everything runs in your browser — no data is sent anywhere.
+      </p>
+    </section>
+
+    <section class="section-wrap project-list">
+      <article class="detail-card" id="pallet-calculator">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Pallet Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field">
+              <label for="pallet-cpl">Cartons per layer</label>
+              <input id="pallet-cpl" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 10" />
+            </div>
+            <div class="tool-field">
+              <label for="pallet-lpp">Layers per pallet</label>
+              <input id="pallet-lpp" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 6" />
+            </div>
+            <div class="tool-field">
+              <label for="pallet-qty">Order quantity (cartons)</label>
+              <input id="pallet-qty" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 137" />
+            </div>
+            <p class="tool-note">
+              Break an order quantity into pallets and layers, and see what it
+              takes to round up to a clean layer or a full pallet.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Order breakdown</span>
+              <strong id="pallet-breakdown">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Round up to full layer</span>
+              <strong id="pallet-layer">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Round up to full pallet</span>
+              <strong id="pallet-pallet">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Last pallet utilisation</span>
+              <strong id="pallet-util">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+
+      <article class="detail-card" id="margin-calculator">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Purchasing tool</span>
+            <h2>Sales Margin Calculator</h2>
+          </div>
+          <span class="status-label">Live on this page</span>
+        </div>
+        <div class="tool-body">
+          <form class="tool-form" autocomplete="off">
+            <div class="tool-field">
+              <label for="margin-cost">Unit cost</label>
+              <input id="margin-cost" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="e.g. 10.00" />
+            </div>
+            <div class="tool-field">
+              <label for="margin-sell">Unit sell price</label>
+              <input id="margin-sell" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="e.g. 14.00" />
+            </div>
+            <p class="tool-note">
+              Margin is profit as a share of the sell price; markup is profit
+              as a share of cost.
+            </p>
+          </form>
+          <div class="tool-results" aria-live="polite">
+            <div class="tool-result">
+              <span>Gross profit</span>
+              <strong id="margin-gp">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Margin</span>
+              <strong id="margin-margin">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Markup</span>
+              <strong id="margin-markup">—</strong>
+            </div>
+          </div>
+        </div>
+        <a class="tool-card-link" href="/projects/#purchasing-workflow-tools">Part of the purchasing workflow toolkit</a>
+      </article>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const EMPTY = "—";
+
+  function byId(id: string) {
+    return document.getElementById(id) as HTMLElement;
+  }
+
+  function readPositiveInt(input: HTMLInputElement): number | null {
+    const value = Number(input.value);
+    return Number.isInteger(value) && value > 0 ? value : null;
+  }
+
+  function readPositiveNumber(input: HTMLInputElement): number | null {
+    const value = Number(input.value);
+    return Number.isFinite(value) && value > 0 ? value : null;
+  }
+
+  function money(value: number): string {
+    return `${value < 0 ? "-" : ""}$${Math.abs(value).toFixed(2)}`;
+  }
+
+  function plural(count: number, unit: string): string {
+    return `${count} ${unit}${count === 1 ? "" : "s"}`;
+  }
+
+  function setupPalletCalculator() {
+    const cplInput = byId("pallet-cpl") as HTMLInputElement;
+    const lppInput = byId("pallet-lpp") as HTMLInputElement;
+    const qtyInput = byId("pallet-qty") as HTMLInputElement;
+    const outputs = {
+      breakdown: byId("pallet-breakdown"),
+      layer: byId("pallet-layer"),
+      pallet: byId("pallet-pallet"),
+      util: byId("pallet-util"),
+    };
+
+    function update() {
+      const cartonsPerLayer = readPositiveInt(cplInput);
+      const layersPerPallet = readPositiveInt(lppInput);
+      const quantity = readPositiveInt(qtyInput);
+
+      if (!cartonsPerLayer || !layersPerPallet || !quantity) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const perPallet = cartonsPerLayer * layersPerPallet;
+      const fullPallets = Math.floor(quantity / perPallet);
+      const remainder = quantity % perPallet;
+      const looseLayers = Math.floor(remainder / cartonsPerLayer);
+      const looseCartons = remainder % cartonsPerLayer;
+
+      outputs.breakdown.textContent = [
+        plural(fullPallets, "pallet"),
+        plural(looseLayers, "layer"),
+        plural(looseCartons, "carton"),
+      ].join(" + ");
+
+      const nextLayerQty = Math.ceil(quantity / cartonsPerLayer) * cartonsPerLayer;
+      outputs.layer.textContent =
+        nextLayerQty === quantity
+          ? `${quantity} cartons — already exact`
+          : `${nextLayerQty} cartons (+${nextLayerQty - quantity})`;
+
+      const nextPalletQty = Math.ceil(quantity / perPallet) * perPallet;
+      outputs.pallet.textContent =
+        nextPalletQty === quantity
+          ? `${quantity} cartons — already exact`
+          : `${nextPalletQty} cartons (+${nextPalletQty - quantity})`;
+
+      const lastPalletCartons = remainder === 0 ? perPallet : remainder;
+      outputs.util.textContent = `${((lastPalletCartons / perPallet) * 100).toFixed(1)}%`;
+    }
+
+    [cplInput, lppInput, qtyInput].forEach((input) => input.addEventListener("input", update));
+  }
+
+  function setupMarginCalculator() {
+    const costInput = byId("margin-cost") as HTMLInputElement;
+    const sellInput = byId("margin-sell") as HTMLInputElement;
+    const outputs = {
+      gp: byId("margin-gp"),
+      margin: byId("margin-margin"),
+      markup: byId("margin-markup"),
+    };
+
+    function update() {
+      const cost = readPositiveNumber(costInput);
+      const sell = readPositiveNumber(sellInput);
+
+      if (!cost || !sell) {
+        Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
+        return;
+      }
+
+      const grossProfit = sell - cost;
+      outputs.gp.textContent = `${money(grossProfit)} per unit`;
+      outputs.margin.textContent = `${((grossProfit / sell) * 100).toFixed(1)}% of sell price`;
+      outputs.markup.textContent = `${((grossProfit / cost) * 100).toFixed(1)}% on cost`;
+    }
+
+    [costInput, sellInput].forEach((input) => input.addEventListener("input", update));
+  }
+
+  setupPalletCalculator();
+  setupMarginCalculator();
+</script>
