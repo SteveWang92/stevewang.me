@@ -227,6 +227,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 <input id="fs-height" type="number" inputmode="numeric" min="1" step="1" value="1350" />
               </div>
             </div>
+            <div class="tool-field-row two">
+              <div class="tool-field">
+                <label for="fs-weight">Carton weight (kg)</label>
+                <input id="fs-weight" type="number" inputmode="decimal" min="0.01" step="0.01" value="18" />
+              </div>
+              <div class="tool-field">
+                <label for="fs-maxweight">Max pallet weight (kg)</label>
+                <input id="fs-maxweight" type="number" inputmode="decimal" min="0.01" step="1" value="1000" />
+              </div>
+            </div>
             <div class="tool-field">
               <label for="fs-qty">Order quantity (cartons)</label>
               <input id="fs-qty" type="number" inputmode="numeric" min="1" step="1" value="137" />
@@ -234,7 +244,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <p class="tool-note">
               Work out how many cartons fit a pallet from carton and pallet
               dimensions, and how many pallets an order takes. Cartons are laid
-              flat in a single orientation per layer.
+              flat in a single orientation per layer; the pallet load is capped
+              by both space and weight.
             </p>
           </form>
           <div class="tool-results" aria-live="polite">
@@ -249,6 +260,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <div class="tool-result">
               <span>Cartons per pallet</span>
               <strong id="fs-perpallet">—</strong>
+            </div>
+            <div class="tool-result">
+              <span>Full-pallet weight</span>
+              <strong id="fs-palletweight">—</strong>
             </div>
             <div class="tool-result">
               <span>Pallets for order</span>
@@ -603,12 +618,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       pl: byId("fs-pl") as HTMLInputElement,
       pw: byId("fs-pw") as HTMLInputElement,
       height: byId("fs-height") as HTMLInputElement,
+      weight: byId("fs-weight") as HTMLInputElement,
+      maxWeight: byId("fs-maxweight") as HTMLInputElement,
       qty: byId("fs-qty") as HTMLInputElement,
     };
     const outputs = {
       perLayer: byId("fs-perlayer"),
       layers: byId("fs-layers"),
       perPallet: byId("fs-perpallet"),
+      palletWeight: byId("fs-palletweight"),
       pallets: byId("fs-pallets"),
       util: byId("fs-util"),
     };
@@ -620,9 +638,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const pl = readPositiveInt(inputs.pl);
       const pw = readPositiveInt(inputs.pw);
       const maxHeight = readPositiveInt(inputs.height);
+      const weight = readPositiveNumber(inputs.weight);
+      const maxWeight = readPositiveNumber(inputs.maxWeight);
       const quantity = readPositiveInt(inputs.qty);
 
-      if (!cl || !cw || !ch || !pl || !pw || !maxHeight || !quantity) {
+      if (!cl || !cw || !ch || !pl || !pw || !maxHeight || !weight || !maxWeight || !quantity) {
         Object.values(outputs).forEach((el) => (el.textContent = EMPTY));
         return;
       }
@@ -631,21 +651,33 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const widthwise = Math.floor(pl / cw) * Math.floor(pw / cl);
       const perLayer = Math.max(lengthwise, widthwise);
       const layers = Math.floor(maxHeight / ch);
+      const weightCap = Math.floor(maxWeight / weight);
 
-      if (perLayer === 0 || layers === 0) {
-        outputs.perLayer.textContent = "Carton does not fit within the pallet space";
+      if (perLayer === 0 || layers === 0 || weightCap === 0) {
+        outputs.perLayer.textContent =
+          weightCap === 0
+            ? "A single carton exceeds the pallet weight limit"
+            : "Carton does not fit within the pallet space";
         outputs.layers.textContent = EMPTY;
         outputs.perPallet.textContent = EMPTY;
+        outputs.palletWeight.textContent = EMPTY;
         outputs.pallets.textContent = EMPTY;
         outputs.util.textContent = EMPTY;
         return;
       }
 
       const orientation = widthwise > lengthwise ? "carton rotated 90°" : "carton square to pallet";
-      const perPallet = perLayer * layers;
+      const spaceCap = perLayer * layers;
+      const perPallet = Math.min(spaceCap, weightCap);
       outputs.perLayer.textContent = `${perLayer} (${orientation})`;
       outputs.layers.textContent = String(layers);
-      outputs.perPallet.textContent = String(perPallet);
+      outputs.perPallet.textContent =
+        weightCap < spaceCap
+          ? `${perPallet} — weight limited (space fits ${spaceCap})`
+          : `${perPallet} — space limited`;
+      outputs.palletWeight.textContent = `${(perPallet * weight).toLocaleString(undefined, {
+        maximumFractionDigits: 1,
+      })} kg of ${maxWeight.toLocaleString(undefined, { maximumFractionDigits: 1 })} kg limit`;
       outputs.pallets.textContent = plural(Math.ceil(quantity / perPallet), "pallet");
 
       const cartonVolume = cl * cw * ch;
