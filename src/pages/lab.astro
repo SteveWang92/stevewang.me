@@ -58,6 +58,42 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           turns a raw sales export into a formatted chase list in seconds
           instead of manual pivot work.
         </p>
+        <details class="lab-demo">
+          <summary>Demo with sample data</summary>
+          <div class="lab-demo-body">
+            <p class="tool-note">
+              Fabricated invoice lines for seven fictional venues and two
+              items, measured against the most recent invoice date in the
+              sample (26 Jun 2026) — exactly how the real script works.
+            </p>
+            <div class="demo-controls">
+              <div class="tool-field">
+                <label for="lapsed-weeks">Flag as lapsed after (weeks)</label>
+                <input id="lapsed-weeks" type="number" inputmode="numeric" min="1" step="1" value="4" />
+              </div>
+            </div>
+            <p class="demo-count" id="lapsed-count" aria-live="polite">—</p>
+            <div class="demo-table-wrap">
+              <table class="demo-table">
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th>Item</th>
+                    <th>Last buy</th>
+                    <th>Weeks since</th>
+                  </tr>
+                </thead>
+                <tbody id="lapsed-rows"></tbody>
+              </table>
+            </div>
+            <p class="tool-note">
+              † This venue's most recent invoice was fully credited, so it
+              doesn't count as a purchase — the last buy falls back to the
+              earlier invoice. Returns are netted per invoice, exactly as in
+              the real report.
+            </p>
+          </div>
+        </details>
       </article>
 
       <article class="detail-card" id="post-promotion-report">
@@ -98,7 +134,202 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           Supplier files arrive in a different layout every time; this
           replaces re-reading a dozen sheets by eye with one CSV.
         </p>
+        <details class="lab-demo">
+          <summary>Demo with sample data</summary>
+          <div class="lab-demo-body">
+            <p class="tool-note">
+              A fabricated example of what arrives versus what the script
+              extracts. Shipment rows hide inside free-text headers in two
+              different date styles.
+            </p>
+            <span class="project-meta">Supplier file — as received</span>
+            <div class="demo-table-wrap">
+              <table class="demo-table">
+                <tbody>
+                  <tr>
+                    <td class="demo-cell-spread" colspan="3"><strong>ECO PACKAGING PTY — STOCK &amp; SHIPMENTS</strong></td>
+                  </tr>
+                  <tr>
+                    <td>4501</td>
+                    <td class="demo-cell-spread">Coffee Cup 8oz (1000/ctn)</td>
+                    <td>SOH 320</td>
+                  </tr>
+                  <tr>
+                    <td>4502</td>
+                    <td class="demo-cell-spread">Coffee Cup Lid 8oz (2000/ctn)</td>
+                    <td>SOH #N/A</td>
+                  </tr>
+                  <tr>
+                    <td class="demo-cell-spread" colspan="3">SEA SHIPMENT — ETA 15/08/2026</td>
+                  </tr>
+                  <tr>
+                    <td>4501</td>
+                    <td class="demo-cell-spread"></td>
+                    <td>600</td>
+                  </tr>
+                  <tr>
+                    <td class="demo-cell-spread" colspan="3">NEXT ORDER ETD SEPT 3</td>
+                  </tr>
+                  <tr>
+                    <td>4502</td>
+                    <td class="demo-cell-spread"></td>
+                    <td>400</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <span class="project-meta">Extracted result</span>
+            <div class="demo-table-wrap">
+              <table class="demo-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Qty</th>
+                    <th>Sheet</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>4501</td>
+                    <td class="demo-cell-spread">Coffee Cup 8oz (1000/ctn)</td>
+                    <td>ETA</td>
+                    <td>15/08/2026</td>
+                    <td>600</td>
+                    <td>QLD</td>
+                  </tr>
+                  <tr>
+                    <td>4502</td>
+                    <td class="demo-cell-spread">Coffee Cup Lid 8oz (2000/ctn)</td>
+                    <td>ETD</td>
+                    <td>03/09/2026</td>
+                    <td>400</td>
+                    <td>QLD</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="tool-note">
+              The real script walks a folder of these workbooks, regex-matching
+              both <code>15/08/2026</code>-style dates and <code>SEPT 3</code>-style
+              month names in the header rows, and attributes each quantity to
+              the right item and sheet.
+            </p>
+          </div>
+        </details>
       </article>
     </section>
   </main>
 </BaseLayout>
+
+<script>
+  interface InvoiceLine {
+    customer: string;
+    item: string;
+    invoice: string;
+    date: string;
+    qty: number;
+  }
+
+  // Fabricated demo data — fictional venues, items, and invoice numbers.
+  const LINES: InvoiceLine[] = [
+    { customer: "Golden Wok Noodle Bar", item: "Soy Sauce 4×1.8L", invoice: "INV-1001", date: "2026-03-06", qty: 4 },
+    { customer: "Golden Wok Noodle Bar", item: "Soy Sauce 4×1.8L", invoice: "INV-1102", date: "2026-04-10", qty: 4 },
+    { customer: "Golden Wok Noodle Bar", item: "Soy Sauce 4×1.8L", invoice: "INV-1230", date: "2026-05-15", qty: 6 },
+    { customer: "Golden Wok Noodle Bar", item: "Soy Sauce 4×1.8L", invoice: "INV-1355", date: "2026-06-19", qty: 4 },
+    { customer: "Golden Wok Noodle Bar", item: "Chilli Oil 12×500ml", invoice: "INV-1230", date: "2026-05-15", qty: 2 },
+    { customer: "Golden Wok Noodle Bar", item: "Chilli Oil 12×500ml", invoice: "INV-1355", date: "2026-06-19", qty: 2 },
+    { customer: "Harbour Lane Café", item: "Soy Sauce 4×1.8L", invoice: "INV-0870", date: "2026-02-20", qty: 2 },
+    { customer: "Harbour Lane Café", item: "Soy Sauce 4×1.8L", invoice: "INV-1050", date: "2026-03-27", qty: 2 },
+    { customer: "Lucky Garden Takeaway", item: "Soy Sauce 4×1.8L", invoice: "INV-1080", date: "2026-04-03", qty: 6 },
+    { customer: "Lucky Garden Takeaway", item: "Soy Sauce 4×1.8L", invoice: "INV-1190", date: "2026-05-08", qty: 6 },
+    { customer: "Lucky Garden Takeaway", item: "Soy Sauce 4×1.8L", invoice: "INV-1310", date: "2026-06-12", qty: 6 },
+    { customer: "Lucky Garden Takeaway", item: "Chilli Oil 12×500ml", invoice: "INV-1080", date: "2026-04-03", qty: 1 },
+    { customer: "Lucky Garden Takeaway", item: "Chilli Oil 12×500ml", invoice: "INV-1190", date: "2026-05-08", qty: 1 },
+    { customer: "Miso House", item: "Soy Sauce 4×1.8L", invoice: "INV-1260", date: "2026-05-22", qty: 3 },
+    { customer: "Miso House", item: "Soy Sauce 4×1.8L", invoice: "INV-1400", date: "2026-06-26", qty: 3 },
+    { customer: "Miso House", item: "Chilli Oil 12×500ml", invoice: "INV-1150", date: "2026-04-24", qty: 2 },
+    { customer: "Miso House", item: "Chilli Oil 12×500ml", invoice: "INV-1352", date: "2026-06-19", qty: 6 },
+    { customer: "Miso House", item: "Chilli Oil 12×500ml", invoice: "INV-1352", date: "2026-06-19", qty: -6 },
+    { customer: "The Corner Bistro", item: "Soy Sauce 4×1.8L", invoice: "INV-1290", date: "2026-06-05", qty: 2 },
+    { customer: "Bamboo Express", item: "Chilli Oil 12×500ml", invoice: "INV-1010", date: "2026-03-13", qty: 4 },
+    { customer: "Bamboo Express", item: "Soy Sauce 4×1.8L", invoice: "INV-1275", date: "2026-05-29", qty: 4 },
+    { customer: "Sunny Point Fish & Chips", item: "Soy Sauce 4×1.8L", invoice: "INV-1401", date: "2026-06-26", qty: 2 },
+  ];
+
+  const DAY = 86400000;
+
+  function setupLapsedDemo() {
+    const weeksInput = document.getElementById("lapsed-weeks") as HTMLInputElement;
+    const countEl = document.getElementById("lapsed-count") as HTMLElement;
+    const bodyEl = document.getElementById("lapsed-rows") as HTMLElement;
+
+    const asOf = Math.max(...LINES.map((line) => Date.parse(line.date)));
+
+    // Net quantity per customer+item+invoice; only invoices with a net
+    // quantity > 0 count as a purchase (a fully credited buy nets to zero).
+    const invoices = new Map<string, { customer: string; item: string; date: number; net: number }>();
+    for (const line of LINES) {
+      const key = `${line.customer}|${line.item}|${line.invoice}`;
+      const entry = invoices.get(key);
+      if (entry) {
+        entry.net += line.qty;
+      } else {
+        invoices.set(key, { customer: line.customer, item: line.item, date: Date.parse(line.date), net: line.qty });
+      }
+    }
+
+    const pairs = new Map<string, { customer: string; item: string; lastBuy: number; lastRaw: number }>();
+    for (const inv of invoices.values()) {
+      const key = `${inv.customer}|${inv.item}`;
+      const pair = pairs.get(key) ?? { customer: inv.customer, item: inv.item, lastBuy: -Infinity, lastRaw: -Infinity };
+      pair.lastRaw = Math.max(pair.lastRaw, inv.date);
+      if (inv.net > 0) pair.lastBuy = Math.max(pair.lastBuy, inv.date);
+      pairs.set(key, pair);
+    }
+
+    const rows = [...pairs.values()]
+      .map((pair) => ({
+        ...pair,
+        weeks: Math.floor((asOf - pair.lastBuy) / DAY / 7),
+        credited: pair.lastRaw > pair.lastBuy,
+      }))
+      .sort((a, b) => b.weeks - a.weeks || a.customer.localeCompare(b.customer));
+
+    function update() {
+      const threshold = Number(weeksInput.value);
+      if (!Number.isInteger(threshold) || threshold < 1) {
+        countEl.textContent = "—";
+        bodyEl.innerHTML = "";
+        return;
+      }
+
+      const lapsed = rows.filter((row) => row.weeks >= threshold).length;
+      countEl.textContent = `${lapsed} of ${rows.length} customer–item pairs lapsed at ${threshold} week${threshold === 1 ? "" : "s"}.`;
+
+      bodyEl.innerHTML = rows
+        .map((row) => {
+          const isLapsed = row.weeks >= threshold;
+          const lastBuy = new Date(row.lastBuy).toLocaleDateString("en-AU", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          });
+          return `<tr${isLapsed ? ' class="demo-row-lapsed"' : ""}>
+            <td>${row.customer}${row.credited ? " †" : ""}</td>
+            <td>${row.item}</td>
+            <td>${lastBuy}</td>
+            <td>${row.weeks} wk${row.weeks === 1 ? "" : "s"}${isLapsed ? '<span class="demo-tag">Lapsed</span>' : ""}</td>
+          </tr>`;
+        })
+        .join("");
+    }
+
+    weeksInput.addEventListener("input", update);
+    update();
+  }
+
+  setupLapsedDemo();
+</script>

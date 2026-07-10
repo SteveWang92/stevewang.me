@@ -36,8 +36,11 @@ deployed to AWS Amplify.
   exists; no screenshots or tech-stack grids). Current entries: weekly sales
   data pipeline, lapsed-customer reports, post-promotion impact report,
   messy-spreadsheet shipment extractor. These run privately on internal data
-  and are described, not hosted. New entries follow the same shape and keep
-  the lighter visual weight that distinguishes them from flagship projects.
+  and are described, not hosted. Two entries include a collapsed "demo with
+  sample data" section — an interactive lapsed-customer demo and a before/after
+  extraction example — running entirely in the browser on fabricated data.
+  New entries follow the same shape and keep the lighter visual weight that
+  distinguishes them from flagship projects.
 
 ## Planned
 
