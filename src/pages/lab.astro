@@ -1,0 +1,104 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Lab - Steve Wang"
+  description="Smaller automation from Steve Wang's purchasing and sales reporting work — data pipelines, lapsed-customer reports, promotion impact reports, and spreadsheet extraction scripts."
+  current="lab"
+>
+  <main>
+    <section class="page-title section-wrap">
+      <h1>Lab</h1>
+      <p>
+        Smaller pieces of automation from day-to-day purchasing and sales
+        reporting work — not flagship projects. These run privately on
+        internal data, so they are described here rather than hosted.
+      </p>
+    </section>
+
+    <section class="section-wrap project-list">
+      <article class="detail-card" id="sales-data-pipeline">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Data pipeline</span>
+            <h2>Weekly Sales Data Pipeline</h2>
+          </div>
+          <span class="status-label">Private · in weekly use</span>
+        </div>
+        <p>
+          A Python importer that loads weekly Excel sales exports into a local
+          SQLite database — header validation, per-file batch tracking, and
+          duplicate-import resolution (replace / skip / abort) — with a flat
+          CSV export for BI tools.
+        </p>
+        <p>
+          Reporting needed a queryable history of weekly exports on a
+          locked-down work machine; SQLite gives a zero-install local
+          warehouse with no admin rights required.
+        </p>
+      </article>
+
+      <article class="detail-card" id="lapsed-customer-reports">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Sales analysis</span>
+            <h2>Lapsed-Customer Reports</h2>
+          </div>
+          <span class="status-label">Private · on request</span>
+        </div>
+        <p>
+          Finds customers who stopped ordering given items — quantities are
+          netted per invoice so fully returned orders don't count as
+          purchases, with per-item or grouped output and "weeks since last
+          order" thresholds to separate lapsed from active.
+        </p>
+        <p>
+          Sales teams kept asking "who used to buy this and stopped?"; this
+          turns a raw sales export into a formatted chase list in seconds
+          instead of manual pivot work.
+        </p>
+      </article>
+
+      <article class="detail-card" id="post-promotion-report">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Reporting automation</span>
+            <h2>Post-Promotion Impact Report</h2>
+          </div>
+          <span class="status-label">Private · monthly</span>
+        </div>
+        <p>
+          Cross-references monthly promotion item lists against the shared
+          SQLite sales database to report which customers actually bought the
+          promoted items, delivered as a formatted Excel workbook.
+        </p>
+        <p>
+          Monthly promotions needed a follow-up answer to "did it move
+          product, and with whom?" without re-opening a stack of weekly
+          spreadsheets.
+        </p>
+      </article>
+
+      <article class="detail-card" id="shipment-extractor">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Data extraction</span>
+            <h2>Messy-Spreadsheet Shipment Extractor</h2>
+          </div>
+          <span class="status-label">Private · on request</span>
+        </div>
+        <p>
+          Parses supplier stock workbooks that were formatted for humans —
+          regex detection of shipment dates and quantities across
+          inconsistent sheets and merged headers — into one clean
+          incoming-shipments table.
+        </p>
+        <p>
+          Supplier files arrive in a different layout every time; this
+          replaces re-reading a dozen sheets by eye with one CSV.
+        </p>
+      </article>
+    </section>
+  </main>
+</BaseLayout>

@@ -657,6 +657,8 @@ a {
   .site-header {
     width: min(var(--max), calc(100% - 28px));
     min-height: 68px;
+    flex-wrap: wrap;
+    padding: 10px 0;
   }
 
   .section-wrap,
