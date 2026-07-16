@@ -372,6 +372,22 @@ a {
   border-top: 1px solid var(--border);
 }
 
+.project-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.project-links a {
+  color: var(--accent-dark);
+  font-weight: 780;
+  text-decoration: none;
+}
+
+.project-links a:hover {
+  text-decoration: underline;
+}
+
 .demo-strip {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -504,6 +520,89 @@ a {
   color: var(--accent-dark);
   font-weight: 780;
   text-decoration: none;
+}
+
+.lab-demo {
+  margin-top: 20px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+.lab-demo summary {
+  width: fit-content;
+  cursor: pointer;
+  color: var(--accent-dark);
+  font-weight: 780;
+}
+
+.lab-demo summary:hover {
+  text-decoration: underline;
+}
+
+.lab-demo-body {
+  display: grid;
+  gap: 14px;
+  padding-top: 16px;
+}
+
+.demo-controls {
+  max-width: 280px;
+}
+
+.demo-count {
+  font-size: 0.9rem;
+  font-weight: 680;
+}
+
+.demo-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.demo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.demo-table th {
+  padding: 10px 12px;
+  text-align: left;
+  color: var(--amber);
+  font-size: 0.72rem;
+  font-weight: 820;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: var(--surface-soft);
+}
+
+.demo-table td {
+  padding: 9px 12px;
+  border-top: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.demo-table td.demo-cell-spread {
+  white-space: normal;
+  min-width: 180px;
+}
+
+.demo-row-lapsed {
+  background: rgba(196, 123, 45, 0.09);
+}
+
+.demo-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: rgba(196, 123, 45, 0.16);
+  color: var(--amber);
+  font-size: 0.68rem;
+  font-weight: 820;
+  text-transform: uppercase;
 }
 
 .shipped-section {
@@ -657,6 +756,8 @@ a {
   .site-header {
     width: min(var(--max), calc(100% - 28px));
     min-height: 68px;
+    flex-wrap: wrap;
+    padding: 10px 0;
   }
 
   .section-wrap,

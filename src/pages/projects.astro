@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Projects - Steve Wang"
-  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, the Shared Bill expense app, Project Status Hub, and purchasing workflow tooling."
+  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, the Shared Bill expense app, StackVitals, and purchasing workflow tooling."
   current="projects"
 >
   <main>
@@ -121,39 +121,43 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
       </article>
 
-      <article class="detail-card" id="project-status-hub">
+      <article class="detail-card" id="stackvitals">
         <div class="detail-header">
           <div>
-            <span class="project-meta">Private dashboard</span>
-            <h2>Project Status Hub</h2>
+            <span class="project-meta">Open-source dashboard</span>
+            <h2>StackVitals</h2>
           </div>
-          <span class="status-label">Owner-only</span>
+          <span class="status-label">Public repo</span>
         </div>
         <div class="detail-grid">
           <div>
             <h3>Purpose</h3>
-            <p>Private operations dashboard for personal web projects, covering deploy health, uptime, provider status, collector errors, aggregate usage, and month-to-date cost.</p>
+            <p>Self-hosted operations dashboard for a handful of side projects — uptime, deploy health, cloud cost, AI/CI usage, and domain status in one lightweight, single-database view built for solo developers.</p>
           </div>
           <div>
             <h3>Collectors</h3>
-            <p>Nine provider adapters — HTTP health, Amplify deploy status, AWS Cost Explorer, Supabase aggregates and health, Resend email health, OpenAI usage, GitHub Actions CI/usage, and Cloudflare domains — run on a scheduled GitHub Action and write append-only snapshots.</p>
+            <p>Nine opt-in provider adapters — HTTP health, Amplify deploy status, AWS Cost Explorer, Supabase aggregates and health, Resend email health, OpenAI usage, GitHub Actions CI/usage, and Cloudflare domains — run on a scheduled GitHub Action and write append-only snapshots.</p>
           </div>
           <div>
-            <h3>Access Model</h3>
-            <p>Frontend login gates the dashboard before data renders, Supabase RLS allows reads only for approved dashboard users, and collectors store aggregate signals only — never raw app records.</p>
+            <h3>Data Safety</h3>
+            <p>Collectors store aggregate signals only — never raw app records. Frontend login gates the dashboard before data renders, and Supabase RLS restricts reads to approved users.</p>
           </div>
           <div>
             <h3>Tech Stack</h3>
             <p>React, Vite, TypeScript, Supabase Auth with row-level security, scheduled GitHub Actions collectors, AWS Amplify Hosting, and Vitest with mocked provider tests.</p>
           </div>
         </div>
-        <div class="demo-strip" aria-label="Project Status Hub screenshots">
+        <div class="project-links">
+          <a href="https://stackvitals.dev" target="_blank" rel="noopener">stackvitals.dev</a>
+          <a href="https://github.com/SteveWang92/stackvitals" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="demo-strip" aria-label="StackVitals screenshots">
           <figure>
-            <img src="/assets/statushub-overview.png" alt="Project Status Hub overview showing tracked apps, health summary, month-to-date cost, and per-app deploy and uptime status cards." loading="lazy" />
+            <img src="/assets/stackvitals-overview.png" alt="StackVitals overview dashboard showing deploy status, uptime, and cost for multiple projects." loading="lazy" />
             <figcaption>Overview with per-app health and cost</figcaption>
           </figure>
           <figure>
-            <img src="/assets/statushub-collectors.png" alt="Project Status Hub collector diagnostics table listing provider runs, durations, and health status for each collector." loading="lazy" />
+            <img src="/assets/stackvitals-collectors.png" alt="StackVitals collector diagnostics showing run history and provider health status." loading="lazy" />
             <figcaption>Collector diagnostics across providers</figcaption>
           </figure>
         </div>

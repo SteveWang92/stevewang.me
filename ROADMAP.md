@@ -25,31 +25,24 @@ deployed to AWS Amplify.
 
 ## Current state
 
-- **Pages**: Home, Projects, Career, Tools, 404.
-- **Projects**: Digital Signage CMS, Fuel Tracker, Shared Bill, Project Status
-  Hub, Purchasing Workflow Tools.
+- **Pages**: Home, Projects, Career, Tools, Lab, 404.
+- **Projects**: Digital Signage CMS, Fuel Tracker, Shared Bill, StackVitals,
+  Purchasing Workflow Tools.
 - **Tools** (client-side, no backend): pallet breakdown, price-break
   evaluator, MOQ & pack rounding, order coverage, freight space, rebate
   calculator, cost-change impact.
+- **Lab** (`/lab/`): a lighter counterpart to Projects for smaller automation
+  worth preserving — description-only entries (title, what it does, why it
+  exists; no screenshots or tech-stack grids). Current entries: weekly sales
+  data pipeline, lapsed-customer reports, post-promotion impact report,
+  messy-spreadsheet shipment extractor. These run privately on internal data
+  and are described, not hosted. Two entries include a collapsed "demo with
+  sample data" section — an interactive lapsed-customer demo and a before/after
+  extraction example — running entirely in the browser on fabricated data.
+  New entries follow the same shape and keep the lighter visual weight that
+  distinguishes them from flagship projects.
 
 ## Planned
-
-### Lab page (`/lab/`)
-
-A lighter counterpart to Projects, for smaller experiments and automation worth
-preserving — explicitly *not* headline projects.
-
-- A short purpose line at the top signalling low altitude ("smaller
-  experiments, not flagship work").
-- Per entry: title, a one-line "what it does", and a one-line "why it exists".
-  No screenshots or full tech-stack grids — the lighter visual weight is what
-  distinguishes a lab entry from a flagship project.
-- Reuses the existing card styles, so no new CSS.
-- Wiring: `src/pages/lab.astro` (BaseLayout, `current="lab"`), a nav link plus
-  the `"lab"` value threaded through `Header` and `BaseLayout`, and a
-  `public/sitemap.xml` entry.
-- Timing: ship only once there are 2–3 real entries — a one-item page reads as
-  a stub.
 
 ### Further out
 
