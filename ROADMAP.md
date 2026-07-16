@@ -26,8 +26,8 @@ deployed to AWS Amplify.
 ## Current state
 
 - **Pages**: Home, Projects, Career, Tools, Lab, 404.
-- **Projects**: Digital Signage CMS, Fuel Tracker, Shared Bill, Project Status
-  Hub, Purchasing Workflow Tools.
+- **Projects**: Digital Signage CMS, Fuel Tracker, Shared Bill, StackVitals,
+  Purchasing Workflow Tools.
 - **Tools** (client-side, no backend): pallet breakdown, price-break
   evaluator, MOQ & pack rounding, order coverage, freight space, rebate
   calculator, cost-change impact.

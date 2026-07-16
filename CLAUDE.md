@@ -37,7 +37,7 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 - Say "purchasing operations" / "foodservice supply chain" — never name the employer, internal portal names, or private workflow details.
 - Do not mention job hunting or open-to-work status; the site reads as a durable project hub.
 - Keep copy professional, technical, outcome-focused, and concise. No social/blog tone, no oversized marketing sections, no purple gradients or decorative blobs — restrained operations-tool aesthetic.
-- Featured framing: Digital Signage CMS = credible production full-stack work; Fuel Tracker / Shared Bill = live personal products; Project Status Hub = private ops dashboard; Purchasing Workflow Tools = current automation focus. Don't promote reporting scripts or plans into headline projects.
+- Featured framing: Digital Signage CMS = credible production full-stack work; Fuel Tracker / Shared Bill = live personal products; StackVitals = open-source ops dashboard; Purchasing Workflow Tools = current automation focus. Don't promote reporting scripts or plans into headline projects.
 
 ## Workflow conventions
 
