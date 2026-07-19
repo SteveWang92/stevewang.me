@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`stevewang.me` — Steve Wang's personal project hub, a static Astro site (home, `/projects/`, `/career/`, plus a 404 page) deployed to AWS Amplify. It is a project hub, not a blog or resume site: it should answer "What has Steve built?" quickly. The former `AGENTS.md` is archived at `docs/archive/AGENTS.md` — do not read or maintain it.
+`stevewang.me` — Steve Wang's personal project hub, a static Astro site (home, `/projects/`, `/experience/`, plus a 404 page) deployed to AWS Amplify. It is a project hub, not a blog or resume site: it should answer "What has Steve built?" quickly. The former `AGENTS.md` is archived at `docs/archive/AGENTS.md` — do not read or maintain it.
 
 ## Commands
 
@@ -20,8 +20,8 @@ There are no tests or linters. Verify content/site changes with `npm run build`;
 
 Plain Astro with no integrations or runtime dependencies — keep it that way (no CMS, contact form, analytics backend, or client-side frameworks).
 
-- `src/layouts/BaseLayout.astro` — the one layout: SEO/OG meta, canonical URL (from `site` in `astro.config.mjs`), favicon, wraps pages with `Header`/`Footer`. Pages pass `title`, `description`, and optional `current` ("projects" | "career") for nav highlighting.
-- `src/pages/` — `index.astro`, `projects.astro`, `career.astro`. Content is hard-coded HTML by design (v1); project cards on `/projects/` use `id` anchors (e.g. `#purchasing-workflow-tools`) that the home page links to. Internal links use trailing slashes (`/projects/`).
+- `src/layouts/BaseLayout.astro` — the one layout: SEO/OG meta, canonical URL (from `site` in `astro.config.mjs`), favicon, wraps pages with `Header`/`Footer`. Pages pass `title`, `description`, and optional `current` ("projects" | "experience") for nav highlighting.
+- `src/pages/` — `index.astro`, `projects.astro`, `experience.astro`. Content is hard-coded HTML by design (v1); project cards on `/projects/` use `id` anchors (e.g. `#purchasing-workflow-tools`) that the home page links to. Internal links use trailing slashes (`/projects/`).
 - `src/styles/global.css` — the single stylesheet, imported by the layout. Design tokens are CSS variables in `:root` (teal accent `--accent`, amber `--amber`, 8px `--radius`).
 - `public/sitemap.xml` is hand-maintained — update it when pages are added or removed.
 - Screenshots served by the site live in `public/assets/`; `docs/assets/` holds private originals and the design reference (`concept-homepage.png`).
@@ -43,5 +43,5 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 
 General commit, branch, release, security, and working rules live in the user-global `~/.claude/CLAUDE.md`. Project-specific notes:
 
-- **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`). Release via a squash-merge `dev`→`main` PR using the **`/release` skill** (no `release:tag` script here).
+- **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`). Release via a rebase-merge `dev`→`main` PR using the **`/release` skill** (no `release:tag` script here).
 - A legacy `production` branch exists — it is **not** the deploy branch; do not use or reference it.
