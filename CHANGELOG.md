@@ -1,0 +1,59 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+
+### Changed
+
+- Rename Career page to Experience
+- Refresh project content and descriptions
+
+## [1.2.0] - 2026-07-16
+
+### Added
+
+- Lab page describing private reporting automation with sample-data demos
+- StackVitals project card (renamed from Project Status Hub) with repo and site links
+
+### Fixed
+
+- Update stale Project Status Hub references and align lab divider styling
+
+## [1.1.0] - 2026-07-07
+
+### Added
+
+- Tools page with client-side calculators:
+  - Pallet calculator with weight limit
+  - Price break evaluator
+  - Order coverage calculator with MOQ rounding and reorder point
+  - Freight space calculator
+  - Rebate calculator
+  - Cost change impact calculator
+- Recently shipped strip on home page
+- Shared Bill and Project Status Hub project cards with screenshots
+- Social share image and person structured data
+- 404 page
+
+### Changed
+
+- Update technical profile with current production stack
+- Refresh project copy with current app status
+- Align copy with private release status and repo facts
+
+## [1.0.0] - 2026-06-22
+
+### Added
+
+- Initial Astro personal site with home, projects, and experience pages
+- Project cards for Fuel Tracker and Shared Bill with demo images
+- SEO metadata, robots.txt, sitemap.xml, favicon
+
+[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/SteveWang92/stevewang.me/releases/tag/v1.0.0
