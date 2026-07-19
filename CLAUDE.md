@@ -43,5 +43,7 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 
 General commit, branch, release, security, and working rules live in the user-global `~/.claude/CLAUDE.md`. Project-specific notes:
 
-- **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`). Release via a rebase-merge `dev`→`main` PR using the **`/release` skill** (no `release:tag` script here).
+- **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`).
+- **Releases** use `scripts/release.mjs` — a two-phase, non-interactive script. `npm run release:prep` creates the release PR; after review, `npm run release:ship` bumps version, finalizes `CHANGELOG.md`, rebase-merges, tags, and publishes the GitHub release. See the script header for full usage (`--version`, `--dry-run`).
+- **Changelog:** `CHANGELOG.md` (Keep a Changelog format) is the release history. Record notable changes in the `[Unreleased]` section as work lands.
 - A legacy `production` branch exists — it is **not** the deploy branch; do not use or reference it.
