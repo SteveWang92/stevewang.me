@@ -45,6 +45,49 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
       </article>
 
+      <article class="detail-card" id="stackvitals">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Open-source dashboard</span>
+            <h2>StackVitals</h2>
+          </div>
+          <span class="status-label">Public repo</span>
+        </div>
+        <div class="detail-grid">
+          <div>
+            <h3>Purpose</h3>
+            <p>Self-hosted operations dashboard for a handful of side projects — uptime, deploy health, cloud cost, AI/CI usage, and domain status in one lightweight, single-database view built for solo developers.</p>
+          </div>
+          <div>
+            <h3>Collectors</h3>
+            <p>Opt-in provider adapters for HTTP health, deploy status (Amplify, GitHub Actions workflows, and Cloudflare Pages), AWS Cost Explorer, Supabase aggregates and health, Resend email, OpenAI usage, GitHub Actions CI metrics, and Cloudflare domains — run on a scheduled GitHub Action and write append-only snapshots.</p>
+          </div>
+          <div>
+            <h3>Data Safety</h3>
+            <p>Collectors store aggregate signals only — never raw app records. Frontend login gates the dashboard before data renders, and Supabase RLS restricts reads to approved users.</p>
+          </div>
+          <div>
+            <h3>Tech Stack</h3>
+            <p>React, Vite, TypeScript, Supabase Auth with row-level security, scheduled GitHub Actions collectors, AWS Amplify Hosting, Astro Starlight project site, and Vitest with mocked provider tests.</p>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://stackvitals.dev" target="_blank" rel="noopener">stackvitals.dev</a>
+          <a href="https://stackvitals.app" target="_blank" rel="noopener">Live demo</a>
+          <a href="https://github.com/SteveWang92/stackvitals" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="demo-strip" aria-label="StackVitals screenshots">
+          <figure>
+            <img src="/assets/stackvitals-overview.png" alt="StackVitals overview dashboard showing deploy status, uptime, and cost for multiple projects." loading="lazy" />
+            <figcaption>Overview with per-app health and cost</figcaption>
+          </figure>
+          <figure>
+            <img src="/assets/stackvitals-collectors.png" alt="StackVitals collector diagnostics showing run history and provider health status." loading="lazy" />
+            <figcaption>Collector diagnostics across providers</figcaption>
+          </figure>
+        </div>
+      </article>
+
       <article class="detail-card" id="fuel-tracker">
         <div class="detail-header">
           <div>
@@ -121,55 +164,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
       </article>
 
-      <article class="detail-card" id="stackvitals">
-        <div class="detail-header">
-          <div>
-            <span class="project-meta">Open-source dashboard</span>
-            <h2>StackVitals</h2>
-          </div>
-          <span class="status-label">Public repo</span>
-        </div>
-        <div class="detail-grid">
-          <div>
-            <h3>Purpose</h3>
-            <p>Self-hosted operations dashboard for a handful of side projects — uptime, deploy health, cloud cost, AI/CI usage, and domain status in one lightweight, single-database view built for solo developers.</p>
-          </div>
-          <div>
-            <h3>Collectors</h3>
-            <p>Nine opt-in provider adapters — HTTP health, Amplify deploy status, AWS Cost Explorer, Supabase aggregates and health, Resend email health, OpenAI usage, GitHub Actions CI/usage, and Cloudflare domains — run on a scheduled GitHub Action and write append-only snapshots.</p>
-          </div>
-          <div>
-            <h3>Data Safety</h3>
-            <p>Collectors store aggregate signals only — never raw app records. Frontend login gates the dashboard before data renders, and Supabase RLS restricts reads to approved users.</p>
-          </div>
-          <div>
-            <h3>Tech Stack</h3>
-            <p>React, Vite, TypeScript, Supabase Auth with row-level security, scheduled GitHub Actions collectors, AWS Amplify Hosting, and Vitest with mocked provider tests.</p>
-          </div>
-        </div>
-        <div class="project-links">
-          <a href="https://stackvitals.dev" target="_blank" rel="noopener">stackvitals.dev</a>
-          <a href="https://github.com/SteveWang92/stackvitals" target="_blank" rel="noopener">GitHub</a>
-        </div>
-        <div class="demo-strip" aria-label="StackVitals screenshots">
-          <figure>
-            <img src="/assets/stackvitals-overview.png" alt="StackVitals overview dashboard showing deploy status, uptime, and cost for multiple projects." loading="lazy" />
-            <figcaption>Overview with per-app health and cost</figcaption>
-          </figure>
-          <figure>
-            <img src="/assets/stackvitals-collectors.png" alt="StackVitals collector diagnostics showing run history and provider health status." loading="lazy" />
-            <figcaption>Collector diagnostics across providers</figcaption>
-          </figure>
-        </div>
-      </article>
-
       <article class="detail-card" id="purchasing-workflow-tools">
         <div class="detail-header">
           <div>
             <span class="project-meta">Current focus</span>
             <h2>Purchasing Workflow Tools</h2>
           </div>
-          <span class="status-label">In progress</span>
+          <span class="status-label">Private release</span>
         </div>
         <div class="detail-grid">
           <div>
@@ -177,16 +178,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <p>Speed up low-stock ordering decisions that are possible in Excel but slow to prepare and check by hand.</p>
           </div>
           <div>
-            <h3>Current Tool</h3>
-            <p>Python import flow for item, sales, cost, price, and supplier data with automatic order amount calculation.</p>
+            <h3>Desktop App</h3>
+            <p>PySide6 desktop application that imports checklist, reference, stock, sales, and cost data from Excel workbooks into a local SQLite database for review and order preparation.</p>
           </div>
           <div>
-            <h3>Rules</h3>
-            <p>Uses supplier MOQ, layer price, pallet price, and packaging constraints when calculating suggested order amounts.</p>
+            <h3>Ordering Logic</h3>
+            <p>Computes suggested order quantities using supplier MOQ, layer and pallet pricing, packaging constraints, and category-level order-day cycles, with a grouped order summary for export.</p>
           </div>
           <div>
             <h3>Tech Stack</h3>
-            <p>Python first. Future UI will depend on the workflow shape after the calculation model is stable.</p>
+            <p>Python, PySide6, SQLite, Pandas for data import, and CSV/XLSX export.</p>
           </div>
         </div>
       </article>
