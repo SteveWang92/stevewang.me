@@ -34,7 +34,7 @@ deployed to AWS Amplify.
 - **Lab** (`/lab/`): a lighter counterpart to Projects for smaller automation
   worth preserving — description-only entries (title, what it does, why it
   exists; no screenshots or tech-stack grids). Current entries: weekly sales
-  data pipeline, lapsed-customer reports, post-promotion impact report,
+  reporting app, lapsed-customer reports, post-promotion impact report,
   messy-spreadsheet shipment extractor. These run privately on internal data
   and are described, not hosted. Two entries include a collapsed "demo with
   sample data" section — an interactive lapsed-customer demo and a before/after

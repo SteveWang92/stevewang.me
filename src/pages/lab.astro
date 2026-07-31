@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Lab - Steve Wang"
-  description="Smaller automation from Steve Wang's purchasing and sales reporting work — data pipelines, lapsed-customer reports, promotion impact reports, and spreadsheet extraction scripts."
+  description="Smaller automation from Steve Wang's purchasing and sales reporting work — a weekly sales reporting app, lapsed-customer reports, promotion impact reports, and spreadsheet extraction scripts."
   current="lab"
 >
   <main>
@@ -18,24 +18,31 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </section>
 
     <section class="section-wrap project-list">
-      <article class="detail-card" id="sales-data-pipeline">
+      <article class="detail-card" id="weekly-sales-reporting">
         <div class="detail-header">
           <div>
-            <span class="project-meta">Data pipeline</span>
-            <h2>Weekly Sales Data Pipeline</h2>
+            <span class="project-meta">Reporting app</span>
+            <h2>Weekly Sales Reporting App</h2>
           </div>
           <span class="status-label">Private · in weekly use</span>
         </div>
         <p>
-          A Python importer that loads weekly Excel sales exports into a local
-          SQLite database — header validation, per-file batch tracking, and
-          duplicate-import resolution (replace / skip / abort) — with a flat
-          CSV export for BI tools.
+          A local desktop app for the weekly sales cycle. Excel/ODS exports are
+          dragged in, auto-detected for type, week, and region, and checked
+          against the existing history with anomaly warnings before anything is
+          written — every import takes an automatic backup first, so a bad file
+          is one click to undo. A dashboard tab summarises KPIs, top movers, and
+          stock alerts, each table carries a week-over-week sparkline, and
+          formatted reports export back out with the highlighting rules already
+          applied.
         </p>
         <p>
-          Reporting needed a queryable history of weekly exports on a
-          locked-down work machine; SQLite gives a zero-install local
-          warehouse with no admin rights required.
+          It started as a plain Python importer loading weekly exports into a
+          local SQLite database — a zero-install local warehouse for a machine
+          that allows no admin rights. Once that history was worth querying, the
+          reporting around it was still being redone by hand every week, so the
+          same headless core picked up a small local interface and kept the
+          import/export logic independent of it.
         </p>
       </article>
 
