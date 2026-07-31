@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Rename Career page to Experience
 - Refresh project content and descriptions
+- Update recently shipped strip for StackVitals 1.5 and add purchasing tools 1.2
+- Expand StackVitals card with attention panel, history charts, and corrected
+  Resend collector scope
+- Expand purchasing tools card with purchase-order and sales-order import,
+  configurable import groups, and committed/arriving netting
+- Rewrite the weekly sales lab entry as the desktop reporting app it became
 
 ## [1.2.0] - 2026-07-16
 

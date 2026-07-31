@@ -56,11 +56,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <div class="detail-grid">
           <div>
             <h3>Purpose</h3>
-            <p>Self-hosted operations dashboard for a handful of side projects — uptime, deploy health, cloud cost, AI/CI usage, and domain status in one lightweight, single-database view built for solo developers.</p>
+            <p>Self-hosted operations dashboard for a handful of side projects — uptime, deploy health, cloud cost, AI/CI usage, and domain status in one lightweight, single-database view built for solo developers. A Needs Attention panel lists every failing check with its project, provider, and error detail.</p>
           </div>
           <div>
             <h3>Collectors</h3>
-            <p>Opt-in provider adapters for HTTP health, deploy status (Amplify, GitHub Actions workflows, and Cloudflare Pages), AWS Cost Explorer, Supabase aggregates and health, Resend email, OpenAI usage, GitHub Actions CI metrics, and Cloudflare domains — run on a scheduled GitHub Action and write append-only snapshots.</p>
+            <p>Opt-in provider adapters for HTTP health, deploy status (Amplify, GitHub Actions workflows, and Cloudflare Pages), AWS Cost Explorer, Supabase aggregates and health, Resend sending-domain verification, OpenAI usage, GitHub Actions CI metrics, and Cloudflare domains — run on a scheduled GitHub Action, writing append-only snapshots that back 30-day uptime and response-time history, daily spend, and usage trend charts.</p>
           </div>
           <div>
             <h3>Data Safety</h3>
@@ -179,11 +179,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
           <div>
             <h3>Desktop App</h3>
-            <p>PySide6 desktop application that imports checklist, reference, stock, sales, and cost data from Excel workbooks into a local SQLite database for review and order preparation.</p>
+            <p>PySide6 desktop application that imports checklist, reference, stock, sales, cost, purchase-order, and sales-order data from Excel workbooks into a local SQLite database, with configurable import groups for workbooks that arrive in different layouts.</p>
           </div>
           <div>
             <h3>Ordering Logic</h3>
-            <p>Computes suggested order quantities using supplier MOQ, layer and pallet pricing, packaging constraints, and category-level order-day cycles, with a grouped order summary for export.</p>
+            <p>Computes suggested order quantities using supplier MOQ, layer and pallet pricing, packaging constraints, and category-level order-day cycles, netting off stock already committed or arriving, with a grouped order summary for export.</p>
           </div>
           <div>
             <h3>Tech Stack</h3>
