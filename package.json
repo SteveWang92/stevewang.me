@@ -27,7 +27,7 @@
     "release:ship": "node scripts/release.mjs ship"
   },
   "dependencies": {
-    "astro": "^6.4.8"
+    "astro": "^7.1.6"
   },
   "devDependencies": {}
 }
