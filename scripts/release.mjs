@@ -251,7 +251,8 @@ const prep = async () => {
     );
   }
 
-  const title = `Release v${version}`;
+  // Conventional Commit line so the title can be used as a merge subject as-is.
+  const title = `chore(release): v${version}`;
   const body = `## Changelog\n\n${unreleased}`;
   const prUrl = gh([
     'pr', 'create', '--repo', REPO,
