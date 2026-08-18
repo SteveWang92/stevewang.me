@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Projects - Steve Wang"
-  description="Selected projects by Steve Wang, including digital signage CMS work, Fuel Tracker, the Shared Bill expense app, StackVitals, and purchasing workflow tooling."
+  description="Selected projects by Steve Wang, including digital signage CMS work, QuotaStation, StackVitals, Fuel Tracker, Shared Bill, and Ordering Dashboard."
   current="projects"
 >
   <main>
@@ -12,7 +12,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <h1>Projects</h1>
       <p>
         Selected work across full-stack product development, live personal software,
-        private operations dashboards, and purchasing workflow automation.
+        local-first desktop software, operations dashboards, and purchasing workflow automation.
       </p>
     </section>
 
@@ -56,11 +56,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <div class="detail-grid">
           <div>
             <h3>Purpose</h3>
-            <p>Self-hosted operations dashboard for a handful of side projects — uptime, deploy health, cloud cost, AI/CI usage, and domain status in one lightweight, single-database view built for solo developers. A Needs Attention panel lists every failing check with its project, provider, and error detail.</p>
+            <p>Self-hosted dashboard for solo developers, combining uptime, deploy health, cloud cost, AI/CI usage, and domain status. A Needs Attention panel surfaces each warning with its project, provider, and error detail.</p>
           </div>
           <div>
             <h3>Collectors</h3>
-            <p>Opt-in provider adapters for HTTP health, deploy status (Amplify, GitHub Actions workflows, and Cloudflare Pages), AWS Cost Explorer, Supabase aggregates and health, Resend sending-domain verification, OpenAI usage, GitHub Actions CI metrics, and Cloudflare domains — run on a scheduled GitHub Action, writing append-only snapshots that back 30-day uptime and response-time history, daily spend, and usage trend charts.</p>
+            <p>Scheduled, opt-in adapters cover HTTP, Amplify, GitHub Actions, Cloudflare, AWS cost, Supabase health, Resend verification, and OpenAI usage. Retained snapshots power 30-day health, spend, and usage trends.</p>
           </div>
           <div>
             <h3>Data Safety</h3>
@@ -88,6 +88,34 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
       </article>
 
+      <article class="detail-card" id="quotastation">
+        <div class="detail-header">
+          <div>
+            <span class="project-meta">Private Windows app</span>
+            <h2>QuotaStation</h2>
+          </div>
+          <span class="status-label">Private release · active development</span>
+        </div>
+        <div class="detail-grid">
+          <div>
+            <h3>Purpose</h3>
+            <p>Local-first monitoring for AI coding subscriptions, bringing live quota windows and reset times together with historical token usage, model activity, and API-equivalent cost.</p>
+          </div>
+          <div>
+            <h3>Windows Surfaces</h3>
+            <p>A tray quick panel, optional taskbar widget, dashboard, and Claude Code status line share one Codex and Claude Code snapshot. Alerts cover low quota, unavailable providers, and resets.</p>
+          </div>
+          <div>
+            <h3>Data Safety</h3>
+            <p>Reads data already published by local clients and keeps history in SQLite. Access is read-only; prompts, source code, credentials, and session content never leave the machine.</p>
+          </div>
+          <div>
+            <h3>Tech Stack</h3>
+            <p>Tauri 2, Rust, React, TypeScript, SQLite, Windows taskbar and notification APIs, and a provider-adapter architecture.</p>
+          </div>
+        </div>
+      </article>
+
       <article class="detail-card" id="fuel-tracker">
         <div class="detail-header">
           <div>
@@ -103,11 +131,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
           <div>
             <h3>Solution</h3>
-            <p>A personal fuel logging app with AI receipt extraction, shipped two ways: a cloud web app and a portable Windows desktop build, with English/Chinese UI and separate region, currency, and unit settings.</p>
+            <p>Cloud web and portable Windows builds share AI-assisted logging, English/Chinese UI, and independent region, currency, and unit settings. Advisory history checks flag likely mistakes, missed fills, and unusual consumption.</p>
           </div>
           <div>
             <h3>AI Extraction</h3>
-            <p>A serverless function reads receipt photos into litres, pump unit price, retail total, fuel grade, brand, station name, and purchase datetime, covering Australian and Chinese receipt formats, with per-account token usage visible in settings.</p>
+            <p>Receipt photos prefill litres, pump price, fuel grade, brand, station, and purchase time across Australian and Chinese formats, with cloud token usage visible in Settings.</p>
           </div>
           <div>
             <h3>Tech Stack</h3>
@@ -141,7 +169,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
           <div>
             <h3>Hosted Web App</h3>
-            <p>Supabase-backed sign-in, groups with member roles and invites, weighted expense splits, settlement calculation, completed transfer tracking, and English/Chinese UI. Settlement details export as a shareable PNG image.</p>
+            <p>AWS-hosted sign-in, groups with member roles and invites, weighted expense splits, settlement calculation, completed transfer tracking, and English/Chinese UI. Settlement details export as a shareable PNG image.</p>
           </div>
           <div>
             <h3>Import Path</h3>
@@ -149,7 +177,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
           <div>
             <h3>Tech Stack</h3>
-            <p>React, Vite, TypeScript, Supabase Auth and Postgres with row-level security, AWS Amplify Hosting, Electron, shared settlement core, and Vitest unit/UI tests.</p>
+            <p>React, Vite, TypeScript, AWS Amplify Hosting, Cognito, API Gateway, Lambda, DynamoDB, CDK, Electron, a shared settlement core, and Vitest unit/UI tests.</p>
           </div>
         </div>
         <div class="demo-strip" aria-label="Shared Bill screenshots">
@@ -167,10 +195,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <article class="detail-card" id="purchasing-workflow-tools">
         <div class="detail-header">
           <div>
-            <span class="project-meta">Current focus</span>
-            <h2>Purchasing Workflow Tools</h2>
+            <span class="project-meta">Purchasing workflow app</span>
+            <h2>Ordering Dashboard</h2>
           </div>
-          <span class="status-label">Private release</span>
+          <span class="status-label">Private release · v1.3</span>
         </div>
         <div class="detail-grid">
           <div>
@@ -178,16 +206,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <p>Speed up low-stock ordering decisions that are possible in Excel but slow to prepare and check by hand.</p>
           </div>
           <div>
-            <h3>Desktop App</h3>
-            <p>PySide6 desktop application that imports checklist, reference, stock, sales, cost, purchase-order, and sales-order data from Excel workbooks into a local SQLite database, with configurable import groups for workbooks that arrive in different layouts.</p>
+            <h3>Import &amp; Tracking</h3>
+            <p>Imports checklist, stock, sales, price/cost, supplier, purchase-order, and sales-order data from Excel or ODS into local SQLite. Optional reference sheets and configurable groups support different workbook layouts.</p>
           </div>
           <div>
-            <h3>Ordering Logic</h3>
-            <p>Computes suggested order quantities using supplier MOQ, layer and pallet pricing, packaging constraints, and category-level order-day cycles, netting off stock already committed or arriving, with a grouped order summary for export.</p>
+            <h3>Ordering &amp; Review</h3>
+            <p>Calculates quantities from demand, stock cover, MOQ, packaging constraints, and order cycles. Buyers can adjust commitments, keep notes and rules, review trends, and safely remove backed-up imports.</p>
+          </div>
+          <div>
+            <h3>Output &amp; Next Phase</h3>
+            <p>Exports draft orders, supplier PDFs, and styled low-stock workbooks by buying group. Next, Weekly Report Manager will join the app so one import feeds purchasing and weekly reporting.</p>
           </div>
           <div>
             <h3>Tech Stack</h3>
-            <p>Python, PySide6, SQLite, Pandas for data import, and CSV/XLSX export.</p>
+            <p>Python, PySide6, SQLite, Pandas, OpenPyXL, Excel/ODS import, and CSV/XLSX/PDF export.</p>
           </div>
         </div>
       </article>

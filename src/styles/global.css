@@ -714,6 +714,12 @@ a {
   font-size: 1.04rem;
 }
 
+@media (max-width: 1120px) {
+  .detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 860px) {
   .project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
