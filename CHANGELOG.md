@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-08-18
+
 ### Changed
 
 - Tighten long project descriptions and switch project details to two columns
@@ -30,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Expand purchasing tools card with purchase-order and sales-order import,
   configurable import groups, and committed/arriving netting
 - Rewrite the weekly sales lab entry as the desktop reporting app it became
+
 
 ## [1.2.0] - 2026-07-16
 
@@ -72,7 +75,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Project cards for Fuel Tracker and Shared Bill with demo images
 - SEO metadata, robots.txt, sitemap.xml, favicon
 
-[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/SteveWang92/stevewang.me/releases/tag/v1.0.0
