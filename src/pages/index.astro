@@ -32,11 +32,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <div>
           <span>Live personal products</span>
-          <strong>Fuel Tracker, Shared Bill, and StackVitals, deployed web tools on AWS Amplify, with Supabase-backed apps where needed.</strong>
+          <strong>Fuel Tracker and Shared Bill on AWS, StackVitals for project operations, and the local-first QuotaStation Windows app.</strong>
         </div>
         <div>
           <span>Current build focus</span>
-          <strong>Purchasing workflow desktop app for low-stock ordering with Excel import, supplier rules, and order summary export.</strong>
+          <strong>Ordering Dashboard for purchasing and weekly reporting, alongside multi-provider quota monitoring in QuotaStation.</strong>
         </div>
       </div>
     </section>
@@ -60,6 +60,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <a href="/projects/#stackvitals">View project</a>
         </article>
         <article class="project-card">
+          <div class="project-meta">Private Windows app</div>
+          <h3>QuotaStation</h3>
+          <p>Local-first quota, reset, token, and cost monitoring for Codex and Claude Code, with tray, taskbar, dashboard, and status-line surfaces.</p>
+          <a href="/projects/#quotastation">View project</a>
+        </article>
+        <article class="project-card">
           <div class="project-meta">Personal product</div>
           <h3>Fuel Tracker</h3>
           <p>Fuel logging with AI receipt extraction, shipped as a cloud web app and a portable desktop build with English/Chinese UI.</p>
@@ -72,9 +78,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <a href="/projects/#shared-bill">Read project notes</a>
         </article>
         <article class="project-card">
-          <div class="project-meta">Current focus</div>
-          <h3>Purchasing Workflow Tools</h3>
-          <p>Desktop purchasing app for low-stock order suggestions, with Excel import, supplier rules, cycle-aware ordering, and grouped export.</p>
+          <div class="project-meta">Purchasing workflow app</div>
+          <h3>Ordering Dashboard</h3>
+          <p>Desktop purchasing app with Excel/ODS import, committed-order tracking, supplier and item rules, cycle-aware recommendations, and grouped export.</p>
           <a href="/projects/#purchasing-workflow-tools">View scope</a>
         </article>
       </div>
@@ -85,24 +91,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <span class="shipped-title">Recently shipped</span>
         <ul class="shipped-list">
           <li>
-            <span class="shipped-version">v1.5</span>
-            <a href="/projects/#stackvitals">StackVitals</a>
-            <p>Needs Attention panel, 30-day uptime history, and spend trend charts.</p>
-          </li>
-          <li>
-            <span class="shipped-version">v1.2</span>
-            <a href="/projects/#purchasing-workflow-tools">Purchasing Workflow Tools</a>
-            <p>Grouped order summary tab and received purchase-order import.</p>
-          </li>
-          <li>
-            <span class="shipped-version">v1.5</span>
-            <a href="/projects/#fuel-tracker">Fuel Tracker</a>
-            <p>AGPL-3.0 license and streamlined release workflow.</p>
-          </li>
-          <li>
-            <span class="shipped-version">v1.4</span>
+            <span class="shipped-version">v1.6.0</span>
             <a href="/projects/#shared-bill">Shared Bill</a>
-            <p>Version display, save improvements, and public release prep.</p>
+            <p>Completed the hosted backend migration from Supabase to serverless AWS.</p>
+          </li>
+          <li>
+            <span class="shipped-version">v1.3.0</span>
+            <a href="/projects/#purchasing-workflow-tools">Ordering Dashboard</a>
+            <p>Sales-order commitments, all-status PO tracking, configurable groups, and styled low-stock exports.</p>
+          </li>
+          <li>
+            <span class="shipped-version">v1.0.0</span>
+            <a href="/lab/#weekly-sales-reporting">Weekly Report Manager</a>
+            <p>First tagged release of the desktop reporting app already used for the weekly sales cycle.</p>
+          </li>
+          <li>
+            <span class="shipped-version">v0.2.0</span>
+            <a href="/projects/#quotastation">QuotaStation</a>
+            <p>Cross-provider status line, taskbar quick-panel trigger, and clearer quota-window reporting.</p>
           </li>
         </ul>
       </div>

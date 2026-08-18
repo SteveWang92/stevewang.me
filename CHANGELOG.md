@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Tighten long project descriptions and switch project details to two columns
+  at medium viewport widths for a more balanced reading rhythm
+- Add QuotaStation as a featured private Windows project
+- Note current QuotaStation alerts, Fuel Tracker data-quality checks, and
+  StackVitals collector retention and failure signalling as active development
+- Rename the purchasing project presentation to Ordering Dashboard and document
+  its v1.3 import, commitment-tracking, review, and export capabilities
+- Update Shared Bill from its retired Supabase backend to the current serverless
+  AWS architecture
+- Refresh the recently shipped strip for the August releases of Shared Bill,
+  Ordering Dashboard, Weekly Report Manager, and QuotaStation
+- Expand the technical profile with Rust, Tauri, PySide6, Windows integration,
+  DynamoDB, API Gateway, and CDK
 - Rename Career page to Experience
 - Refresh project content and descriptions
 - Update recently shipped strip for StackVitals 1.5 and add purchasing tools 1.2
