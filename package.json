@@ -24,6 +24,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "release:prep": "node scripts/release.mjs prep",
+    "release:reversion": "node scripts/release.mjs reversion",
     "release:ship": "node scripts/release.mjs ship"
   },
   "dependencies": {
