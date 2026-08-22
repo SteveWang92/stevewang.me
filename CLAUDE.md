@@ -45,5 +45,5 @@ General commit, branch, release, security, and working rules live in the user-gl
 
 - **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`).
 - **Releases** use `scripts/release.mjs` — a two-phase, non-interactive script. `npm run release:prep` creates the release PR; after review, `npm run release:ship` bumps version, finalizes `CHANGELOG.md`, rebase-merges, tags, and publishes the GitHub release. See the script header for full usage (`--version`, `--dry-run`).
-- **Changelog:** `CHANGELOG.md` (Keep a Changelog format) is the release history. Record notable changes in the `[Unreleased]` section as work lands.
+- **Changelog:** `CHANGELOG.md` is the release history and follows the changelog rules in Steve's global `CLAUDE.md`, which is where they are explained: user-facing results only, one entry to one line, Keep a Changelog categories in order. `release:ship` finalizes the `[Unreleased]` section into a versioned entry and maintains the compare links.
 - A legacy `production` branch exists — it is **not** the deploy branch; do not use or reference it.
