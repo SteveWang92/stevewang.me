@@ -24,10 +24,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <span class="project-meta">Reporting app</span>
             <h2>Weekly Sales Reporting App</h2>
           </div>
-          <span class="status-label">Private · in weekly use</span>
+          <span class="status-label">Private · now part of Ordering Dashboard</span>
         </div>
         <p>
-          A local desktop app for the weekly sales cycle. Excel/ODS exports are
+          Originally a standalone desktop app for the weekly sales cycle. Excel/ODS exports are
           dragged in, auto-detected for type, week, and region, and checked
           against the existing history with anomaly warnings before anything is
           written — every import takes an automatic backup first, so a bad file
@@ -43,6 +43,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           reporting around it was still being redone by hand every week, so the
           same headless core picked up a small local interface and kept the
           import/export logic independent of it.
+        </p>
+        <p>
+          Purchasing and weekly reporting were reading the same sales exports
+          twice, so the app was folded into the
+          <a href="/projects/#purchasing-workflow-tools">Ordering Dashboard</a>
+          as its Weekly Report tab. It is no longer maintained separately: one
+          import now serves both workflows, over one database.
         </p>
       </article>
 
