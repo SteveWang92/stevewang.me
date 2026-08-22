@@ -4,7 +4,7 @@ Repository-specific guidance for coding agents.
 
 ## What this is
 
-`stevewang.me` — Steve Wang's personal project hub, a static Astro site (home, `/projects/`, `/experience/`, plus a 404 page) deployed to AWS Amplify. It is a project hub, not a blog or resume site: it should answer "What has Steve built?" quickly.
+`stevewang.me` — Steve Wang's personal project hub, a static Astro site (home, `/projects/`, `/tools/`, `/lab/`, `/experience/`, plus a 404 page) deployed to AWS Amplify. `stevewang.app` 301-redirects here at Cloudflare; the domain, DNS, and subdomain records for both live in the `## Domains` table of the folder-level `D:\Projects\steve-projects\CLAUDE.md`, which is where they are maintained. It is a project hub, not a blog or resume site: it should answer "What has Steve built?" quickly.
 
 ## Commands
 
