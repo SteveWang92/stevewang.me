@@ -21,7 +21,7 @@ There are no tests or linters. Verify content/site changes with `npm run build`;
 Plain Astro with no integrations or runtime dependencies — keep it that way (no CMS, contact form, analytics backend, or client-side frameworks).
 
 - `src/layouts/BaseLayout.astro` — the one layout: SEO/OG meta, canonical URL (from `site` in `astro.config.mjs`), favicon, wraps pages with `Header`/`Footer`. Pages pass `title`, `description`, and optional `current` ("projects" | "experience") for nav highlighting.
-- `src/pages/` — `index.astro`, `projects.astro`, `experience.astro`. Content is hard-coded HTML by design (v1); project cards on `/projects/` use `id` anchors (e.g. `#purchasing-workflow-tools`) that the home page links to. Internal links use trailing slashes (`/projects/`).
+- `src/pages/` — `index.astro`, `projects.astro`, `tools.astro`, `lab.astro`, `experience.astro`, and `404.astro`. Content is hard-coded HTML by design (v1); project cards on `/projects/` use `id` anchors (e.g. `#purchasing-workflow-tools`) that the home page links to. Internal links use trailing slashes (`/projects/`).
 - `src/styles/global.css` — the single stylesheet, imported by the layout. Design tokens are CSS variables in `:root` (teal accent `--accent`, amber `--amber`, 8px `--radius`).
 - `public/sitemap.xml` is hand-maintained — update it when pages are added or removed.
 - Screenshots served by the site live in `public/assets/`; `docs/assets/` holds private originals and the design reference (`concept-homepage.png`).
