@@ -7,12 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-08-23
+
 ### Changed
 
 - Fix the "Recently shipped" strip to Fuel Tracker, QuotaStation, Shared Bill, and Ordering Dashboard, ordered by newest release and noting each project's latest substantive update
 - Describe the Ordering Dashboard at v2.0 with weekly sales reporting now built into the app
 - Note QuotaStation's usage charts and light theme on its project card
 - Mark the Lab weekly reporting entry as merged into the Ordering Dashboard
+
 
 ## [1.3.0] - 2026-08-18
 
@@ -82,7 +85,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Project cards for Fuel Tracker and Shared Bill with demo images
 - SEO metadata, robots.txt, sitemap.xml, favicon
 
-[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.0.0...v1.1.0
