@@ -603,6 +603,20 @@ const ship = async () => {
   git(["pull", "origin", DEPLOY_BRANCH]);
   console.log(`Synced ${DEPLOY_BRANCH}.`);
 
+  const contentDiff = git([
+    "diff",
+    "--stat",
+    DEPLOY_BRANCH,
+    INTEGRATION_BRANCH,
+  ]);
+  if (contentDiff) {
+    throw new Error(
+      `${DEPLOY_BRANCH} and ${INTEGRATION_BRANCH} have different content after the release PR merged:\n${contentDiff}\n` +
+        `Resolve the difference before tagging or resetting ${INTEGRATION_BRANCH}.`,
+    );
+  }
+  console.log(`${DEPLOY_BRANCH} and ${INTEGRATION_BRANCH} content trees match.`);
+
   // 3. Create annotated tag and push
   git(["tag", "-a", releaseTag, "-m", `${APP_NAME} ${version}`]);
   git(["push", "origin", releaseTag]);
