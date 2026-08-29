@@ -1,6 +1,6 @@
 {
   "name": "stevewang-me",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Steve Wang's personal project hub — a static Astro site.",
   "keywords": [
     "portfolio",
@@ -24,6 +24,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "release:prep": "node scripts/release.mjs prep",
+    "release:reversion": "node scripts/release.mjs reversion",
     "release:ship": "node scripts/release.mjs ship"
   },
   "dependencies": {

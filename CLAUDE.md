@@ -44,6 +44,8 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 General commit, branch, release, security, and working rules live in the user-global `~/.claude/CLAUDE.md`. Project-specific notes:
 
 - **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`).
-- **Releases** use `scripts/release.mjs` — a two-phase, non-interactive script. `npm run release:prep` creates the release PR; after review, `npm run release:ship` bumps version, finalizes `CHANGELOG.md`, rebase-merges, tags, and publishes the GitHub release. See the script header for full usage (`--version`, `--dry-run`).
-- **Changelog:** `CHANGELOG.md` is the release history and follows the changelog rules in Steve's global `CLAUDE.md`, which is where they are explained: user-facing results only, one entry to one line, Keep a Changelog categories in order. `release:ship` finalizes the `[Unreleased]` section into a versioned entry and maintains the compare links.
+- **Releases** use `scripts/release.mjs` through the active release skill. The script is the
+  authoritative implementation for version fields and repository-specific checks; the
+  shared `prep` / `reversion` / `ship` workflow lives only in Steve's global guidance.
+- **Changelog:** `CHANGELOG.md` is the release history and follows the changelog rules in Steve's global `CLAUDE.md`, which is where they are explained: user-facing results only, one entry to one line, Keep a Changelog categories in order. `release:prep` finalizes the `[Unreleased]` section into a versioned entry and maintains the compare links.
 - A legacy `production` branch exists — it is **not** the deploy branch; do not use or reference it.

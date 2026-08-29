@@ -1,38 +1,41 @@
-// Two-phase release automation for stevewang.me.
+// Three-phase release automation for stevewang.me.
 //
-// Phase 1 — prep:  parse changelog, push dev, create release PR
+// Phase 1 — prep:  bump version, finalize changelog, push dev, open/refresh release PR
 //   node scripts/release.mjs prep [--version X.Y.Z] [--dry-run]
 //
-// Phase 2 — ship:  bump version, finalize changelog, rebase-merge PR,
-//                   tag, GitHub release, reset dev
-//   node scripts/release.mjs ship [--version X.Y.Z] [--dry-run]
+//   reversion:     change the version of a prepped release, files left uncommitted
+//   node scripts/release.mjs reversion X.Y.Z
 //
-// Both phases are non-interactive — no TTY prompts. Safe for AI and CI use.
+// Phase 2 — ship:  verify the PR can merge, then squash-merge, tag, GitHub release,
+//                   reset dev. Pushes nothing of its own.
+//   node scripts/release.mjs ship [--dry-run]
+//
+// Every phase is non-interactive — no TTY prompts. Safe for AI and CI use.
 
-import { spawnSync } from 'node:child_process';
-import { readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { spawnSync } from "node:child_process";
+import { readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import {
   parseVersion,
   compareVersions,
   incrementVersion,
   suggestLevel,
-} from './release-version.mjs';
+} from "./release-version.mjs";
 
 const projectRoot = process.cwd();
-const gitSafeDirectory = projectRoot.replaceAll('\\', '/');
+const gitSafeDirectory = projectRoot.replaceAll("\\", "/");
 const args = process.argv.slice(2);
-const subcommand = args.find((a) => !a.startsWith('--'));
-const dryRun = args.includes('--dry-run');
+const subcommand = args.find((a) => !a.startsWith("--"));
+const dryRun = args.includes("--dry-run");
 const versionFlag = (() => {
-  const idx = args.indexOf('--version');
+  const idx = args.indexOf("--version");
   return idx >= 0 && args[idx + 1] ? args[idx + 1] : null;
 })();
 
-const APP_NAME = 'stevewang.me';
-const DEPLOY_BRANCH = 'main';
-const INTEGRATION_BRANCH = 'dev';
-const REPO = 'SteveWang92/stevewang.me';
+const APP_NAME = "stevewang.me";
+const DEPLOY_BRANCH = "main";
+const INTEGRATION_BRANCH = "dev";
+const REPO = "SteveWang92/stevewang.me";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -41,8 +44,8 @@ const REPO = 'SteveWang92/stevewang.me';
 const run = (command, runArgs, options = {}) => {
   const result = spawnSync(command, runArgs, {
     cwd: projectRoot,
-    encoding: 'utf8',
-    stdio: options.inherit ? 'inherit' : 'pipe',
+    encoding: "utf8",
+    stdio: options.inherit ? "inherit" : "pipe",
     shell: options.shell ?? false,
   });
   if (result.error) throw result.error;
@@ -53,16 +56,16 @@ const run = (command, runArgs, options = {}) => {
         : result.stderr?.trim() || `${command} failed.`,
     );
   }
-  return result.stdout?.trim() ?? '';
+  return result.stdout?.trim() ?? "";
 };
 
 const git = (gitArgs) =>
-  run('git', ['-c', `safe.directory=${gitSafeDirectory}`, ...gitArgs]);
+  run("git", ["-c", `safe.directory=${gitSafeDirectory}`, ...gitArgs]);
 
-const gh = (ghArgs) => run('gh', ghArgs);
+const gh = (ghArgs) => run("gh", ghArgs);
 
 const latestTag = () => {
-  const tags = git(['tag', '--list', 'v[0-9]*', '--sort=-version:refname'])
+  const tags = git(["tag", "--list", "v[0-9]*", "--sort=-version:refname"])
     .split(/\r?\n/)
     .filter(Boolean);
   const tag = tags.find((t) => parseVersion(t.slice(1)));
@@ -70,12 +73,12 @@ const latestTag = () => {
 };
 
 const commitsSince = (tag) => {
-  const range = tag ? `${tag}..HEAD` : 'HEAD';
-  const output = git(['log', range, '--format=%s%x1f%b%x1e']);
+  const range = tag ? `${tag}..HEAD` : "HEAD";
+  const output = git(["log", range, "--format=%s%x1f%b%x1e"]);
   return output
-    .split('\x1e')
+    .split("\x1e")
     .map((entry) => {
-      const [subject = '', body = ''] = entry.trim().split('\x1f');
+      const [subject = "", body = ""] = entry.trim().split("\x1f");
       return { subject: subject.trim(), body: body.trim() };
     })
     .filter((c) => c.subject);
@@ -83,27 +86,27 @@ const commitsSince = (tag) => {
 
 const today = () => {
   const d = new Date();
-  const pad = (n) => String(n).padStart(2, '0');
+  const pad = (n) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 };
 
 const writeJson = (file, value) =>
-  writeFile(file, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+  writeFile(file, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 
 // ---------------------------------------------------------------------------
 // Changelog helpers
 // ---------------------------------------------------------------------------
 
-const CHANGELOG_PATH = join(projectRoot, 'CHANGELOG.md');
+const CHANGELOG_PATH = join(projectRoot, "CHANGELOG.md");
 
-const readChangelog = () => readFile(CHANGELOG_PATH, 'utf8');
+const readChangelog = () => readFile(CHANGELOG_PATH, "utf8");
 
 const parseUnreleased = (content) => {
-  const heading = '## [Unreleased]';
+  const heading = "## [Unreleased]";
   const start = content.indexOf(heading);
-  if (start < 0) throw new Error('No [Unreleased] section in CHANGELOG.md.');
-  const afterHeading = content.indexOf('\n', start) + 1;
-  const nextSection = content.indexOf('\n## [', afterHeading);
+  if (start < 0) throw new Error("No [Unreleased] section in CHANGELOG.md.");
+  const afterHeading = content.indexOf("\n", start) + 1;
+  const nextSection = content.indexOf("\n## [", afterHeading);
   const body =
     nextSection >= 0
       ? content.slice(afterHeading, nextSection)
@@ -116,11 +119,12 @@ const finalizeChangelog = async (version, prevTag) => {
   const tag = `v${version}`;
   const dateStr = today();
 
-  const heading = '## [Unreleased]';
+  const heading = "## [Unreleased]";
   const headingPos = content.indexOf(heading);
-  if (headingPos < 0) throw new Error('No [Unreleased] section in CHANGELOG.md.');
+  if (headingPos < 0)
+    throw new Error("No [Unreleased] section in CHANGELOG.md.");
   const afterHeading = headingPos + heading.length;
-  const nextSection = content.indexOf('\n## [', afterHeading);
+  const nextSection = content.indexOf("\n## [", afterHeading);
 
   const unreleasedBody =
     nextSection >= 0
@@ -128,7 +132,7 @@ const finalizeChangelog = async (version, prevTag) => {
       : content.slice(afterHeading);
 
   const before = content.slice(0, headingPos);
-  const after = nextSection >= 0 ? content.slice(nextSection) : '';
+  const after = nextSection >= 0 ? content.slice(nextSection) : "";
 
   content = `${before}## [Unreleased]\n\n## [${version}] - ${dateStr}${unreleasedBody}\n${after}`;
 
@@ -138,14 +142,13 @@ const finalizeChangelog = async (version, prevTag) => {
       `[Unreleased]: https://github.com/${REPO}/compare/${tag}...HEAD\n[${version}]: https://github.com/${REPO}/compare/${prevTag}...${tag}`,
     );
   } else {
-    const linksStart = content.lastIndexOf('\n[');
+    const linksStart = content.lastIndexOf("\n[");
     const insertPos = linksStart >= 0 ? linksStart + 1 : content.length;
     const links = `[Unreleased]: https://github.com/${REPO}/compare/${tag}...HEAD\n[${version}]: https://github.com/${REPO}/releases/tag/${tag}\n`;
-    content =
-      content.slice(0, insertPos) + links + content.slice(insertPos);
+    content = content.slice(0, insertPos) + links + content.slice(insertPos);
   }
 
-  await writeFile(CHANGELOG_PATH, content, 'utf8');
+  await writeFile(CHANGELOG_PATH, content, "utf8");
 };
 
 // ---------------------------------------------------------------------------
@@ -153,19 +156,19 @@ const finalizeChangelog = async (version, prevTag) => {
 // ---------------------------------------------------------------------------
 
 const bumpPackageVersion = async (version) => {
-  const pkgPath = join(projectRoot, 'package.json');
-  const pkg = JSON.parse(await readFile(pkgPath, 'utf8'));
+  const pkgPath = join(projectRoot, "package.json");
+  const pkg = JSON.parse(await readFile(pkgPath, "utf8"));
   pkg.version = version;
   await writeJson(pkgPath, pkg);
 
-  const lockPath = join(projectRoot, 'package-lock.json');
+  const lockPath = join(projectRoot, "package-lock.json");
   try {
-    const lock = JSON.parse(await readFile(lockPath, 'utf8'));
-    if ('version' in lock) lock.version = version;
-    if (lock.packages?.['']) lock.packages[''].version = version;
+    const lock = JSON.parse(await readFile(lockPath, "utf8"));
+    if ("version" in lock) lock.version = version;
+    if (lock.packages?.[""]) lock.packages[""].version = version;
     await writeJson(lockPath, lock);
   } catch (e) {
-    if (e.code !== 'ENOENT') throw e;
+    if (e.code !== "ENOENT") throw e;
   }
 };
 
@@ -173,220 +176,476 @@ const bumpPackageVersion = async (version) => {
 // Subcommands
 // ---------------------------------------------------------------------------
 
-const prep = async () => {
-  const branch = git(['branch', '--show-current']);
+// A release is "prepped" once the version bump and the dated changelog section are
+// committed on dev but not yet tagged. Read from the files rather than from git history so
+// it stays true after review fixes land on top; the tag check is what distinguishes a
+// pending release from the one that shipped last time, since dev keeps both of those files
+// at the released version afterwards.
+const preppedVersion = async () => {
+  const pkgVersion = JSON.parse(
+    await readFile(join(projectRoot, "package.json"), "utf8"),
+  ).version;
+  const content = await readChangelog();
+  if (!content.includes(`## [${pkgVersion}] - `)) return null;
+  return git(["tag", "--list", `v${pkgVersion}`]) ? null : pkgVersion;
+};
+
+const releasedSection = (content, version) => {
+  const heading = `## [${version}]`;
+  const start = content.indexOf(heading);
+  if (start < 0) return "";
+  const afterLine = content.indexOf("\n", start) + 1;
+  const nextHeading = content.indexOf("\n## [", afterLine);
+  let body =
+    nextHeading >= 0
+      ? content.slice(afterLine, nextHeading).trim()
+      : content.slice(afterLine).trim();
+  const linksStart = body.indexOf("\n[Unreleased]:");
+  if (linksStart >= 0) body = body.slice(0, linksStart).trim();
+  return body;
+};
+
+const openReleasePR = () => {
+  const list = JSON.parse(
+    gh([
+      "pr",
+      "list",
+      "--repo",
+      REPO,
+      "--head",
+      INTEGRATION_BRANCH,
+      "--base",
+      DEPLOY_BRANCH,
+      "--state",
+      "open",
+      "--json",
+      "number,title",
+      "--limit",
+      "1",
+    ]),
+  );
+  return list[0] ?? null;
+};
+
+const requireCleanIntegrationBranch = () => {
+  const branch = git(["branch", "--show-current"]);
   if (branch !== INTEGRATION_BRANCH) {
     throw new Error(
-      `Must be on ${INTEGRATION_BRANCH}, currently on ${branch || 'detached HEAD'}.`,
+      `Must be on ${INTEGRATION_BRANCH}, currently on ${branch || "detached HEAD"}.`,
     );
   }
-  if (git(['status', '--porcelain'])) {
-    throw new Error('Working tree is not clean. Commit or stash changes first.');
-  }
-
-  git(['fetch', 'origin']);
-  git(['merge', '--ff-only', `origin/${INTEGRATION_BRANCH}`]);
-
-  const changelog = await readChangelog();
-  const unreleased = parseUnreleased(changelog);
-  if (!unreleased) {
+  if (git(["status", "--porcelain"])) {
     throw new Error(
-      '[Unreleased] section in CHANGELOG.md is empty. Add changelog entries before releasing.',
+      "Working tree is not clean. Commit or stash changes first.",
     );
   }
+};
+
+// ---------------------------------------------------------------------------
+// prep — bump, finalize the changelog, push dev, open (or refresh) the release PR
+//
+// Idempotent: re-running after review fixes have landed re-pushes dev and refreshes the
+// PR body without touching the already-committed version bump.
+// ---------------------------------------------------------------------------
+
+const prep = async () => {
+  requireCleanIntegrationBranch();
+
+  git(["fetch", "origin"]);
+  git(["merge", "--ff-only", `origin/${INTEGRATION_BRANCH}`]);
 
   const latest = latestTag();
-  const commits = commitsSince(latest?.tag);
-  const level = suggestLevel(commits);
-  const currentPkgVersion = JSON.parse(
-    await readFile(join(projectRoot, 'package.json'), 'utf8'),
-  ).version;
-  const suggested = incrementVersion(
-    latest?.version ?? currentPkgVersion,
-    level,
+  const prepped = await preppedVersion();
+  let version;
+
+  if (prepped) {
+    if (versionFlag && versionFlag !== prepped) {
+      throw new Error(
+        `v${prepped} is already prepped on ${INTEGRATION_BRANCH}. To release ${versionFlag} instead, run ` +
+          `"node scripts/release.mjs reversion ${versionFlag}" and commit the result with your review fix.`,
+      );
+    }
+    version = prepped;
+  } else {
+    const unreleased = parseUnreleased(await readChangelog());
+    if (!unreleased) {
+      throw new Error(
+        "[Unreleased] section in CHANGELOG.md is empty. Add changelog entries before releasing.",
+      );
+    }
+    const commits = commitsSince(latest?.tag);
+    const level = suggestLevel(commits);
+    const currentPkgVersion = JSON.parse(
+      await readFile(join(projectRoot, "package.json"), "utf8"),
+    ).version;
+    const suggested = incrementVersion(
+      latest?.version ?? currentPkgVersion,
+      level,
+    );
+    version = versionFlag ?? suggested;
+
+    if (!parseVersion(version)) {
+      throw new Error(`Invalid version "${version}". Use major.minor.patch.`);
+    }
+    if (latest && compareVersions(version, latest.version) <= 0) {
+      throw new Error(`Version ${version} must be newer than ${latest.tag}.`);
+    }
+    if (git(["tag", "--list", `v${version}`])) {
+      throw new Error(`Tag v${version} already exists.`);
+    }
+
+    console.log(`App:          ${APP_NAME}`);
+    console.log(`Latest tag:   ${latest?.tag ?? "none"}`);
+    console.log(`Commits:      ${commits.length}`);
+    console.log(`Suggested:    ${level} -> ${suggested}`);
+    console.log("");
+    console.log("Unreleased changelog:");
+    console.log(unreleased);
+    console.log("");
+  }
+
+  console.log(
+    `Version:      ${version}${prepped ? " (already bumped and committed)" : ""}`,
   );
-  const version = versionFlag ?? suggested;
-
-  if (!parseVersion(version)) {
-    throw new Error(`Invalid version "${version}". Use major.minor.patch.`);
-  }
-  if (latest && compareVersions(version, latest.version) <= 0) {
-    throw new Error(`Version ${version} must be newer than ${latest.tag}.`);
-  }
-  if (git(['tag', '--list', `v${version}`])) {
-    throw new Error(`Tag v${version} already exists.`);
-  }
-
-  console.log(`App:          ${APP_NAME}`);
-  console.log(`Latest tag:   ${latest?.tag ?? 'none'}`);
-  console.log(`Commits:      ${commits.length}`);
-  console.log(`Suggested:    ${level} -> ${suggested}`);
-  console.log(`Version:      ${version}`);
-  console.log('');
-  console.log('Unreleased changelog:');
-  console.log(unreleased);
-  console.log('');
+  console.log("");
 
   if (dryRun) {
-    console.log('Dry run complete. No PR created.');
+    console.log("Dry run complete. Nothing committed, pushed, or opened.");
     return;
   }
 
-  git(['push', 'origin', INTEGRATION_BRANCH]);
-
-  const existingPR = JSON.parse(
-    gh([
-      'pr', 'list', '--repo', REPO,
-      '--head', INTEGRATION_BRANCH,
-      '--base', DEPLOY_BRANCH,
-      '--state', 'open',
-      '--json', 'number,title',
-      '--limit', '1',
-    ]),
-  );
-  if (existingPR.length > 0) {
-    throw new Error(
-      `Open PR already exists: #${existingPR[0].number} "${existingPR[0].title}". ` +
-        'Close it or run "ship" to complete the release.',
-    );
+  if (!prepped) {
+    await bumpPackageVersion(version);
+    await finalizeChangelog(version, latest?.tag);
+    git(["add", "package.json", "package-lock.json", "CHANGELOG.md"]);
+    git(["commit", "-m", `chore(release): v${version}`]);
+    console.log(`Committed chore(release): v${version}`);
   }
 
-  // Conventional Commit line so the title can be used as a merge subject as-is.
-  const title = `chore(release): v${version}`;
-  const body = `## Changelog\n\n${unreleased}`;
-  const prUrl = gh([
-    'pr', 'create', '--repo', REPO,
-    '--base', DEPLOY_BRANCH,
-    '--head', INTEGRATION_BRANCH,
-    '--title', title,
-    '--body', body,
-  ]);
+  git(["push", "origin", INTEGRATION_BRANCH]);
+  console.log(`Pushed ${INTEGRATION_BRANCH}.`);
 
-  console.log(`PR created: ${prUrl}`);
-  console.log('');
-  console.log('Next steps:');
-  console.log('  1. Review the PR and fix any issues');
-  console.log(`  2. Run: node scripts/release.mjs ship --version ${version}`);
+  const notes = releasedSection(await readChangelog(), version);
+  const body = `## Changelog\n\n${notes}`;
+  // The PR title becomes the squash subject verbatim, so it must be a Conventional Commit
+  // line. GitHub appends " (#N)" to it — passing --subject at merge time would not, which
+  // is why ship never overrides it.
+  const title = `chore(release): v${version}`;
+
+  const existing = openReleasePR();
+  if (existing) {
+    gh([
+      "pr",
+      "edit",
+      String(existing.number),
+      "--repo",
+      REPO,
+      "--title",
+      title,
+      "--body",
+      body,
+    ]);
+    console.log(`PR #${existing.number} updated.`);
+  } else {
+    const prUrl = gh([
+      "pr",
+      "create",
+      "--repo",
+      REPO,
+      "--base",
+      DEPLOY_BRANCH,
+      "--head",
+      INTEGRATION_BRANCH,
+      "--title",
+      title,
+      "--body",
+      body,
+    ]);
+    console.log(`PR created: ${prUrl}`);
+  }
+
+  console.log("");
+  console.log("Next steps:");
+  console.log(
+    "  1. Review the PR; commit fixes on dev and re-run prep to refresh it",
+  );
+  console.log(
+    "  2. If the review changes the version level, run: node scripts/release.mjs reversion X.Y.Z",
+  );
+  console.log("  3. Run: node scripts/release.mjs ship");
 };
 
-const ship = async () => {
-  const branch = git(['branch', '--show-current']);
-  if (branch !== INTEGRATION_BRANCH) {
+// ---------------------------------------------------------------------------
+// reversion — change the version of an already-prepped release
+//
+// Rewrites the four places the version lives (version fields, changelog heading, compare
+// links, PR title) and leaves the file changes uncommitted so they can go in with the
+// review fix that motivated the change.
+// ---------------------------------------------------------------------------
+
+const reversion = async () => {
+  const positional = args.filter((a) => !a.startsWith("--"))[1] ?? null;
+  const target = versionFlag ?? positional;
+  if (!target) {
+    throw new Error("Usage: node scripts/release.mjs reversion X.Y.Z");
+  }
+  if (!parseVersion(target)) {
+    throw new Error(`Invalid version "${target}". Use major.minor.patch.`);
+  }
+
+  requireCleanIntegrationBranch();
+  git(["fetch", "origin"]);
+  git(["merge", "--ff-only", `origin/${INTEGRATION_BRANCH}`]);
+
+  const current = await preppedVersion();
+  if (!current) {
     throw new Error(
-      `Must be on ${INTEGRATION_BRANCH}, currently on ${branch || 'detached HEAD'}.`,
+      `No prepped release found on ${INTEGRATION_BRANCH}. Run "prep" first.`,
     );
   }
-  if (git(['status', '--porcelain'])) {
-    throw new Error('Working tree is not clean. Commit or stash changes first.');
-  }
-
-  git(['fetch', 'origin']);
-  git(['merge', '--ff-only', `origin/${INTEGRATION_BRANCH}`]);
-
-  const prListJson = gh([
-    'pr', 'list', '--repo', REPO,
-    '--head', INTEGRATION_BRANCH,
-    '--base', DEPLOY_BRANCH,
-    '--state', 'open',
-    '--json', 'number,title',
-    '--limit', '1',
-  ]);
-  const prs = JSON.parse(prListJson);
-  if (prs.length === 0) {
-    throw new Error('No open release PR found. Run "prep" first.');
-  }
-  const pr = prs[0];
-  console.log(`Found PR: #${pr.number} "${pr.title}"`);
-
-  let version = versionFlag;
-  if (!version) {
-    const match = pr.title.match(/v(\d+\.\d+\.\d+)/);
-    if (match) version = match[1];
-  }
-  if (!version) {
-    throw new Error('Could not determine version from PR title. Pass --version X.Y.Z.');
-  }
-  if (!parseVersion(version)) {
-    throw new Error(`Invalid version "${version}".`);
+  if (current === target) {
+    throw new Error(`The prepped release is already v${target}.`);
   }
 
   const latest = latestTag();
+  if (git(["tag", "--list", `v${target}`])) {
+    throw new Error(`Tag v${target} already exists.`);
+  }
+  if (latest && compareVersions(target, latest.version) <= 0) {
+    throw new Error(`Version ${target} must be newer than ${latest.tag}.`);
+  }
+
+  console.log(`Re-versioning: v${current} -> v${target}`);
+
+  if (dryRun) {
+    console.log("Dry run complete. No files or PR touched.");
+    return;
+  }
+
+  await bumpPackageVersion(target);
+
+  const content = await readChangelog();
+  const rewritten = content
+    .replace(`## [${current}] - `, `## [${target}] - `)
+    .replace(`\n[${current}]: `, `\n[${target}]: `)
+    .replaceAll(`...v${current}`, `...v${target}`)
+    .replace(`compare/v${current}...HEAD`, `compare/v${target}...HEAD`)
+    .replaceAll(`/tag/v${current}`, `/tag/v${target}`);
+  await writeFile(CHANGELOG_PATH, rewritten, "utf8");
+  console.log("Rewrote the version files and CHANGELOG.md.");
+
+  const existing = openReleasePR();
+  if (existing) {
+    gh([
+      "pr",
+      "edit",
+      String(existing.number),
+      "--repo",
+      REPO,
+      "--title",
+      `chore(release): v${target}`,
+    ]);
+    console.log(`PR #${existing.number} title updated.`);
+  } else {
+    console.log("No open release PR to retitle.");
+  }
+
+  console.log("");
+  console.log(
+    "File changes are left uncommitted — commit them with the review fix that caused the version change.",
+  );
+};
+
+// ---------------------------------------------------------------------------
+// ship — verify, merge, tag, publish, reset
+//
+// Pushes nothing of its own: everything that could block the merge is checked first, so a
+// failed pre-flight leaves the release exactly as it was. Fix the cause (or wait for CI)
+// and run ship again.
+// ---------------------------------------------------------------------------
+
+const describeChecks = (rollup) => {
+  const bad = (rollup ?? [])
+    .map((c) => ({
+      name: c.name ?? c.context ?? "check",
+      state: c.conclusion || c.state || c.status || "PENDING",
+    }))
+    .filter(
+      (c) =>
+        !["SUCCESS", "NEUTRAL", "SKIPPED"].includes(
+          String(c.state).toUpperCase(),
+        ),
+    );
+  return bad.length
+    ? ` Checks not passing: ${bad.map((c) => `${c.name} (${c.state})`).join(", ")}.`
+    : "";
+};
+
+const preflight = async (pr, version) => {
+  const problems = [];
+
+  const localHead = git(["rev-parse", "HEAD"]);
+  if (pr.headRefOid !== localHead) {
+    problems.push(
+      `PR head ${pr.headRefOid.slice(0, 7)} does not match local ${INTEGRATION_BRANCH} head ${localHead.slice(0, 7)}. Run "prep" to push.`,
+    );
+  }
+
+  const pkgVersion = JSON.parse(
+    await readFile(join(projectRoot, "package.json"), "utf8"),
+  ).version;
+  if (pkgVersion !== version) {
+    problems.push(
+      `PR title says v${version} but package.json is ${pkgVersion}. Use "reversion" to change the version everywhere at once.`,
+    );
+  }
+
+  const changelog = await readChangelog();
+  if (!changelog.includes(`## [${version}] - `)) {
+    problems.push(
+      `CHANGELOG.md has no "## [${version}] - <date>" section. Run "prep" first.`,
+    );
+  }
+
+  if (git(["tag", "--list", `v${version}`])) {
+    problems.push(`Tag v${version} already exists.`);
+  }
+  const latest = latestTag();
+  if (latest && compareVersions(version, latest.version) <= 0) {
+    problems.push(`Version ${version} is not newer than ${latest.tag}.`);
+  }
+
+  if (pr.mergeStateStatus !== "CLEAN") {
+    problems.push(
+      `GitHub reports the PR as ${pr.mergeStateStatus} (mergeable: ${pr.mergeable}).${describeChecks(pr.statusCheckRollup)}`,
+    );
+  }
+
+  return problems;
+};
+
+const ship = async () => {
+  if (versionFlag) {
+    throw new Error(
+      'ship takes no --version. The version comes from the release PR title; use "reversion" to change it.',
+    );
+  }
+
+  requireCleanIntegrationBranch();
+
+  git(["fetch", "origin"]);
+  git(["merge", "--ff-only", `origin/${INTEGRATION_BRANCH}`]);
+
+  const open = openReleasePR();
+  if (!open) {
+    throw new Error('No open release PR found. Run "prep" first.');
+  }
+
+  const prJson = gh([
+    "pr",
+    "view",
+    String(open.number),
+    "--repo",
+    REPO,
+    "--json",
+    "number,title,mergeable,mergeStateStatus,headRefOid,statusCheckRollup",
+  ]);
+  const pr = JSON.parse(prJson);
+  console.log(`Found PR: #${pr.number} "${pr.title}"`);
+
+  const match = pr.title.match(/v(\d+\.\d+\.\d+)/);
+  if (!match) {
+    throw new Error(
+      `Could not read a version from the PR title "${pr.title}".`,
+    );
+  }
+  const version = match[1];
   const releaseTag = `v${version}`;
-  if (git(['tag', '--list', releaseTag])) {
-    throw new Error(`Tag ${releaseTag} already exists.`);
+
+  const problems = await preflight(pr, version);
+  if (problems.length > 0) {
+    console.error(`Cannot ship ${releaseTag} yet:`);
+    for (const problem of problems) console.error(`  - ${problem}`);
+    console.error("");
+    console.error(
+      "Nothing has been changed. Fix the cause — or wait a few minutes if checks are still running — and run ship again.",
+    );
+    process.exit(1);
   }
 
   console.log(`Version:    ${version}`);
   console.log(`Tag:        ${releaseTag}`);
-  console.log(`Merging:    PR #${pr.number}`);
-  console.log('');
+  console.log("Pre-flight: all clear");
+  console.log("");
 
   if (dryRun) {
-    console.log('Dry run complete. No changes made.');
+    console.log("Dry run complete. No changes made.");
     return;
   }
 
-  // 1. Bump version + finalize changelog
-  await bumpPackageVersion(version);
-  await finalizeChangelog(version, latest?.tag);
-  git(['add', 'package.json', 'package-lock.json', 'CHANGELOG.md']);
-  git(['commit', '-m', `chore(release): ${releaseTag}`]);
-  console.log(`Committed chore(release): ${releaseTag}`);
-
-  // 2. Push dev (includes the release commit)
-  git(['push', 'origin', INTEGRATION_BRANCH]);
-  console.log('Pushed dev.');
-
-  // 3. Rebase merge the PR
-  console.log(`Rebase-merging PR #${pr.number}...`);
+  // 1. Squash merge the PR — no --subject, so GitHub uses the PR title and appends
+  //    " (#N)". Only the auto-generated body is stripped.
+  console.log(`Squash-merging PR #${pr.number}...`);
   gh([
-    'pr', 'merge', String(pr.number),
-    '--repo', REPO,
-    '--rebase',
+    "pr",
+    "merge",
+    String(pr.number),
+    "--repo",
+    REPO,
+    "--squash",
+    "--body",
+    "",
   ]);
-  console.log('PR merged.');
+  console.log("PR merged.");
 
-  // 4. Sync main from remote
-  git(['checkout', DEPLOY_BRANCH]);
-  git(['pull', 'origin', DEPLOY_BRANCH]);
+  // 2. Sync main from remote
+  git(["checkout", DEPLOY_BRANCH]);
+  git(["pull", "origin", DEPLOY_BRANCH]);
   console.log(`Synced ${DEPLOY_BRANCH}.`);
 
-  // 5. Create annotated tag and push
-  git(['tag', '-a', releaseTag, '-m', `${APP_NAME} ${version}`]);
-  git(['push', 'origin', releaseTag]);
+  const contentDiff = git([
+    "diff",
+    "--stat",
+    DEPLOY_BRANCH,
+    INTEGRATION_BRANCH,
+  ]);
+  if (contentDiff) {
+    throw new Error(
+      `${DEPLOY_BRANCH} and ${INTEGRATION_BRANCH} have different content after the release PR merged:\n${contentDiff}\n` +
+        `Resolve the difference before tagging or resetting ${INTEGRATION_BRANCH}.`,
+    );
+  }
+  console.log(`${DEPLOY_BRANCH} and ${INTEGRATION_BRANCH} content trees match.`);
+
+  // 3. Create annotated tag and push
+  git(["tag", "-a", releaseTag, "-m", `${APP_NAME} ${version}`]);
+  git(["push", "origin", releaseTag]);
   console.log(`Tag ${releaseTag} pushed.`);
 
-  // 6. Create GitHub release with changelog section as notes
-  const changelog = await readChangelog();
-  const versionHeading = `## [${version}]`;
-  const vStart = changelog.indexOf(versionHeading);
-  let releaseNotes = '';
-  if (vStart >= 0) {
-    const afterLine = changelog.indexOf('\n', vStart) + 1;
-    const nextHeading = changelog.indexOf('\n## [', afterLine);
-    releaseNotes =
-      nextHeading >= 0
-        ? changelog.slice(afterLine, nextHeading).trim()
-        : changelog.slice(afterLine).trim();
-    const linksStart = releaseNotes.indexOf('\n[Unreleased]:');
-    if (linksStart >= 0) releaseNotes = releaseNotes.slice(0, linksStart).trim();
-  }
-
+  // 4. Create GitHub release with the changelog section as notes
+  const releaseNotes = releasedSection(await readChangelog(), version);
   gh([
-    'release', 'create', releaseTag,
-    '--repo', REPO,
-    '--title', releaseTag,
-    '--notes', releaseNotes || `${APP_NAME} ${version}`,
+    "release",
+    "create",
+    releaseTag,
+    "--repo",
+    REPO,
+    "--title",
+    releaseTag,
+    "--notes",
+    releaseNotes || `${APP_NAME} ${version}`,
   ]);
   console.log(`GitHub release ${releaseTag} created.`);
 
-  // 7. Reset dev to main and force push
-  git(['checkout', INTEGRATION_BRANCH]);
-  git(['reset', '--hard', DEPLOY_BRANCH]);
-  git(['push', '--force-with-lease', 'origin', INTEGRATION_BRANCH]);
-  console.log(`Reset ${INTEGRATION_BRANCH} to ${DEPLOY_BRANCH} and force-pushed.`);
+  // 5. Reset dev to main and force push
+  git(["checkout", INTEGRATION_BRANCH]);
+  git(["reset", "--hard", DEPLOY_BRANCH]);
+  git(["push", "--force-with-lease", "origin", INTEGRATION_BRANCH]);
+  console.log(
+    `Reset ${INTEGRATION_BRANCH} to ${DEPLOY_BRANCH} and force-pushed.`,
+  );
 
-  console.log('');
+  console.log("");
   console.log(`Release ${version} complete.`);
 };
 
@@ -394,16 +653,25 @@ const ship = async () => {
 // Main
 // ---------------------------------------------------------------------------
 
-if (subcommand === 'prep') {
+if (subcommand === "prep") {
   await prep();
-} else if (subcommand === 'ship') {
+} else if (subcommand === "reversion") {
+  await reversion();
+} else if (subcommand === "ship") {
   await ship();
 } else {
   console.error(
-    'Usage: node scripts/release.mjs <prep|ship> [--version X.Y.Z] [--dry-run]',
+    "Usage: node scripts/release.mjs <prep|reversion|ship> [--version X.Y.Z] [--dry-run]",
   );
-  console.error('');
-  console.error('  prep   Create a release PR from dev -> main');
-  console.error('  ship   Finalize, rebase-merge, tag, and publish the release');
+  console.error("");
+  console.error(
+    "  prep            Bump, finalize the changelog, push dev, open or refresh the release PR",
+  );
+  console.error(
+    "  reversion X.Y.Z Change the version of a prepped release (files left uncommitted)",
+  );
+  console.error(
+    "  ship            Verify the PR can merge, then merge, tag, and publish",
+  );
   process.exit(1);
 }

@@ -51,7 +51,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <span class="project-meta">Open-source dashboard</span>
             <h2>StackVitals</h2>
           </div>
-          <span class="status-label">Public repo</span>
+          <span class="status-label">Released · open source</span>
         </div>
         <div class="detail-grid">
           <div>
@@ -60,7 +60,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
           <div>
             <h3>Collectors</h3>
-            <p>Scheduled, opt-in adapters cover HTTP, Amplify, GitHub Actions, Cloudflare, AWS cost, Supabase health, Resend verification, and OpenAI usage. Retained snapshots power 30-day health, spend, and usage trends.</p>
+            <p>Scheduled, opt-in adapters cover HTTP, Amplify, GitHub Actions, Cloudflare, AWS cost and backend status, Supabase health, Resend verification, and OpenAI usage. Collector configuration owns the active inventory, while retained snapshots power 30-day health, spend, and usage trends.</p>
           </div>
           <div>
             <h3>Data Safety</h3>
@@ -103,11 +103,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
           <div>
             <h3>Windows Surfaces</h3>
-            <p>A tray quick panel, optional taskbar widget, dashboard, and Claude Code status line share one Codex and Claude Code snapshot. The dashboard charts tokens, cost, model mix, and quota history over a chosen range, in a light or dark theme that can follow Windows. Alerts cover low quota, unavailable providers, and resets.</p>
+            <p>A tray quick panel, optional taskbar widget, dashboard, and Claude Code status line share one Codex and Claude Code snapshot. The dashboard charts tokens, cost, model mix, quota, and reset history; usage from multiple machines can be combined through a shared folder. Alerts cover low quota, unavailable providers, and resets.</p>
           </div>
           <div>
             <h3>Data Safety</h3>
-            <p>Reads data already published by local clients and keeps history in SQLite. Access is read-only; prompts, source code, credentials, and session content never leave the machine.</p>
+            <p>Reads data already published by local clients and keeps history in SQLite. Access is read-only; prompts, source code, credentials, and session content never leave the machine, and exported diagnostics are redacted.</p>
           </div>
           <div>
             <h3>Tech Stack</h3>
