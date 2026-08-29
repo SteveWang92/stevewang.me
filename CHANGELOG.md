@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-08-30
+
 ### Changed
 
 - Add StackVitals to Recently shipped and refresh the strip for the latest StackVitals and QuotaStation releases
 - Update QuotaStation with multi-machine usage, reset history, and redacted diagnostics
+
 
 ## [1.4.0] - 2026-08-23
 
@@ -90,7 +93,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Project cards for Fuel Tracker and Shared Bill with demo images
 - SEO metadata, robots.txt, sitemap.xml, favicon
 
-[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.1.0...v1.2.0
