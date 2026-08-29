@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Add StackVitals to Recently shipped and refresh the strip for the latest StackVitals and QuotaStation releases
+- Update QuotaStation with multi-machine usage, reset history, and redacted diagnostics
+
 ## [1.4.0] - 2026-08-23
 
 ### Changed
