@@ -1,0 +1,8 @@
+{
+  // The Astro extension supplies syntax highlighting and IntelliSense for `.astro`, and
+  // EditorConfig applies the charset, indentation and line-ending rules in `.editorconfig`.
+  "recommendations": ["astro-build.astro-vscode", "editorconfig.editorconfig"],
+  // This repository has no formatter of its own, so a general-purpose one installed
+  // globally would silently rewrite hand-written markup, CSS and Markdown.
+  "unwantedRecommendations": ["esbenp.prettier-vscode", "biomejs.biome"]
+}

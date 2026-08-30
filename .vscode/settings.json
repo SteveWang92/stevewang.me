@@ -1,0 +1,35 @@
+{
+  // Shared workspace settings, committed so that editing this repository by hand produces
+  // no incidental reformatting. There is deliberately no formatter or linter here (see
+  // CLAUDE.md): the Astro markup, the single stylesheet and the Markdown are all written
+  // and wrapped by hand, and `npm run build` is the only gate.
+
+  // Nothing in this repository owns formatting, so no formatter is nominated and saving
+  // never reformats. A globally installed Prettier or Biome would otherwise claim these
+  // files and rewrite them to its own defaults.
+  "editor.formatOnSave": false,
+
+  // Named per language as well, because a language-specific setting in a user profile
+  // beats a workspace-wide one. These are the languages this repository actually contains.
+  "[astro]": { "editor.formatOnSave": false },
+  "[css]": { "editor.formatOnSave": false },
+  "[html]": { "editor.formatOnSave": false },
+  "[javascript]": { "editor.formatOnSave": false },
+  "[json]": { "editor.formatOnSave": false },
+  "[jsonc]": { "editor.formatOnSave": false },
+  "[xml]": { "editor.formatOnSave": false },
+
+  // Markdown is wrapped by hand — the changelog, roadmap and agent instructions are read
+  // as plain text — and a two-space line ending is a hard line break, so trimming it
+  // silently changes the rendered page.
+  "[markdown]": {
+    "editor.formatOnSave": false,
+    "files.trimTrailingWhitespace": false
+  },
+
+  // Match .editorconfig without depending on an extension. Everything is stored with LF;
+  // Git's autocrlf handles the Windows working copy, so new files start out consistent.
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true
+}
