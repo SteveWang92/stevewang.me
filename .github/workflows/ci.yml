@@ -1,0 +1,43 @@
+name: CI
+
+# Base-branch filter, not a typo: pull_request fires on the PR's target branch, so this runs
+# on the dev -> main release PR and again on the merge commit that lands on main. Amplify
+# deploys from that same push, so this is the only check standing between a broken build and
+# the live site; everyday work on dev is verified locally with npm run build.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# One run per commit: a newer push cancels its in-flight run. main is exempt so a release
+# commit's check always completes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.18.1
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
