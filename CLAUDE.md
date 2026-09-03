@@ -14,7 +14,7 @@ npm run build     # static build to dist/ — the verification step before hando
 npm run preview   # preview the production build
 ```
 
-There are no tests or linters. Verify content/site changes with `npm run build`; for documentation-only changes, skip builds and verify by reviewing the edited files.
+There are no tests or linters. Verify content/site changes with `npm run build`; for documentation-only changes, skip builds and verify by reviewing the edited files. `.github/workflows/ci.yml` runs the same build on the `dev` -> `main` pull request and on the push that lands on `main`, which is the only check between a broken build and the live site.
 
 ## Architecture
 
@@ -37,13 +37,13 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 - Say "purchasing operations" / "foodservice supply chain" — never name the employer, internal portal names, or private workflow details.
 - Do not mention job hunting or open-to-work status; the site reads as a durable project hub.
 - Keep copy professional, technical, outcome-focused, and concise. No social/blog tone, no oversized marketing sections, no purple gradients or decorative blobs — restrained operations-tool aesthetic.
-- Featured framing: Digital Signage CMS = credible production full-stack work; Fuel Tracker / Shared Bill = live personal products; StackVitals = open-source ops dashboard; QuotaStation = private Windows product with no repository or release links; Ordering Dashboard = current purchasing automation focus. Don't promote reporting scripts or plans into headline projects.
+- Featured framing: Digital Signage CMS = credible production full-stack work; Fuel Tracker / Shared Bill = live personal products, still private and linked to nothing; StackVitals and QuotaStation = released open-source tools that carry repository, demo, and download links; Ordering Dashboard = current purchasing automation focus. Don't promote reporting scripts or plans into headline projects.
 
 ## Workflow conventions
 
 General commit, branch, release, security, and working rules live in the user-global `~/.claude/CLAUDE.md`. Project-specific notes:
 
-- **Amplify deploys from `main` on push** (build `npm run build`, output `dist/`).
+- **Amplify deploys from `main` on push.** `amplify.yml` at the repository root owns that build — it pins Node 24.18.1, runs `npm run build`, and publishes `dist/` — and takes precedence over whatever build spec the Amplify console still holds.
 - **Releases** use `scripts/release.mjs` through the active release skill. The script is the
   authoritative implementation for version fields and repository-specific checks; the
   shared `prep` / `reversion` / `ship` workflow lives only in Steve's global guidance.

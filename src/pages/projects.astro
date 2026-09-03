@@ -91,19 +91,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <article class="detail-card" id="quotastation">
         <div class="detail-header">
           <div>
-            <span class="project-meta">Private Windows app</span>
+            <span class="project-meta">Open-source Windows app</span>
             <h2>QuotaStation</h2>
           </div>
-          <span class="status-label">Private release · active development</span>
+          <span class="status-label">Released · open source</span>
         </div>
         <div class="detail-grid">
           <div>
             <h3>Purpose</h3>
-            <p>Local-first monitoring for AI coding subscriptions, bringing live quota windows and reset times together with historical token usage, model activity, and API-equivalent cost.</p>
+            <p>Local-first monitoring for AI coding subscriptions, bringing live quota windows and reset times together with historical token usage, model activity, and API-equivalent cost. Released under AGPL-3.0, with a per-user Windows installer attached to every published version.</p>
           </div>
           <div>
             <h3>Windows Surfaces</h3>
-            <p>A tray quick panel, optional taskbar widget, dashboard, and Claude Code status line share one Codex and Claude Code snapshot. The dashboard charts tokens, cost, model mix, quota, and reset history; usage from multiple machines can be combined through a shared folder. Alerts cover low quota, unavailable providers, and resets.</p>
+            <p>A tray quick panel, optional taskbar widget, dashboard, and Claude Code status line share one Codex and Claude Code snapshot. The dashboard charts tokens, cost, model mix, quota, and reset history; usage from multiple machines can be combined through a shared folder. Alerts cover low quota, unavailable providers, and resets, and a provider whose quota is not worth tracking can be switched off without losing its usage history.</p>
           </div>
           <div>
             <h3>Data Safety</h3>
@@ -113,6 +113,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <h3>Tech Stack</h3>
             <p>Tauri 2, Rust, React, TypeScript, SQLite, Windows taskbar and notification APIs, and a provider-adapter architecture.</p>
           </div>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/SteveWang92/QuotaStation" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/SteveWang92/QuotaStation/releases/latest" target="_blank" rel="noopener">Download for Windows</a>
+        </div>
+        <div class="demo-strip" aria-label="QuotaStation screenshots">
+          <figure>
+            <img src="/assets/quotastation-dashboard.png" alt="QuotaStation dashboard showing Codex and Claude Code quota windows above hourly token usage and cost charts." loading="lazy" />
+            <figcaption>Dashboard with quota windows and usage charts</figcaption>
+          </figure>
+          <figure>
+            <img src="/assets/quotastation-quick-panel.png" alt="QuotaStation tray quick panel showing current quota percentages and reset countdowns for each provider." loading="lazy" />
+            <figcaption>Tray quick panel with resets at a glance</figcaption>
+          </figure>
         </div>
       </article>
 
@@ -131,7 +145,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
           <div>
             <h3>Solution</h3>
-            <p>Cloud web and portable Windows builds share AI-assisted logging, English/Chinese UI, and independent region, currency, and unit settings. Advisory history checks flag likely mistakes, missed fills, and unusual consumption.</p>
+            <p>Cloud web and portable Windows builds share AI-assisted logging, English/Chinese UI, and independent region, currency, and unit settings. Advisory history checks flag likely mistakes, missed fills, and unusual consumption, and history filters by date range, grade, brand, and station with free-text search across brand, station, and notes.</p>
           </div>
           <div>
             <h3>AI Extraction</h3>
@@ -198,7 +212,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <span class="project-meta">Purchasing workflow app</span>
             <h2>Ordering Dashboard</h2>
           </div>
-          <span class="status-label">Private release · v2.0</span>
+          <span class="status-label">Private release · v2.3</span>
         </div>
         <div class="detail-grid">
           <div>
@@ -216,6 +230,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <div>
             <h3>Weekly Reporting</h3>
             <p>The weekly sales reporting app now lives in the same tab strip and the same database, so one sales export feeds purchasing and the weekly report. Regional dashboards, per-brand views, and formatted report workbooks come out of that shared history.</p>
+          </div>
+          <div>
+            <h3>Claims &amp; Rebates</h3>
+            <p>A Claims tab tracks supplier credit claims, rebates, and other claims with a chase schedule, settlement records, and a short-paid total. Chases due are surfaced on the tab, in a header banner, and once a day at startup, and a rebate claim email opens prefilled in the desktop mail client.</p>
           </div>
           <div>
             <h3>Output</h3>

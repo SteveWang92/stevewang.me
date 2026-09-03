@@ -32,7 +32,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <div>
           <span>Live personal products</span>
-          <strong>Fuel Tracker and Shared Bill on AWS, StackVitals for project operations, and the local-first QuotaStation Windows app.</strong>
+          <strong>Fuel Tracker and Shared Bill on AWS, with StackVitals and QuotaStation released as open-source operations tools.</strong>
         </div>
         <div>
           <span>Current build focus</span>
@@ -60,9 +60,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <a href="/projects/#stackvitals">View project</a>
         </article>
         <article class="project-card">
-          <div class="project-meta">Private Windows app</div>
+          <div class="project-meta">Open-source Windows app</div>
           <h3>QuotaStation</h3>
-          <p>Local-first quota, reset, token, and cost monitoring for Codex and Claude Code, with tray, taskbar, dashboard, and status-line surfaces.</p>
+          <p>Local-first quota, reset, token, and cost monitoring for Codex and Claude Code, with tray, taskbar, dashboard, and status-line surfaces. Open source, with a Windows installer on every release.</p>
           <a href="/projects/#quotastation">View project</a>
         </article>
         <article class="project-card">
@@ -91,9 +91,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <span class="shipped-title">Recently shipped</span>
         <ul class="shipped-list">
           <li>
-            <span class="shipped-version">v0.6.0</span>
+            <span class="shipped-version">v2.3.0</span>
+            <a href="/projects/#purchasing-workflow-tools">Ordering Dashboard</a>
+            <p>A Claims tab for supplier credit claims and rebates, with a chase schedule, settlement records, and stock cover projected to each supplier's next order window.</p>
+          </li>
+          <li>
+            <span class="shipped-version">v1.1.0</span>
             <a href="/projects/#quotastation">QuotaStation</a>
-            <p>Reset history now syncs through the shared usage folder, with 90-day quota history and redacted diagnostics export.</p>
+            <p>A provider's quota can be switched off while its usage history keeps recording, and an expired sign-in now reads as signed out rather than as a failure.</p>
+          </li>
+          <li>
+            <span class="shipped-version">v1.7.0</span>
+            <a href="/projects/#fuel-tracker">Fuel Tracker</a>
+            <p>History filters and searches by date range, grade, brand, and station, over refined Overview charts with accessible tooltips.</p>
           </li>
           <li>
             <span class="shipped-version">v1.7.8</span>
@@ -101,19 +111,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <p>Collector configuration keeps the monitored inventory in sync, with redirect-aware health checks and retired provider data removed.</p>
           </li>
           <li>
-            <span class="shipped-version">v1.6.1</span>
-            <a href="/projects/#fuel-tracker">Fuel Tracker</a>
-            <p>History flags records that look like mistakes or missed fills, such as an unchanged odometer or an implausible tank volume.</p>
-          </li>
-          <li>
             <span class="shipped-version">v1.7.0</span>
             <a href="/projects/#shared-bill">Shared Bill</a>
             <p>First-sign-in password setup, with hosted sessions that hold up across network interruptions and group switches.</p>
-          </li>
-          <li>
-            <span class="shipped-version">v2.0.0</span>
-            <a href="/projects/#purchasing-workflow-tools">Ordering Dashboard</a>
-            <p>Weekly reporting folded into the app, so one sales import feeds both purchasing and the weekly report.</p>
           </li>
         </ul>
       </div>

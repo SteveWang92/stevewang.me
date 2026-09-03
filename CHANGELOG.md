@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Repository, Windows download, and screenshot links on the QuotaStation project card
+
+### Changed
+
+- Present QuotaStation as a released open-source product rather than a private one
+- Refresh Recently shipped for the current Ordering Dashboard, QuotaStation, and Fuel Tracker releases
+- Describe the Ordering Dashboard at v2.3 with its supplier claims and rebate tracking
+- Note Fuel Tracker's history filtering and search on its project card
+
 ### Security
 
 - Update Astro to 7.3.0, clearing three high-severity advisories in its bundled image and SVG dependencies
