@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Security
+
+- Update Astro to 7.3.0, clearing three high-severity advisories in its bundled image and SVG dependencies
+
 ## [1.5.0] - 2026-08-30
 
 ### Changed
