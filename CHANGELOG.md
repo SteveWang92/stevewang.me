@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-09-13
+
 ### Added
 
 - Repository, Windows download, and screenshot links on the QuotaStation project card
@@ -109,7 +111,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Project cards for Fuel Tracker and Shared Bill with demo images
 - SEO metadata, robots.txt, sitemap.xml, favicon
 
-[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.2.0...v1.3.0
