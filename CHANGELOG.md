@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-09-13
+
+### Added
+
+- Repository, Windows download, and screenshot links on the QuotaStation project card
+
+### Changed
+
+- Present QuotaStation as a released open-source product rather than a private one
+- Refresh Recently shipped for the current QuotaStation, Ordering Dashboard, and Fuel Tracker releases
+- Describe the Ordering Dashboard at v3.2 with its rebuilt interface, claims tracking, supplier order emails, and reserve quantities
+- Note QuotaStation's configurable status line, session-level usage history, and compact quick panel
+- Note Fuel Tracker's history filtering and search on its project card
+
+### Security
+
+- Update Astro to 7.3.0, clearing three high-severity advisories in its bundled image and SVG dependencies
+
 ## [1.5.0] - 2026-08-30
 
 ### Changed
@@ -93,7 +111,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Project cards for Fuel Tracker and Shared Bill with demo images
 - SEO metadata, robots.txt, sitemap.xml, favicon
 
-[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/SteveWang92/stevewang.me/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/SteveWang92/stevewang.me/compare/v1.2.0...v1.3.0

@@ -42,9 +42,7 @@ deployed to AWS Amplify.
   New entries follow the same shape and keep the lighter visual weight that
   distinguishes them from flagship projects.
 
-## Planned
+## Planned work
 
-### Further out
-
-- Project content collections and reusable project templates.
-- Additional `/tools/` calculators as day-to-day needs surface.
+Planned work and its progress live in GitHub issues. New `/tools/` calculators are added as
+day-to-day needs surface.
