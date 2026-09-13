@@ -271,15 +271,16 @@ const githubReleaseExists = (tag) => {
   }
 };
 
-// True once the squash-merged deploy branch is an ancestor of the integration
-// branch — i.e. the reset either happened or dev has moved on past it.
+// True once the squash-merged deploy branch is an ancestor of the remote
+// integration branch — i.e. the reset reached origin or dev has moved on past it.
+// A local-only reset whose push failed does not count.
 const integrationContainsDeploy = () => {
   try {
     git([
       "merge-base",
       "--is-ancestor",
       `origin/${DEPLOY_BRANCH}`,
-      INTEGRATION_BRANCH,
+      `origin/${INTEGRATION_BRANCH}`,
     ]);
     return true;
   } catch {
@@ -594,7 +595,14 @@ const ship = async () => {
   requireCleanIntegrationBranch();
 
   git(["fetch", "origin"]);
-  git(["merge", "--ff-only", `origin/${INTEGRATION_BRANCH}`]);
+  // A dev reset whose push failed leaves local dev on main's squash commit,
+  // diverged from origin/dev; step 5 pushes it, so fast-forward only otherwise.
+  if (
+    git(["rev-parse", INTEGRATION_BRANCH]) !==
+    git(["rev-parse", `origin/${DEPLOY_BRANCH}`])
+  ) {
+    git(["merge", "--ff-only", `origin/${INTEGRATION_BRANCH}`]);
+  }
 
   const open = openReleasePR();
   const releasePR = open ?? mergedReleasePR();

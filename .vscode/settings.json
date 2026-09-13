@@ -27,8 +27,8 @@
     "files.trimTrailingWhitespace": false
   },
 
-  // Match .editorconfig without depending on an extension. Everything is stored with LF;
-  // Git's autocrlf handles the Windows working copy, so new files start out consistent.
+  // Match .editorconfig without depending on an extension. Everything is stored with LF
+  // and, through .gitattributes, checked out with LF too, so new files start out consistent.
   "files.eol": "\n",
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true
