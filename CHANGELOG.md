@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Present QuotaStation as a released open-source product rather than a private one
-- Refresh Recently shipped for the current Ordering Dashboard, QuotaStation, and Fuel Tracker releases
-- Describe the Ordering Dashboard at v2.3 with its supplier claims and rebate tracking
+- Refresh Recently shipped for the current QuotaStation, Ordering Dashboard, and Fuel Tracker releases
+- Describe the Ordering Dashboard at v3.2 with its rebuilt interface, claims tracking, supplier order emails, and reserve quantities
+- Note QuotaStation's configurable status line, session-level usage history, and compact quick panel
 - Note Fuel Tracker's history filtering and search on its project card
 
 ### Security
