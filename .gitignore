@@ -1,3 +1,37 @@
+# -----------------------------------------------------------------------------
+# Allowlist-style ignore: everything at the repository root is ignored by default and
+# only reviewed paths are un-ignored below. A new top-level file or directory stays
+# invisible to git until it is deliberately added here — fail-closed, so a stray
+# credential or private config cannot be committed by accident.
+# -----------------------------------------------------------------------------
+/*
+
+# --- Tracked directories ---
+!/.github/
+!/.vscode/
+!/public/
+!/src/
+
+# --- Tracked root files ---
+!/.editorconfig
+!/.gitattributes
+!/.gitignore
+!/.nvmrc
+!/AGENTS.md
+!/amplify.yml
+!/astro.config.mjs
+!/changedeck.json
+!/CHANGELOG.md
+!/CLAUDE.md
+!/LICENSE
+!/package-lock.json
+!/package.json
+!/README.md
+!/ROADMAP.md
+!/SECURITY.md
+!/tsconfig.json
+
+# --- Never track, anywhere in the tree ---
 # Private planning notes; keep out of public commits/deployments.
 docs/
 
