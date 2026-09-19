@@ -44,8 +44,8 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 General commit, branch, release, security, and working rules live in the user-global `~/.claude/CLAUDE.md`. Project-specific notes:
 
 - **Amplify deploys from `main` on push.** `amplify.yml` at the repository root owns that build — it pins Node 24.18.1, runs `npm run build`, and publishes `dist/` — and takes precedence over whatever build spec the Amplify console still holds.
-- **Releases** use `scripts/release.mjs` through the active release skill. The script is the
-  authoritative implementation for version fields and repository-specific checks; the
-  shared `prep` / `reversion` / `ship` workflow lives only in Steve's global guidance.
+- **Releases** run through the globally installed `changedeck` CLI via the active release
+  skill; `changedeck.json` lists the version fields, and the shared `prep` / `reversion` /
+  `ship` workflow lives only in Steve's global guidance.
 - **Changelog:** `CHANGELOG.md` is the release history; its wording rules live in Steve's global `CLAUDE.md`. `release:prep` finalizes the `[Unreleased]` section into a versioned entry and maintains the compare links.
 - A legacy `production` branch exists — it is **not** the deploy branch; do not use or reference it.

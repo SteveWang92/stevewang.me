@@ -1,0 +1,8 @@
+{
+  "appName": "stevewang.me",
+  "repo": "SteveWang92/stevewang.me",
+  "versionFiles": [
+    { "path": "package.json", "type": "json", "key": "version" },
+    { "path": "package-lock.json", "type": "npm-lock", "packages": [""] }
+  ]
+}
