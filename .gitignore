@@ -17,7 +17,6 @@
 !/.gitattributes
 !/.gitignore
 !/.nvmrc
-!/AGENTS.md
 !/amplify.yml
 !/astro.config.mjs
 !/changedeck.json
