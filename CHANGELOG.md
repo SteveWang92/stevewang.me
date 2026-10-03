@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Refresh Recently shipped for the latest Ordering Dashboard, QuotaStation, Shared Bill, StackVitals, and Fuel Tracker releases
+- Describe the Ordering Dashboard at v3.7 with its daily list, replenishment orders, and multiple rebates
+- Note QuotaStation's multi-device reset history, chosen time zone, and internet-time clock check
+- Note Fuel Tracker's odometer photo reading, bulk delete, CSV import, and accessibility pass
+
 ## [1.6.0] - 2026-09-13
 
 ### Added
