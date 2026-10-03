@@ -40,5 +40,8 @@ General commit, branch, release, security, and working rules live in the user-gl
 - **Releases** run through the globally installed `changedeck` CLI via the active release
   skill; `changedeck.json` lists the version fields, and the shared `prep` / `reversion` /
   `ship` workflow lives only in Steve's global guidance.
+- **Release prompt:** the live site changes only when `main` does, so after any user-visible
+  content change lands on `dev`, remind Steve that `## [Unreleased]` in `CHANGELOG.md` is
+  waiting for a release; release only when he asks.
 - **Changelog:** `CHANGELOG.md` is the release history; its wording rules live in Steve's global `CLAUDE.md`. `release:prep` finalizes the `[Unreleased]` section into a versioned entry and maintains the compare links.
 - A legacy `production` branch exists — it is **not** the deploy branch; do not use or reference it.
