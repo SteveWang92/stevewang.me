@@ -13,13 +13,13 @@ npm run preview
 
 ## Deploy
 
-Production hosting uses AWS Amplify from the `main` branch.
+AWS Amplify builds and deploys the `main` branch on every push, using `amplify.yml`
+(`npm run build`, output `dist/`). Day-to-day work lands on `dev`, and releases merge `dev`
+into `main` through a reviewed release pull request.
 
-Work happens directly on `main`; pushing `main` is the manual production
-deploy trigger.
+## Documentation
 
-Build command: `npm run build`
-
-Output directory: `dist`
-
-DNS is managed separately through Route 53. Configure your hosting provider to serve the generated `dist` output for the same primary domain used in `astro.config.mjs`.
+- [`docs/CONTENT_GUIDE.md`](docs/CONTENT_GUIDE.md) — positioning, page structure, content
+  rules, and design direction
+- [`CHANGELOG.md`](CHANGELOG.md) — release history
+- Planned work lives in GitHub issues.

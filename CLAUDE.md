@@ -24,20 +24,13 @@ Plain Astro with no integrations or runtime dependencies — keep it that way (n
 - `src/pages/` — `index.astro`, `projects.astro`, `tools.astro`, `lab.astro`, `experience.astro`, and `404.astro`. Content is hard-coded HTML by design; project cards on `/projects/` use `id` anchors (e.g. `#purchasing-workflow-tools`) that the home page links to. Internal links use trailing slashes (`/projects/`).
 - `src/styles/global.css` — the single stylesheet, imported by the layout. Design tokens are CSS variables in `:root` (teal accent `--accent`, amber `--amber`, 8px `--radius`).
 - `public/sitemap.xml` is hand-maintained — update it when pages are added or removed.
-- Screenshots served by the site live in `public/assets/`; `docs/assets/` holds private originals and the design reference (`concept-homepage.png`).
+- Screenshots served by the site live in `public/assets/`.
 
-## docs/ is private and Git-ignored
+## Documentation
 
-`docs/PROJECT_PLAN.md` is the authoritative source for positioning, content direction, public copy guardrails, design direction, and deployment notes — read it before content changes, and update it in the same change when positioning, public-facing copy, guardrails, or deployment assumptions shift. But the whole `docs/` folder is intentionally Git-ignored (private planning notes): never commit it, and never copy employer-specific or private planning details from it into committed files or public copy.
+`docs/CONTENT_GUIDE.md` (tracked, public) owns positioning, page structure, project framing, content guardrails, design direction, and the standing rules such as Recently shipped — read it before content changes and update it in the same change when any of those shift. Planned work and its progress live in GitHub issues.
 
-`ROADMAP.md` (repo root, tracked, public) is the sanitized counterpart — a shareable summary of direction and principles with no employer, private app URLs, or private workflow detail. Keep it in sync at a high level when the public roadmap shifts, but never mirror private specifics into it. The repo is public, so treat anything committed as published.
-
-## Content guardrails (from the plan)
-
-- Say "purchasing operations" / "foodservice supply chain" — never name the employer, internal portal names, or private workflow details.
-- Do not mention job hunting or open-to-work status; the site reads as a durable project hub.
-- Keep copy professional, technical, outcome-focused, and concise. No social/blog tone, no oversized marketing sections, no purple gradients or decorative blobs — restrained operations-tool aesthetic.
-- Featured framing: Digital Signage CMS = credible production full-stack work; Fuel Tracker / Shared Bill = live personal products, still private and linked to nothing; StackVitals and QuotaStation = released open-source tools that carry repository, demo, and download links; Ordering Dashboard = current purchasing automation focus. Don't promote reporting scripts or plans into headline projects.
+Local-only files carry `.local` in the file or folder name and are ignored by `*.local.*` / `*.local/`. `docs/PRIVATE_CONTEXT.local.md` holds the employer context, the private sources behind `/lab/` entries, and the internal names public copy must avoid; `docs/assets.local/` holds private screenshot originals and the design reference. Never copy anything from them into committed files or public copy. The repo is public, so treat anything committed as published.
 
 ## Workflow conventions
 

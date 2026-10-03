@@ -8,6 +8,7 @@
 
 # --- Tracked directories ---
 !/.github/
+!/docs/
 !/.vscode/
 !/public/
 !/src/
@@ -26,13 +27,13 @@
 !/package-lock.json
 !/package.json
 !/README.md
-!/ROADMAP.md
 !/SECURITY.md
 !/tsconfig.json
 
 # --- Never track, anywhere in the tree ---
-# Private planning notes; keep out of public commits/deployments.
-docs/
+# Local-only notes and files: `.local` in the file or folder name.
+*.local.*
+*.local/
 
 # Astro / Node output.
 node_modules/
