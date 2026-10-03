@@ -43,5 +43,9 @@ General commit, branch, release, security, and working rules live in the user-gl
 - **Release prompt:** the live site changes only when `main` does, so after any user-visible
   content change lands on `dev`, remind Steve that `## [Unreleased]` in `CHANGELOG.md` is
   waiting for a release; release only when he asks.
+- **Commit types:** site content is the product, so a user-visible content change under
+  `src/` or `public/` is `feat:` (or `fix:` for a correction such as a wrong link or typo),
+  which makes `changedeck` suggest a minor release. `docs:` is only for repository
+  documentation such as `CLAUDE.md`, `docs/CONTENT_GUIDE.md`, and `README.md`.
 - **Changelog:** `CHANGELOG.md` is the release history; its wording rules live in Steve's global `CLAUDE.md`. `release:prep` finalizes the `[Unreleased]` section into a versioned entry and maintains the compare links.
 - A legacy `production` branch exists — it is **not** the deploy branch; do not use or reference it.
