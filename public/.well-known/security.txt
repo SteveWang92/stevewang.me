@@ -1,0 +1,5 @@
+Contact: mailto:contact@stevewang.me
+Contact: https://github.com/SteveWang92/stevewang.me/security/advisories/new
+Expires: 2027-10-11T00:00:00.000Z
+Preferred-Languages: en, zh
+Canonical: https://stevewang.me/.well-known/security.txt

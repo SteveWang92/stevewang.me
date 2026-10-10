@@ -21,6 +21,7 @@
 !/amplify.yml
 !/astro.config.mjs
 !/changedeck.json
+!/customHttp.yml
 !/CHANGELOG.md
 !/CLAUDE.md
 !/LICENSE
