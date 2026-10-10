@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Security
 
-- Send anti-framing, referrer and permissions security headers on every page
+- Enforce a content security policy and send security headers on every page
 
 ## [1.6.1] - 2026-10-04
 

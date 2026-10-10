@@ -36,7 +36,7 @@ Local-only files carry `.local` in the file or folder name and are ignored by `*
 
 General commit, branch, release, security, and working rules live in the user-global `~/.claude/CLAUDE.md`. Project-specific notes:
 
-- **Amplify deploys from `main` on push.** `amplify.yml` at the repository root owns that build — it pins Node 24.18.1, runs `npm run build`, and publishes `dist/` — and takes precedence over whatever build spec the Amplify console still holds.
+- **Amplify deploys from `main` on push.** `amplify.yml` at the repository root owns that build — it pins Node 24.18.1, runs `npm run build`, and publishes `dist/` — and takes precedence over whatever build spec the Amplify console still holds. `customHttp.yml` sets the response security headers, and `security.csp` in `astro.config.mjs` emits a per-page CSP meta tag hashing every inline script and style; an external script or style source must be added there.
 - **Releases** run through the globally installed `changedeck` CLI via the active release
   skill; `changedeck.json` lists the version fields, and the shared `prep` / `reversion` /
   `ship` workflow lives only in Steve's global guidance.
